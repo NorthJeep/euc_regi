@@ -231,7 +231,7 @@
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
                 <tr>
-                  <th>ID</th> 
+                  <th class="hide">ID</th> 
                   <th>Title</th>
                   <th>Location</th>
                   <th>Date</th>
@@ -241,7 +241,7 @@
                   <th>Actions</th>
                 </tr>
                 <tr>
-                  <td>183</td>
+                  <td class="hide">183</td>
                   <td>Barangay IT Seminar </td>
                   <td> Vigan City </td>
                   <td>11-7-2014</td>
@@ -254,7 +254,7 @@
                 </tr>
       <!--  -->
                 <tr>
-                  <td>183</td>
+                  <td class="hide">183</td>
                   <td>SAD Lecture </td>
                   <td> Quezon City </td>
                   <td>11-7-2014</td>
@@ -267,7 +267,7 @@
                 </tr>
 
       <!--  -->
-                  <td>183</td>
+                  <td class="hide">183</td>
                   <td>Extension Project </td>
                   <td> Makati City </td>
                   <td>11-7-2014</td>
