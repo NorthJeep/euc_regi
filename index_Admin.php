@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EUC Events </title>
+  <title>EUC Events | Admin </title>
+
+  <link rel="shortcut icon" href="favicon.ico">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -52,23 +54,22 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="index_Admin.php">Events <span class="sr-only">(current)</span></a></li>
            <!--  <li><a href="index_Admin.php">Link</a></li> -->
+             -->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="#">List of Events</a></li>
+              <!--   <li class="divider"></li> -->
+                <li><a href="#">List of Delegates</a></li>
+        <!--         <li class="divider"></li>
+                <li><a href="#">List of Everthing</a></li> -->
               </ul>
             </li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
+          <!--   <div class="form-group">
               <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
-            </div>
+            </div> -->
           </form>
         </div>
         <!-- /.navbar-collapse -->
@@ -78,54 +79,23 @@
             <!-- Messages: style can be found in dropdown.less-->
             <li class="dropdown messages-menu">
               <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-envelope-o"></i>
-                <span class="label label-success">4</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have 4 messages</li>
-                <li>
-                  <!-- inner menu: contains the messages -->
-                  <ul class="menu">
-                    <li><!-- start message -->
-                      <a href="#">
-                        <div class="pull-left">
-                          <!-- User Image -->
-                          <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                        </div>
-                        <!-- Message title and timestamp -->
-                        <h4>
-                          Support Team
-                          <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                        </h4>
-                        <!-- The message -->
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <!-- end message -->
-                  </ul>
-                  <!-- /.menu -->
-                </li>
-                <li class="footer"><a href="#">See All Messages</a></li>
-              </ul>
-            </li>
-            <!-- /.messages-menu -->
+             
 
             <!-- Notifications Menu -->
             <li class="dropdown notifications-menu">
               <!-- Menu toggle button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-bell-o"></i>
-                <span class="label label-warning">10</span>
+                <span class="label label-warning">2</span>
               </a>
               <ul class="dropdown-menu">
-                <li class="header">You have 10 notifications</li>
+                <li class="header">Notifications</li>
                 <li>
                   <!-- Inner Menu: contains the notifications -->
                   <ul class="menu">
                     <li><!-- start notification -->
                       <a href="#">
-                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                        <i class="fa fa-users text-aqua"></i> 5 new participants joined today!
                       </a>
                     </li>
                     <!-- end notification -->
@@ -139,10 +109,10 @@
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-flag-o"></i>
-                <span class="label label-danger">9</span>
+                <span class="label label-danger">1</span>
               </a>
               <ul class="dropdown-menu">
-                <li class="header">You have 9 tasks</li>
+                <li class="header">Event Days</li>
                 <li>
                   <!-- Inner menu: contains the tasks -->
                   <ul class="menu">
@@ -150,14 +120,14 @@
                       <a href="#">
                         <!-- Task title and progress text -->
                         <h3>
-                          Design some buttons
-                          <small class="pull-right">20%</small>
+                          Barangay IT Seminar 
+                          <small class="pull-right">7 Days Left</small>
                         </h3>
                         <!-- The progress bar -->
                         <div class="progress xs">
                           <!-- Change the css width attribute to simulate progress -->
-                          <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                            <span class="sr-only">20% Complete</span>
+                          <div class="progress-bar progress-bar-aqua" style="width: 50%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                            <span class="sr-only">50% Complete</span>
                           </div>
                         </div>
                       </a>
@@ -227,55 +197,208 @@
     <div class="container">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>
-          Top Navigation
-          <small>Example 2.0</small>
-        </h1>
-        <ol class="breadcrumb">
+ <!--        <h1> EUC Events </h1> -->
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default_add">
+                Add New Event
+            </button>
+       <!--  <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li><a href="#">Layout</a></li>
           <li class="active">Top Navigation</li>
-        </ol>
+        </ol> -->
       </section>
+    </br>
 
       <!-- Main content -->
-      <section class="content">
-        <div class="callout callout-info">
-          <h4>Tip!</h4>
+      
+          <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">EUC Events</h3>
 
-          <p>Add the layout-top-nav class to the body tag to get this layout. This feature can also be used with a
-            sidebar! So use this class if you want to remove the custom dropdown menus from the navbar and use regular
-            links instead.</p>
-        </div>
-        <div class="callout callout-danger">
-          <h4>Warning!</h4>
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-          <p>The construction of this layout differs from the normal one. In other words, the HTML markup of the navbar
-            and the content will slightly differ than that of the normal layout.</p>
-        </div>
-        <div class="box box-default">
-          <div class="box-header with-border">
-            <h3 class="box-title">Blank Box</h3>
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tr>
+                  <th>ID</th> 
+                  <th>Title</th>
+                  <th>Location</th>
+                  <th>Date</th>
+                  <th>Organizer</th>
+                  <th>State</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+                <tr>
+                  <td>183</td>
+                  <td>Barangay IT Seminar </td>
+                  <td> Vigan City </td>
+                  <td>11-7-2014</td>
+                  <td> Peter John Teneza</td>
+                  <td><span class="label label-success">Registration</span></td>
+                  <td>A seminar about the barangay IT system that will greatly revolutionize the way our barangays manage their businesses</td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
+                Edit
+              </button></td>
+                </tr>
+      <!--  -->
+                <tr>
+                  <td>183</td>
+                  <td>SAD Lecture </td>
+                  <td> Quezon City </td>
+                  <td>11-7-2014</td>
+                  <td> Lowell Dave Agnir</td>
+                  <td><span class="label label-warning">Coming Soon</span></td>
+                  <td>huhuhuhuhu</td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
+                Edit
+              </button></td>
+                </tr>
+
+      <!--  -->
+                  <td>183</td>
+                  <td>Extension Project </td>
+                  <td> Makati City </td>
+                  <td>11-7-2014</td>
+                  <td>Ma. Michaela Alejandria</td>
+                  <td><span class="label label-danger">Ended</span></td>
+                  <td>Yiieeee! Only Binay, only Binay! hart hart xD </td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
+                Edit
+              </button></td>
+               
+              </table>
+            </div>
+            <!-- /.box-body -->
           </div>
-          <div class="box-body">
-            The great content goes here
-          </div>
-          <!-- /.box-body -->
+          <!-- /.box -->
         </div>
-        <!-- /.box -->
-      </section>
+      </div>
+
+
+       <!--  -->
       <!-- /.content -->
     </div>
     <!-- /.container -->
   </div>
   <!-- /.content-wrapper -->
+
+  <!-- MODAL EDIT START HERE!!! -->
+        <div class="modal fade" id="modal-default_update">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Event</h4>
+              </div>
+              <div class="modal-body">
+                <!-- INPUTS SA MODAL HERE!! -->
+                <label>Event Title</label>
+                <input type="text" class="form-control" placeholder="">
+                </br>
+                <label>Event Location</label>
+                <input type="text" class="form-control" placeholder="">
+                </br>
+                <label>End Date</label>
+                <input type="Date" class="form-control" placeholder="">
+                </br>
+                <label>Event Organizer</label>
+                <input type="text" class="form-control" placeholder="">
+                </br>
+                <!-- COMBO BOX HERE -->
+                <label>Event State</label>
+                  <select class="form-control">
+                    <option>Registration</option>
+                    <option>Ended</option>
+                    <option>Coming Soon</option>
+                  </select>
+                </br>
+                <label>Event Description</label>
+                <textarea class="form-control" rows="3" placeholder=""></textarea>
+                <!-- END OF INPUTS SA MODAL -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+  <!-- MODAL EDIT ENDS HERE!!! -->
+
+  <!-- MODAL ADD STARTS HERE!!! -->
+<div class="modal fade" id="modal-default_add">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add New Event</h4>
+              </div>
+              <div class="modal-body">
+                <!-- INPUTS SA MODAL HERE!! -->
+                <label>Event Title</label>
+                <input type="text" class="form-control" placeholder="">
+                </br>
+                <label>Event Location</label>
+                <input type="text" class="form-control" placeholder="">
+                </br>
+                <label>End Date</label>
+                <input type="Date" class="form-control" placeholder="">
+                </br>
+                <label>Event Organizer</label>
+                <input type="text" class="form-control" placeholder="">
+                </br>
+                <!-- COMBO BOX HERE -->
+                <label>Event State</label>
+                  <select class="form-control">
+                    <option>Registration</option>
+                    <option>Ended</option>
+                    <option>Coming Soon</option>
+                  </select>
+                </br>
+                <label>Event Description</label>
+                <textarea class="form-control" rows="3" placeholder=""></textarea>
+                <!-- END OF INPUTS SA MODAL -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success">Add</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+
+
+
+  <!-- MODAL ADD ENDS HERE!!! -->
+
   <footer class="main-footer">
     <div class="container">
       <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.0
+       <!--  <b>Version</b> 2.4.0 -->
       </div>
-      <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-      reserved.
+     <!--  <strong>Copyright &copy; 2018 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+      reserved. -->
+      <strong> <a href="http://euc-inc.ph"> Electronic Financials Users’ Circle (EUC), Inc.</a> &copy 2018</strong>
     </div>
     <!-- /.container -->
   </footer>
