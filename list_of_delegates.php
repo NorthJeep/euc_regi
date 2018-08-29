@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EUC Events | Admin </title>
+  <title>EUC Events | Event Reports </title>
 
   <link rel="shortcut icon" href="favicon.ico">
   <!-- Tell the browser to be responsive to screen width -->
@@ -52,13 +52,13 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index_Admin.php">Events <span class="sr-only">(current)</span></a></li>
+            <li class=""><a href="index_Admin.php">Events <span class="sr-only"></span></a></li>
            <!--  <li><a href="index_Admin.php">Link</a></li> -->
-             -->
+             
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="list_of_events.php">List of Events</a></li>
+                <li><a href="list_of_events.php" class="active">List of Events</a></li>
               <!--   <li class="divider"></li> -->
                 <li><a href="list_of_delegates.php">List of Delegates</a></li>
         <!--         <li class="divider"></li>
@@ -198,9 +198,14 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
  <!--        <h1> EUC Events </h1> -->
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default_add">
-                Add New Event
-            </button>
+           <a href="euc_delegates_print.php" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a> </br>
+         </br>
+           <label>Select Event</label>
+                  <select class="form-control">
+                    <option>Barangay IT Seminar</option>
+                    <option>SAD Lecture</option>
+                    <option>Extension Project</option>
+                  </select>
        <!--  <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li><a href="#">Layout</a></li>
@@ -215,7 +220,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">EUC Events</h3>
+              <h3 class="box-title">EUC Event Participants</h3>
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -232,51 +237,49 @@
               <table class="table table-hover">
                 <tr>
                   <th class="hide">ID</th> 
-                  <th>Title</th>
-                  <th>Location</th>
-                  <th>Date</th>
-                  <th>Organizer</th>
-                  <th>State</th>
-                  <th>Description</th>
-                  <th>Actions</th>
+                  <th>First Name</th>
+                  <th>Middle Name</th>
+                  <th>Last Name</th>
+                  <th>Name Extension</th>
+                  <th>Contact</th>
+                  <th>E-Mail</th>
                 </tr>
+
                 <tr>
                   <td class="hide">183</td>
-                  <td>Barangay IT Seminar </td>
-                  <td> Vigan City </td>
-                  <td>11-7-2014</td>
-                  <td> Peter John Teneza</td>
-                  <td><span class="label label-success">Registration</span></td>
-                  <td>A seminar about the barangay IT system that will greatly revolutionize the way our barangays manage their businesses</td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
-                Edit
-              </button></td>
+                  <td>Lowell Dave </td>
+                  <td>Elba </td>
+                  <td>Agnir</td>
+                  <td>III</td>
+                  <td>09123456</td>
+                  <td>emailnilowell@gmail.com</td>
+                  
                 </tr>
       <!--  -->
+                
                 <tr>
                   <td class="hide">183</td>
-                  <td>SAD Lecture </td>
-                  <td> Quezon City </td>
-                  <td>11-7-2014</td>
-                  <td> Lowell Dave Agnir</td>
-                  <td><span class="label label-warning">Coming Soon</span></td>
-                  <td>huhuhuhuhu</td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
-                Edit
-              </button></td>
+                  <td>Ma. Michaela </td>
+                  <td>Cruz</td>
+                  <td>Alejandria</td>
+                  <td>Sr.</td>
+                  <td>09123456789</td>
+                  <td>mikaemail@gmail.com</td>
+                  
                 </tr>
 
       <!--  -->
+                  
+                <tr>
                   <td class="hide">183</td>
-                  <td>Extension Project </td>
-                  <td> Makati City </td>
-                  <td>11-7-2014</td>
-                  <td>Ma. Michaela Alejandria</td>
-                  <td><span class="label label-danger">Ended</span></td>
-                  <td>Yiieeee! Only Binay, only Binay! hart hart xD </td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
-                Edit
-              </button></td>
+                  <td>Peter John </td>
+                  <td>  </td>
+                  <td>Teneza</td>
+                  <td> </td>
+                  <td>09264192129</td>
+                  <td>peterjohnteneza@gmail.com</td>
+                  
+                </tr>
                
               </table>
             </div>
