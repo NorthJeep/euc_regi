@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EUC Events | Admin </title>
-
-  <link rel="shortcut icon" href="favicon.ico">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
+<?php
+$Title='EUC Events | Admin';
+include_once('head.php');
+session_start();
+?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
 
@@ -54,13 +21,12 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="index_Admin.php">Events <span class="sr-only">(current)</span></a></li>
            <!--  <li><a href="index_Admin.php">Link</a></li> -->
-             -->
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">List of Events</a></li>
+                <li><a href="list_of_events.php">List of Events</a></li>
               <!--   <li class="divider"></li> -->
-                <li><a href="#">List of Delegates</a></li>
+                <li><a href="list_of_delegates.php">List of Delegates</a></li>
         <!--         <li class="divider"></li>
                 <li><a href="#">List of Everthing</a></li> -->
               </ul>
@@ -180,7 +146,7 @@
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div> -->
                   <div class="pull-right">
-                    <a href="index.php" class="btn btn-default btn-flat">Sign out</a>
+                    <a href="Admin_SignOutSession.php" class="btn btn-default btn-flat">Sign out</a>
                   </div>
                 </li>
               </ul>
@@ -235,12 +201,51 @@
                   <th>Title</th>
                   <th>Location</th>
                   <th>Date</th>
+                  <th>Time</th>
                   <th>Organizer</th>
                   <th>State</th>
                   <th>Description</th>
                   <th>Actions</th>
                 </tr>
-                <tr>
+                <?php
+                  include('config.php');
+
+                  $EventListSQL = 'SELECT * FROM tbl_t_event';
+                  $EventList = mysqli_query($euceventMysqli,$EventListSQL) or die (mysqli_error($euceventMysqli));
+                  if(mysqli_num_rows($EventList) > 0)
+                  {
+                    while($row = mysqli_fetch_assoc($EventList))
+                    {
+                      $ID = $row['Event_ID'];
+                      $UID = $row['User_ID'];
+                      $Title = $row['Event_Title'];
+                      $Date = $row['Event_Date'];
+                      $Time = $row['Event_Time'];
+                      $Location = $row['Event_Location'];
+                      $Organizer = $row['Event_OrganizerDetail'];
+                      $Desc = $row['Event_Desc'];
+
+                      echo '
+                            <tr>
+                              <td class="hide">'.$ID.'</td>
+                              <td>'.$Title.'</td>
+                              <td>'.$Location.'</td>
+                              <td>'.$Date.'</td>
+                              <td>'.$Time.'</td>
+                              <td>'.$Organizer.'</td>
+                              <td><span class="label label-success">Registration</span></td>
+                              <td>'.$Desc.'</td>
+                              <td>
+                                <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view">View Details</button>
+                                <button type="button" class="btn btn-primary EditEvent" data-toggle="modal" data-target="#modal-default_update">Edit</button>
+                              </td>
+                            </tr>';
+
+                    }
+                  }
+
+                ?>
+                <!-- <tr>
                   <td class="hide">183</td>
                   <td>Barangay IT Seminar </td>
                   <td> Vigan City </td>
@@ -251,9 +256,9 @@
                   <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
                 Edit
               </button></td>
-                </tr>
+                </tr> -->
       <!--  -->
-                <tr>
+                <!-- <tr>
                   <td class="hide">183</td>
                   <td>SAD Lecture </td>
                   <td> Quezon City </td>
@@ -264,9 +269,10 @@
                   <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
                 Edit
               </button></td>
-                </tr>
+                </tr> -->
 
       <!--  -->
+                <!-- <tr>
                   <td class="hide">183</td>
                   <td>Extension Project </td>
                   <td> Makati City </td>
@@ -277,7 +283,7 @@
                   <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
                 Edit
               </button></td>
-               
+                </tr> -->
               </table>
             </div>
             <!-- /.box-body -->
@@ -296,6 +302,7 @@
 
   <!-- MODAL EDIT START HERE!!! -->
         <div class="modal fade" id="modal-default_update">
+          <form id="EventEdit" action="EventEditAdmin.php" method="POST">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -305,44 +312,141 @@
               </div>
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
+                <label class="hide">Event ID</label>
+                <input id="EID" type="text" class="form-control hide" placeholder="" name="ID">
+                </br>
                 <label>Event Title</label>
-                <input type="text" class="form-control" placeholder="">
+                <input id="ETitle" type="text" class="form-control" placeholder="" name="ETitle">
                 </br>
                 <label>Event Location</label>
-                <input type="text" class="form-control" placeholder="">
+                <input id="ELocation" type="text" class="form-control" placeholder="" name="ELocation">
                 </br>
-                <label>End Date</label>
-                <input type="Date" class="form-control" placeholder="">
-                </br>
-                <label>Event Organizer</label>
-                <input type="text" class="form-control" placeholder="">
-                </br>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <label>Date</label>
+                    <input id="EDate" type="Date" class="form-control" placeholder="" name="EDate">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- <label>Time</label>
+                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
+                    <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group">
+                          <input id="ETime" type="text" class="form-control timepicker" name="ETime">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                        <!-- /.input group -->
+                      </div>
+                      <!-- /.form group -->
+                    </div>
+                  </div>
+                </div>
                 <!-- COMBO BOX HERE -->
-                <label>Event State</label>
+                <!-- <label>Event State</label>
                   <select class="form-control">
                     <option>Registration</option>
                     <option>Ended</option>
                     <option>Coming Soon</option>
                   </select>
+                </br> -->
+                <label>Event Organizer</label>
+                <input id="EOrganizer" type="text" class="form-control" placeholder="" name="EOrganizer">
                 </br>
                 <label>Event Description</label>
-                <textarea class="form-control" rows="3" placeholder=""></textarea>
+                <textarea id="EDesc" class="form-control" rows="3" placeholder="" name="EDesc"></textarea>
                 <!-- END OF INPUTS SA MODAL -->
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">Update</button>
               </div>
             </div>
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
+        </form>
         </div>
 
   <!-- MODAL EDIT ENDS HERE!!! -->
 
+<!-- MODAL VIEW START HERE!!! -->
+        <div class="modal fade" id="modal-default_view">
+          <form id="EventEdit" action="#" method="POST">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">View Event</h4>
+              </div>
+              <div class="modal-body">
+                <!-- INPUTS SA MODAL HERE!! -->
+                <label class="hide">Event ID</label>
+                <input id="VID" type="text" class="form-control hide" placeholder="" name="ID">
+                </br>
+                <label>Event Title</label>
+                <input id="VTitle" type="text" class="form-control" placeholder="" name="Title">
+                </br>
+                <label>Event Location</label>
+                <input id="VLocation" type="text" class="form-control" placeholder="" name="Location">
+                </br>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <label>Date</label>
+                    <input id="VDate" type="Date" class="form-control" placeholder="" name="Date">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- <label>Time</label>
+                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
+                    <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group">
+                          <input id="VTime" type="text" class="form-control timepicker" name="Time">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                        <!-- /.input group -->
+                      </div>
+                      <!-- /.form group -->
+                    </div>
+                  </div>
+                </div>
+                </br>
+                <!-- COMBO BOX HERE -->
+                <!-- <label>Event State</label>
+                  <select class="form-control">
+                    <option>Registration</option>
+                    <option>Ended</option>
+                    <option>Coming Soon</option>
+                  </select>
+                </br> -->
+                <label>Event Organizer</label>
+                <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer">
+                </br>
+                <label>Event Description</label>
+                <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc"></textarea>
+                <!-- END OF INPUTS SA MODAL -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Back</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </form>
+        </div>
+
+  <!-- MODAL VIEW ENDS HERE!!! -->
+
   <!-- MODAL ADD STARTS HERE!!! -->
 <div class="modal fade" id="modal-default_add">
+    <form id="EventAdd" action="EventAddAdmin.php" method="POST">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -353,57 +457,68 @@
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
                 <label>Event Title</label>
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" class="form-control" placeholder="Event Title" name="Title" required="">
                 </br>
                 <label>Event Location</label>
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" class="form-control" placeholder="Location" name="Location">
                 </br>
-                <label>End Date</label>
-                <input type="Date" class="form-control" placeholder="">
-                </br>
-                <label>Event Organizer</label>
-                <input type="text" class="form-control" placeholder="">
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <label>Date</label>
+                    <input type="Date" class="form-control" placeholder="" name="Date">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- <label>Time</label>
+                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
+                    <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control timepicker" name="Time">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                        <!-- /.input group -->
+                      </div>
+                      <!-- /.form group -->
+                    </div>
+                  </div>
+                </div>
                 </br>
                 <!-- COMBO BOX HERE -->
-                <label>Event State</label>
+                <!-- <label>Event State</label>
                   <select class="form-control">
                     <option>Registration</option>
                     <option>Ended</option>
                     <option>Coming Soon</option>
                   </select>
+                </br> -->
+                <label>Event Organizer Details</label>
+                <textarea class="form-control" rows="3" placeholder="Event Organizer Details" name="Organizer" required=""></textarea>
                 </br>
                 <label>Event Description</label>
-                <textarea class="form-control" rows="3" placeholder=""></textarea>
+                <textarea class="form-control" rows="5" placeholder="Event Description" name="Desc" required=""></textarea>
                 <!-- END OF INPUTS SA MODAL -->
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success">Add</button>
+                <button type="submit" class="btn btn-success">Add</button>
               </div>
             </div>
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
+        </form>
         </div>
-
-
-
-
   <!-- MODAL ADD ENDS HERE!!! -->
-
-  <footer class="main-footer">
-    <div class="container">
-      <div class="pull-right hidden-xs">
-       <!--  <b>Version</b> 2.4.0 -->
-      </div>
-     <!--  <strong>Copyright &copy; 2018 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-      reserved. -->
-      <strong> <a href="http://euc-inc.ph"> Electronic Financials Users’ Circle (EUC), Inc.</a> &copy 2018</strong>
-    </div>
-    <!-- /.container -->
-  </footer>
+<?php
+  include('footer.php');
+?>  
 </div>
 <!-- ./wrapper -->
+
+
 
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -427,5 +542,66 @@
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+
 </body>
 </html>
+
+<script>
+  $(function (){
+    //Timepicker
+    $('.timepicker').timepicker({
+      showInputs: false
+    })
+  })
+</script>
+<script type="text/javascript">
+        $(document).ready(function()
+        {
+            $(".EditEvent").click(function()
+            {
+                $("#ETitle").val($(this).closest("tbody tr").find("td:eq(0)").html());
+                $("#ETitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
+                $("#ELocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
+                $("#EDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
+                $("#ETime").val($(this).closest("tbody tr").find("td:eq(4)").html());
+                $("#EOrganizer").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#EDesc").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
+                //         $("#editCheckA").prop("checked", true).trigger('click');
+                //     } else {
+                //         $("#editCheckI").prop("checked", true).trigger('click');
+                //     }
+                // if ($(this).closest("tbody tr").find("td:eq(16)").text() === "M") {
+                //         $("#EditGendM").prop("checked", true).trigger('click');
+                //     } else {
+                //         $("#EditGendF").prop("checked", true).trigger('click');
+                //     }
+                // ActOption = "option[value="+val($(this).closest("tbody tr").find("td:eq(4)").html())+"]";
+                // $("#PositionOption").find(ActOption).prop("selected",true);
+            });
+            $(".ViewEvent").click(function()
+            {
+                $("#VTitle").val($(this).closest("tbody tr").find("td:eq(0)").html());
+                $("#VTitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
+                $("#VLocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
+                $("#VDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
+                $("#VTime").val($(this).closest("tbody tr").find("td:eq(4)").html());
+                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
+                //         $("#editCheckA").prop("checked", true).trigger('click');
+                //     } else {
+                //         $("#editCheckI").prop("checked", true).trigger('click');
+                //     }
+                // if ($(this).closest("tbody tr").find("td:eq(16)").text() === "M") {
+                //         $("#EditGendM").prop("checked", true).trigger('click');
+                //     } else {
+                //         $("#EditGendF").prop("checked", true).trigger('click');
+                //     }
+                // ActOption = "option[value="+val($(this).closest("tbody tr").find("td:eq(4)").html())+"]";
+                // $("#PositionOption").find(ActOption).prop("selected",true);
+            });
+        });
+
+    </script> 
