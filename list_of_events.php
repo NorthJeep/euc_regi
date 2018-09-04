@@ -1,41 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EUC Events | Event Reports </title>
+<?php
+$Title='EUC Events | Event Reports';
+include_once('head.php');
+session_start();
+if(!isset($_SESSION['LoggedIn']))
+{
+  $header = 'Location:/euc_regi/index.php';
+  session_destroy();
+  header($header);
+}
 
-  <link rel="shortcut icon" href="favicon.ico">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
+?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
 
@@ -198,8 +172,20 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
  <!--        <h1> EUC Events </h1> -->
-           <a href="euc_events_print.php" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-
+           <!-- <a href="euc_delegates_print.php" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>  -->
+           <button href="euc_delegates_print.php" target="_blank" class="btn btn-default printFunction"><i class="fa fa-print"></i> Print</button> 
+         </br>
+         </br>
+           <label>Event Status</label>
+                  <select id="status-select" class="form-control">
+                    <option value="0">All</option>
+                    <option value="1">Available</option>
+                    <option value="2">Ongoing</option>
+                    <option value="3">Finished</option>
+                    <!-- <option>Barangay IT Seminar</option>
+                    <option>SAD Lecture</option>
+                    <option>Extension Project</option> -->
+                  </select>
        <!--  <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li><a href="#">Layout</a></li>
@@ -210,7 +196,7 @@
 
       <!-- Main content -->
       
-          <div class="row">
+      <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
@@ -229,49 +215,78 @@
             
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
+              <table class="table table-hover event-list">
+                <thead>
                 <tr>
                   <th class="hide">ID</th> 
                   <th>Title</th>
                   <th>Location</th>
                   <th>Date</th>
-                  <th>Organizer</th>
-                  <th>State</th>
+                  <th>Time</th>
+                  <th class="hide">Organizer</th>
+                  <th>Status</th>
                   <th>Description</th>
-                  
                 </tr>
-                <tr>
-                  <td class="hide">183</td>
-                  <td>Barangay IT Seminar </td>
-                  <td> Vigan City </td>
-                  <td>11-7-2014</td>
-                  <td> Peter John Teneza</td>
-                  <td><span class="label label-success">Registration</span></td>
-                  <td>A seminar about the barangay IT system that will greatly revolutionize the way our barangays manage their businesses</td>
-                  
-                </tr>
-      <!--  -->
-                <tr>
-                  <td class="hide">183</td>
-                  <td>SAD Lecture </td>
-                  <td> Quezon City </td>
-                  <td>11-7-2014</td>
-                  <td> Lowell Dave Agnir</td>
-                  <td><span class="label label-warning">Coming Soon</span></td>
-                  <td>huhuhuhuhu</td>
-                  
-                </tr>
+                </thead>
+                <tbody>
+                <?php
+                  include('config.php');
+                  $CurrDate = time();
+                  $EventListSQL = 'SELECT * FROM tbl_t_event ORDER BY Event_ID DESC';
+                  $EventList = mysqli_query($euceventMysqli,$EventListSQL) or die (mysqli_error($euceventMysqli));
+                  if(mysqli_num_rows($EventList) > 0)
+                  {
+                    while($row = mysqli_fetch_assoc($EventList))
+                    {
+                      $ID = $row['Event_ID'];
+                      $UID = $row['User_ID'];
+                      $Title = $row['Event_Title'];
+                      $Date = $row['Event_Date'];
+                      $Time = $row['Event_Time'];
+                      $Location = $row['Event_Location'];
+                      $Organizer = $row['Event_OrganizerDetail'];
+                      $Desc = $row['Event_Desc'];
 
-      <!--  -->
-                  <td class="hide">183</td>
-                  <td>Extension Project </td>
-                  <td> Makati City </td>
-                  <td>11-7-2014</td>
-                  <td>Ma. Michaela Alejandria</td>
-                  <td><span class="label label-danger">Ended</span></td>
-                  <td>Yiieeee! Only Binay, only Binay! hart hart xD </td>
-                  
-               
+                      if($Date!= '' || $Date!= null)
+                      {
+                        if (strtotime($Date) > $CurrDate) 
+                        {
+                          $Status = '<span class="label label-success">Registration</span>';
+                            #$date occurs in the future
+                        } 
+                        else if ($Date == DATE("Y-m-d"))
+                        {
+                          $Status = '<span class="label label-warning">Ongoing</span>';
+                            #$date occurs now or in the past
+                        }
+                        else
+                        {
+                          $Status = '<span class="label label-danger">Finished</span>';
+                        }
+                      }
+                      else
+                      {
+                        $Status = '<span class="label label-default">Coming Soon</span>';
+                      }
+                      
+
+                      echo '
+                            <tr>
+                              <td class="hide">'.$ID.'</td>
+                              <td>'.$Title.'</td>
+                              <td>'.$Location.'</td>
+                              <td>'.$Date.'</td>
+                              <td>'.$Time.'</td>
+                              <td class="hide">'.$Organizer.'</td>
+                              <td>'.$Status.'</td>
+                              <td>'.$Desc.'</td>
+                            </tr>';
+
+                    }
+                  }
+
+                ?>
+              </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -385,17 +400,9 @@
 
   <!-- MODAL ADD ENDS HERE!!! -->
 
-  <footer class="main-footer">
-    <div class="container">
-      <div class="pull-right hidden-xs">
-       <!--  <b>Version</b> 2.4.0 -->
-      </div>
-     <!--  <strong>Copyright &copy; 2018 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-      reserved. -->
-      <strong> <a href="http://euc-inc.ph"> Electronic Financials Users’ Circle (EUC), Inc.</a> &copy 2018</strong>
-    </div>
-    <!-- /.container -->
-  </footer>
+<?php
+include('footer.php');
+?> 
 </div>
 <!-- ./wrapper -->
 
@@ -423,3 +430,26 @@
 
 </body>
 </html>
+<script>
+  $(document).ready(function(){
+
+
+  $('.printFunction').on('click',function(){
+    var EID = $('#status-select').val();
+    window.open("euc_events_print.php?status="+EID+"");
+  });
+  $('#status-select').on('change', function(){
+      $('.event-list tbody tr').remove();
+      var Event = $(this).val();
+      $.ajax({
+        url:"eventlist.php",
+        type:"POST",
+        data: {ID:Event},
+        success:function(data)
+        {
+          $('.event-list tbody').append(data);
+        } 
+      });
+    });
+});
+</script>

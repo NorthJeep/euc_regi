@@ -20,9 +20,9 @@
 											Event_Desc)
 									VALUES  ('.$ID.',
 											"'.$Title.'",
-											"'.$Location.'",
 											"'.$Date.'",
 											"'.$Time.'",
+											"'.$Location.'",
 											"'.$Organizer.'",
 											"'.$Desc.'")';
 	$AddEvent = mysqli_query($euceventMysqli,$AddEventSQL) or die (mysqli_error($euceventMysqli));

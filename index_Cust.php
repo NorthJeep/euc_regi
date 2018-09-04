@@ -100,12 +100,90 @@ include_once('head.php');
                   <th>Title</th>
                   <th>Location</th>
                   <th>Date</th>
-                  <th>Organizer</th>
+                  <th>Time</th>
+                  <th class="hide">Organizer</th>
                   <th>State</th>
                   <th>Description</th>
                   <th>Actions</th>
                 </tr>
-                <tr>
+                <?php
+                  include('config.php');
+                  $CurrDate = time();
+                  $EventListSQL = 'SELECT Event_ID,
+                                          User_ID,
+                                          Event_Title,
+                                          IFNULL(Event_Date,"") AS Event_Date,
+                                          IFNULL(Event_Time,"") AS Event_Time,
+                                          Event_Location,
+                                          Event_OrganizerDetail,
+                                          Event_Desc
+                                   FROM tbl_t_event WHERE Event_Date >= CURRENT_DATE OR Event_Date IS NULL
+                                   ORDER BY Event_ID DESC';
+                  $EventList = mysqli_query($euceventMysqli,$EventListSQL) or die (mysqli_error($euceventMysqli));
+                  if(mysqli_num_rows($EventList) > 0)
+                  {
+                    while($row = mysqli_fetch_assoc($EventList))
+                    {
+                      $ID = $row['Event_ID'];
+                      $UID = $row['User_ID'];
+                      $Title = $row['Event_Title'];
+                      $Date = $row['Event_Date'];
+                      $Time = $row['Event_Time'];
+                      $Location = $row['Event_Location'];
+                      $Organizer = $row['Event_OrganizerDetail'];
+                      $Desc = $row['Event_Desc'];
+                      $RegisterFlag = 1;
+                      if($Date!= '' || $Date!= null)
+                      {
+                        if (strtotime($Date) > $CurrDate) 
+                        {
+                          $Status = '<span class="label label-success">Registration</span>';
+                            #$date occurs in the future
+                        } 
+                        else if ($Date == DATE("Y-m-d"))
+                        {
+                          $Status = '<span class="label label-warning">Ongoing</span>';
+                        }
+                      }
+                      else
+                      {
+                        $Status = '<span class="label label-default">Coming Soon</span>';
+                        $RegisterFlag = 0;
+                      }
+                      echo '
+                            <tr>
+                              <td class="hide">'.$ID.'</td>
+                              <td>'.$Title.'</td>
+                              <td>'.$Location.'</td>
+                              <td>'.$Date.'</td>
+                              <td>'.$Time.'</td>
+                              <td class="hide">'.$Organizer.'</td>
+                              <td>'.$Status.'</td>
+                              <td>'.$Desc.'</td>';
+                            if($RegisterFlag == 1)
+                            {
+                              echo '
+                              <td>
+                                <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view">View Details</button>
+                                <button type="button" class="btn btn-success RegisterEvent" data-toggle="modal" data-target="#modal-defaul_Register"> Register
+                                </button>
+                              </td>
+                              </tr>';
+                            }
+                            else
+                            {
+                              echo '
+                                <td>
+                                  <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view">View Details</button>
+                                </td>
+                                </tr>';
+                            }
+
+                    }
+                  }
+
+                ?>
+                <!-- <tr>
                   <td class="hide">183</td>
                   <td>Barangay IT Seminar </td>
                   <td> Vigan City </td>
@@ -116,9 +194,9 @@ include_once('head.php');
                   <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-defaul_Register">
                 Register
               </button></td>
-                </tr>
+                </tr> -->
       <!--  -->
-                <tr>
+                <!-- <tr>
                   <td class="hide">183</td>
                   <td>SAD Lecture </td>
                   <td> Quezon City </td>
@@ -129,9 +207,10 @@ include_once('head.php');
                   <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-defaul_Register">
                 Register
               </button></td>
-                </tr>
+                </tr> -->
 
       <!--  -->
+                <!-- <tr>
                   <td class="hide">183</td>
                   <td>Extension Project </td>
                   <td> Makati City </td>
@@ -142,6 +221,7 @@ include_once('head.php');
                   <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-defaul_Register">
                 Register
               </button></td>
+                </tr> -->
                
               </table>
             </div>
@@ -151,8 +231,81 @@ include_once('head.php');
         </div>
       </div>
 
+<!-- MODAL VIEW START HERE!!! -->
+        <div class="modal fade" id="modal-default_view">
+          <form id="EventEdit" action="#" method="POST">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">View Event</h4>
+              </div>
+              <div class="modal-body">
+                <!-- INPUTS SA MODAL HERE!! -->
+                <label class="hide">Event ID</label>
+                <input id="VID" type="text" class="form-control hide" placeholder="" name="ID" readonly="">
+                </br>
+                <label>Event Title</label>
+                <input id="VTitle" type="text" class="form-control" placeholder="" name="Title" readonly="">
+                </br>
+                <label>Event Location</label>
+                <input id="VLocation" type="text" class="form-control" placeholder="" name="Location" readonly="">
+                </br>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <label>Date</label>
+                    <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- <label>Time</label>
+                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
+                    <div>
+                      <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group">
+                          <input id="VTime" type="text" class="form-control timepicker" name="Time" readonly="">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                        <!-- /.input group -->
+                      </div>
+                      <!-- /.form group -->
+                    </div>
+                  </div>
+                </div>
+                </br>
+                <!-- COMBO BOX HERE -->
+                <!-- <label>Event State</label>
+                  <select class="form-control">
+                    <option>Registration</option>
+                    <option>Ended</option>
+                    <option>Coming Soon</option>
+                  </select>
+                </br> -->
+                <label>Event Organizer</label>
+                <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
+                </br>
+                <label>Event Description</label>
+                <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
+                <!-- END OF INPUTS SA MODAL -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Back</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </form>
+        </div>
+
+  <!-- MODAL VIEW ENDS HERE!!! -->
+
 <!-- MODAL EDIT START HERE!!! -->
         <div class="modal fade" id="modal-defaul_Register">
+          <form id="Regster" action="Register.php" method="POST">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -162,33 +315,44 @@ include_once('head.php');
               </div>
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
+                <label class="hide">Event ID</label>
+                <input id="ID" type="text" class="form-control hide" placeholder="" name="ID">
                 <label>First Name</label>
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" class="form-control" placeholder="" name="FName" required="">
                 </br>
                 <label>Middle Name</label>
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" class="form-control" placeholder="" name="MName">
                 </br>
                 <label>Last Name</label>
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" class="form-control" placeholder="" name="LName" required="">
                 </br>
                 <label>Extension Name</label>
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" class="form-control" placeholder="" name="XName">
                 </br>
                 <label>Contact Number</label>
-                <input type="Number" class="form-control" placeholder="">
+                <input type="Number" class="form-control" placeholder="" name="Contact" required="">
                 </br>
-                <label>E-mail</label>
-                <input type="E-mail" class="form-control" placeholder="">
+                <label>E-mail Address</label>
+                <input type="E-mail" class="form-control" placeholder="" name="Email" required="">
+                <div class="col-lg-12" style="align-content: center;" align:center;">
+                  <div class="checkbox col-xs-12" style="align-content: center;" align="center">
+                    <input type="checkbox" required="">
+                    <label>
+                       By clicking the checkbox, you agree to our <a href="TermsAndConditions.php">Terms of Use, Privacy Policy and Disclaimer.</a>
+                    </label>
+                  </div>
+                </div>
                 <!-- END OF INPUTS SA MODAL -->
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary">Register</button>
               </div>
             </div>
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
+        </form>
         </div>
 
   <!-- MODAL EDIT ENDS HERE!!! -->
@@ -230,3 +394,40 @@ include_once('head.php');
 
 </body>
 </html>
+<script type="text/javascript">
+        $(document).ready(function()
+        {
+            $(".RegisterEvent").click(function()
+            {
+                $("#ID").val($(this).closest("tbody tr").find("td:eq(0)").html());
+                
+            });
+        });
+        $(document).ready(function()
+        {
+
+            $(".ViewEvent").click(function()
+            {
+                $("#VID").val($(this).closest("tbody tr").find("td:eq(0)").html());
+                $("#VTitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
+                $("#VLocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
+                $("#VDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
+                $("#VTime").val($(this).closest("tbody tr").find("td:eq(4)").html());
+                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
+                //         $("#editCheckA").prop("checked", true).trigger('click');
+                //     } else {
+                //         $("#editCheckI").prop("checked", true).trigger('click');
+                //     }
+                // if ($(this).closest("tbody tr").find("td:eq(16)").text() === "M") {
+                //         $("#EditGendM").prop("checked", true).trigger('click');
+                //     } else {
+                //         $("#EditGendF").prop("checked", true).trigger('click');
+                //     }
+                // ActOption = "option[value="+val($(this).closest("tbody tr").find("td:eq(4)").html())+"]";
+                // $("#PositionOption").find(ActOption).prop("selected",true);
+            });
+        });
+
+    </script> 

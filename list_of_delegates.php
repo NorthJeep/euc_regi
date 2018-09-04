@@ -1,41 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EUC Events | Event Reports </title>
+<?php
+$Title='EUC Events | Event Reports ';
+include_once('head.php');
+session_start();
+if(!isset($_SESSION['LoggedIn']))
+{
+  $header = 'Location:/euc_regi/index.php';
+  session_destroy();
+  header($header);
+}
 
-  <link rel="shortcut icon" href="favicon.ico">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
+?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
 
@@ -198,13 +172,35 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
  <!--        <h1> EUC Events </h1> -->
-           <a href="euc_delegates_print.php" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a> </br>
+           <!-- <a href="euc_delegates_print.php" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>  -->
+           <button href="euc_delegates_print.php" target="_blank" class="btn btn-default printFunction"><i class="fa fa-print"></i> Print</button> 
+         </br>
          </br>
            <label>Select Event</label>
-                  <select class="form-control">
-                    <option>Barangay IT Seminar</option>
+                  <select id="event-select" class="form-control">
+                    <?php
+                      include('config.php');
+                      $EventSelectSQL = 'SELECT * FROM tbl_t_event ORDER BY Event_Title';
+                      $EventSelect = mysqli_query($euceventMysqli,$EventSelectSQL) or die (mysqli_error($euceventMysqli));
+                      if(mysqli_num_rows($EventSelect) > 0)
+                      {
+                        echo '<option value="0" selected>No selected event.</option>';
+                        while($row = mysqli_fetch_assoc($EventSelect))
+                        {
+                          $Title = $row['Event_Title'];
+                          $ID =  $row['Event_ID'];
+                          echo '<option value="'.$ID.'">'.$Title.'</option>';
+                        }
+                      }
+                      else
+                      {
+                        echo '<option value="0" selected>No registered events.</option>';
+                      }
+
+                    ?>
+                    <!-- <option>Barangay IT Seminar</option>
                     <option>SAD Lecture</option>
-                    <option>Extension Project</option>
+                    <option>Extension Project</option> -->
                   </select>
        <!--  <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -234,7 +230,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
+              <table class="table table-hover participant-table">
+                <thead>
                 <tr>
                   <th class="hide">ID</th> 
                   <th>First Name</th>
@@ -244,19 +241,18 @@
                   <th>Contact</th>
                   <th>E-Mail</th>
                 </tr>
-
+                </thead>
+                <tbody>
                 <tr>
-                  <td class="hide">183</td>
-                  <td>Lowell Dave </td>
-                  <td>Elba </td>
-                  <td>Agnir</td>
-                  <td>III</td>
-                  <td>09123456</td>
-                  <td>emailnilowell@gmail.com</td>
-                  
+                  <td class="hide">N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
                 </tr>
-      <!--  -->
-                
+                <!-- 
                 <tr>
                   <td class="hide">183</td>
                   <td>Ma. Michaela </td>
@@ -267,8 +263,6 @@
                   <td>mikaemail@gmail.com</td>
                   
                 </tr>
-
-      <!--  -->
                   
                 <tr>
                   <td class="hide">183</td>
@@ -279,8 +273,8 @@
                   <td>09264192129</td>
                   <td>peterjohnteneza@gmail.com</td>
                   
-                </tr>
-               
+                </tr> -->
+               </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -394,17 +388,9 @@
 
   <!-- MODAL ADD ENDS HERE!!! -->
 
-  <footer class="main-footer">
-    <div class="container">
-      <div class="pull-right hidden-xs">
-       <!--  <b>Version</b> 2.4.0 -->
-      </div>
-     <!--  <strong>Copyright &copy; 2018 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-      reserved. -->
-      <strong> <a href="http://euc-inc.ph"> Electronic Financials Users’ Circle (EUC), Inc.</a> &copy 2018</strong>
-    </div>
-    <!-- /.container -->
-  </footer>
+<?php
+  include('footer.php');
+?>  
 </div>
 <!-- ./wrapper -->
 
@@ -432,3 +418,33 @@
 
 </body>
 </html>
+<!-- <script>
+  function printFunction(this){
+    var EID = $('#event-select').val();
+    window.open("/euc_delegates_print.php?Event"+EID+"");
+  }
+</script> -->
+<script>
+  $(document).ready(function(){
+
+
+  $('.printFunction').on('click',function(){
+    var EID = $('#event-select').val();
+    window.open("euc_delegates_print.php?Event="+EID+"");
+  });
+
+    $('#event-select').on('change', function(){
+      $('.participant-table tbody tr').remove();
+      var Event = $(this).val();
+      $.ajax({
+        url:"participantlist.php",
+        type:"POST",
+        data: {ID:Event},
+        success:function(data)
+        {
+          $('.participant-table tbody').append(data);
+        } 
+      });
+    });
+});
+</script>

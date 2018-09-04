@@ -2,6 +2,12 @@
 $Title='EUC Events | Admin';
 include_once('head.php');
 session_start();
+if(!isset($_SESSION['LoggedIn']))
+{
+  $header = 'Location:/euc_regi/index.php';
+  session_destroy();
+  header($header);
+}
 ?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
@@ -183,7 +189,7 @@ session_start();
             <div class="box-header">
               <h3 class="box-title">EUC Events</h3>
 
-              <div class="box-tools">
+              <!-- <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
@@ -191,7 +197,7 @@ session_start();
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
@@ -202,15 +208,15 @@ session_start();
                   <th>Location</th>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>Organizer</th>
+                  <th class="hide">Organizer</th>
                   <th>State</th>
                   <th>Description</th>
                   <th>Actions</th>
                 </tr>
                 <?php
                   include('config.php');
-
-                  $EventListSQL = 'SELECT * FROM tbl_t_event';
+                  $CurrDate = time();
+                  $EventListSQL = 'SELECT * FROM tbl_t_event ORDER BY Event_ID DESC';
                   $EventList = mysqli_query($euceventMysqli,$EventListSQL) or die (mysqli_error($euceventMysqli));
                   if(mysqli_num_rows($EventList) > 0)
                   {
@@ -225,6 +231,29 @@ session_start();
                       $Organizer = $row['Event_OrganizerDetail'];
                       $Desc = $row['Event_Desc'];
 
+                      if($Date!= '' || $Date!= null)
+                      {
+                        if (strtotime($Date) > $CurrDate) 
+                        {
+                          $Status = '<span class="label label-success">Registration</span>';
+                            #$date occurs in the future
+                        } 
+                        else if ($Date == DATE("Y-m-d"))
+                        {
+                          $Status = '<span class="label label-warning">Ongoing</span>';
+                            #$date occurs now or in the past
+                        }
+                        else
+                        {
+                          $Status = '<span class="label label-danger">Finished</span>';
+                        }
+                      }
+                      else
+                      {
+                        $Status = '<span class="label label-default">Coming Soon</span>';
+                      }
+                      
+
                       echo '
                             <tr>
                               <td class="hide">'.$ID.'</td>
@@ -232,8 +261,8 @@ session_start();
                               <td>'.$Location.'</td>
                               <td>'.$Date.'</td>
                               <td>'.$Time.'</td>
-                              <td>'.$Organizer.'</td>
-                              <td><span class="label label-success">Registration</span></td>
+                              <td class="hide">'.$Organizer.'</td>
+                              <td>'.$Status.'</td>
                               <td>'.$Desc.'</td>
                               <td>
                                 <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view">View Details</button>
@@ -313,7 +342,7 @@ session_start();
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
                 <label class="hide">Event ID</label>
-                <input id="EID" type="text" class="form-control hide" placeholder="" name="ID">
+                <input id="EID" type="text" class="form-control hide" placeholder="" name="EID">
                 </br>
                 <label>Event Title</label>
                 <input id="ETitle" type="text" class="form-control" placeholder="" name="ETitle">
@@ -353,7 +382,7 @@ session_start();
                   </select>
                 </br> -->
                 <label>Event Organizer</label>
-                <input id="EOrganizer" type="text" class="form-control" placeholder="" name="EOrganizer">
+                <input id="EOrganizer" type="text" class="form-control" placeholder="" name="EOrganizer" value="EUC" readonly="">
                 </br>
                 <label>Event Description</label>
                 <textarea id="EDesc" class="form-control" rows="3" placeholder="" name="EDesc"></textarea>
@@ -385,27 +414,27 @@ session_start();
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
                 <label class="hide">Event ID</label>
-                <input id="VID" type="text" class="form-control hide" placeholder="" name="ID">
+                <input id="VID" type="text" class="form-control hide" placeholder="" name="ID" readonly="">
                 </br>
                 <label>Event Title</label>
-                <input id="VTitle" type="text" class="form-control" placeholder="" name="Title">
+                <input id="VTitle" type="text" class="form-control" placeholder="" name="Title" readonly="">
                 </br>
                 <label>Event Location</label>
-                <input id="VLocation" type="text" class="form-control" placeholder="" name="Location">
+                <input id="VLocation" type="text" class="form-control" placeholder="" name="Location" readonly="">
                 </br>
                 <div class="col-md-12">
                   <div class="col-md-6">
                     <label>Date</label>
-                    <input id="VDate" type="Date" class="form-control" placeholder="" name="Date">
+                    <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
                   </div>
                   <div class="col-md-6">
                     <!-- <label>Time</label>
                     <input type="Date" class="form-control" placeholder="" name="Date"> -->
-                    <div class="bootstrap-timepicker">
+                    <div>
                       <div class="form-group">
                         <label>Time</label>
                         <div class="input-group">
-                          <input id="VTime" type="text" class="form-control timepicker" name="Time">
+                          <input id="VTime" type="text" class="form-control timepicker" name="Time" readonly="">
                           <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                           </div>
@@ -426,10 +455,10 @@ session_start();
                   </select>
                 </br> -->
                 <label>Event Organizer</label>
-                <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer">
+                <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
                 </br>
                 <label>Event Description</label>
-                <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc"></textarea>
+                <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
                 <!-- END OF INPUTS SA MODAL -->
               </div>
               <div class="modal-footer">
@@ -495,7 +524,7 @@ session_start();
                   </select>
                 </br> -->
                 <label>Event Organizer Details</label>
-                <textarea class="form-control" rows="3" placeholder="Event Organizer Details" name="Organizer" required=""></textarea>
+                <input class="form-control" rows="3" placeholder="Event Organizer Details" name="Organizer" value="EUC" readonly=""></input>
                 </br>
                 <label>Event Description</label>
                 <textarea class="form-control" rows="5" placeholder="Event Description" name="Desc" required=""></textarea>
@@ -537,30 +566,28 @@ session_start();
 <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- ChartJS -->
 <script src="bower_components/chart.js/Chart.js"></script>
+
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard2.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 
-<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
 
 </body>
 </html>
 
-<script>
-  $(function (){
-    //Timepicker
-    $('.timepicker').timepicker({
-      showInputs: false
-    })
-  })
-</script>
 <script type="text/javascript">
         $(document).ready(function()
         {
+
+          $('.timepicker').timepicker({
+            showInputs: false
+          });
+
             $(".EditEvent").click(function()
             {
-                $("#ETitle").val($(this).closest("tbody tr").find("td:eq(0)").html());
+                $("#EID").val($(this).closest("tbody tr").find("td:eq(0)").html());
                 $("#ETitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
                 $("#ELocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
                 $("#EDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
@@ -582,7 +609,7 @@ session_start();
             });
             $(".ViewEvent").click(function()
             {
-                $("#VTitle").val($(this).closest("tbody tr").find("td:eq(0)").html());
+                $("#VID").val($(this).closest("tbody tr").find("td:eq(0)").html());
                 $("#VTitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
                 $("#VLocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
                 $("#VDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
