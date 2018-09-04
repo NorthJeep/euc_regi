@@ -9,8 +9,8 @@
 									IFNULL(tbl_t_registrant.Middle_Name," ") AS Middle_Name,
 									IFNULL(tbl_t_registrant.Last_Name," ") AS Last_Name,
 									IFNULL(tbl_t_registrant.Ext_Name," ") AS Ext_Name,
-									IFNULL(tbl_t_registrant.Contact," ") AS Contact,
-									IFNULL(tbl_t_registrant.Email," ") AS Email
+									IFNULL(aes_decrypt(tbl_t_registrant.Contact,"eucevent")," ") AS Contact,
+                                  IFNULL(aes_decrypt(tbl_t_registrant.Email,"eucevent")," ") AS Email
 							 FROM tbl_t_registration
 							 INNER JOIN tbl_t_registrant
 							 	ON tbl_t_registrant.Registrant_ID = tbl_t_registration.Registrant_ID

@@ -330,7 +330,7 @@ include_once('head.php');
                 <input type="text" class="form-control" placeholder="" name="XName">
                 </br>
                 <label>Contact Number</label>
-                <input type="Number" class="form-control" placeholder="" name="Contact" required="">
+                <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
                 </br>
                 <label>E-mail Address</label>
                 <input type="E-mail" class="form-control" placeholder="" name="Email" required="">
@@ -370,6 +370,10 @@ include_once('head.php');
 </div>
 <!-- ./wrapper -->
 
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<!-- <script src="plugins/input-mask/jquery.inputmask.js"></script> -->
+
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -392,6 +396,8 @@ include_once('head.php');
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 
+<script src="plugins/input-mask/jquery.mask.js"></script>
+
 </body>
 </html>
 <script type="text/javascript">
@@ -402,6 +408,7 @@ include_once('head.php');
                 $("#ID").val($(this).closest("tbody tr").find("td:eq(0)").html());
                 
             });
+            $('#Contact').mask('00000000000');
         });
         $(document).ready(function()
         {

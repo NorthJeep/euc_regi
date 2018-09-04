@@ -8,7 +8,7 @@ if(!isset($_SESSION['LoggedIn']))
   session_destroy();
   header($header);
 }
-
+date_default_timezone_set('Asia/Manila');
 $StatusNo = $_GET['status'];
 ?>
 <body onload="window.print();">

@@ -16,7 +16,7 @@
 														Middle_Name = "'.$MName.'" AND 
 														Last_Name = "'.$LName.'" AND  
 														Ext_Name = "'.$XName.'") OR
-														Email = "'.$Email.'" ';
+														Email = aes_decrypt("'.$Email.'","eucevent") ';
 	$Check = mysqli_query($euceventMysqli,$CheckSQL) or die (mysqli_error($euceventMysqli));							
 	if(mysqli_num_rows($Check) > 0)
 	{
@@ -26,12 +26,12 @@
 		}
 
 		// UPDATE DETAILS
-		$RegistrantUpdateSQL = 'UPDATE tbl_t_registrant SET Contact = "'.$Contact.'", Email = "'.$Email.'" WHERE Registrant_ID = '.$RID.' ';
+		$RegistrantUpdateSQL = 'UPDATE tbl_t_registrant SET Contact = aes_encrypt("'.$Contact.'","eucevent"), Email = aes_encrypt("'.$Email.'","eucevent") WHERE Registrant_ID = '.$RID.' ';
 		$RegistrantUpdate = mysqli_query($euceventMysqli,$RegistrantUpdateSQL) or die (mysqli_error($euceventMysqli));
 
 		// REGISTER INTO EVENT
 
-		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered) VALUES ('.$ID.','.$RID.','.date("Y-m-d").')';
+		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered) VALUES ('.$ID.','.$RID.',CURRENT_DATE)';
 		$RegisterEvent = mysqli_query($euceventMysqli,$RegisterEventSQL) or die (mysqli_error($euceventMysqli));
 
 		echo 'OK';
@@ -43,7 +43,7 @@
 	{
 		// INSERT REGISTRANT DETAILS
 
-		$RegisterSQL = 'INSERT INTO tbl_t_registrant (First_Name,Middle_Name,Last_Name,Ext_Name,Contact,Email) VALUES ("'.$FName.'","'.$MName.'","'.$LName.'","'.$XName.'","'.$Contact.'","'.$Email.'")';
+		$RegisterSQL = 'INSERT INTO tbl_t_registrant (First_Name,Middle_Name,Last_Name,Ext_Name,Contact,Email) VALUES ("'.$FName.'","'.$MName.'","'.$LName.'","'.$XName.'",aes_encrypt("'.$Contact.'","eucevent"),aes_encrypt("'.$Email.'","eucevent"))';
 		$Register = mysqli_query($euceventMysqli,$RegisterSQL) or die (mysqli_error($euceventMysqli));
 
 		// GET LAST ENTERED REGISTRANT ID
@@ -65,7 +65,7 @@
 
 		// INSERT REGISTRATION
 
-		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered) VALUES ('.$ID.','.$RID.','.date("Y-m-d").')';
+		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered) VALUES ('.$ID.','.$RID.',CURRENT_DATE)';
 		$RegisterEvent = mysqli_query($euceventMysqli,$RegisterEventSQL) or die (mysqli_error($euceventMysqli));
 
 

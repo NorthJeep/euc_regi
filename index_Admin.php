@@ -8,6 +8,7 @@ if(!isset($_SESSION['LoggedIn']))
   session_destroy();
   header($header);
 }
+date_default_timezone_set('Asia/Manila');
 ?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
@@ -233,7 +234,8 @@ if(!isset($_SESSION['LoggedIn']))
 
                       if($Date!= '' || $Date!= null)
                       {
-                        if (strtotime($Date) > $CurrDate) 
+                        // if (strtotime($Date) > $CurrDate) 
+                        if($Date > DATE("Y-m-d"))
                         {
                           $Status = '<span class="label label-success">Registration</span>';
                             #$date occurs in the future
