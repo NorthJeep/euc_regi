@@ -405,7 +405,7 @@ date_default_timezone_set('Asia/Manila');
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary" onclick="window.open ('Registration_Print.php')">Register</button>
               </div>
             </div>
             <!-- /.modal-content -->
