@@ -1,6 +1,7 @@
 <?php
 $Title='EUC Events | Registration';
 include_once('head.php');
+date_default_timezone_set('Asia/Manila');
 ?>
 
 <body class="hold-transition skin-blue layout-top-nav">
@@ -232,7 +233,7 @@ include_once('head.php');
       </div>
 
 <!-- MODAL VIEW START HERE!!! -->
-        <div class="modal fade" id="modal-default_view">
+        <!-- <div class="modal fade" id="modal-default_view">
           <form id="EventEdit" action="#" method="POST">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -242,7 +243,7 @@ include_once('head.php');
                 <h4 class="modal-title">View Event</h4>
               </div>
               <div class="modal-body">
-                <!-- INPUTS SA MODAL HERE!! -->
+
                 <label class="hide">Event ID</label>
                 <input id="VID" type="text" class="form-control hide" placeholder="" name="ID" readonly="">
                 </br>
@@ -258,8 +259,6 @@ include_once('head.php');
                     <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
                   </div>
                   <div class="col-md-6">
-                    <!-- <label>Time</label>
-                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
                     <div>
                       <div class="form-group">
                         <label>Time</label>
@@ -269,35 +268,77 @@ include_once('head.php');
                             <i class="fa fa-clock-o"></i>
                           </div>
                         </div>
-                        <!-- /.input group -->
                       </div>
-                      <!-- /.form group -->
                     </div>
                   </div>
                 </div>
                 </br>
-                <!-- COMBO BOX HERE -->
-                <!-- <label>Event State</label>
-                  <select class="form-control">
-                    <option>Registration</option>
-                    <option>Ended</option>
-                    <option>Coming Soon</option>
-                  </select>
-                </br> -->
                 <label>Event Organizer</label>
                 <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
                 </br>
                 <label>Event Description</label>
                 <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
-                <!-- END OF INPUTS SA MODAL -->
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Back</button>
               </div>
             </div>
-            <!-- /.modal-content -->
           </div>
-          <!-- /.modal-dialog -->
+        </form>
+        </div> -->
+        <div class="modal fade" id="modal-default_view">
+          <form id="EventEdit" action="#" method="POST">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">View Event</h4>
+              </div>
+              <div class="modal-body">
+
+                <label class="hide">Event ID</label>
+                <input id="VID" type="text" class="form-control hide" placeholder="" name="ID" readonly="">
+                </br>
+                <label>Event Title</label>
+                <input id="VTitle" type="text" class="form-control" placeholder="" name="Title" readonly="">
+                </br>
+                <label>Event Location</label>
+                <input id="VLocation" type="text" class="form-control" placeholder="" name="Location" readonly="">
+                </br>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <label>Date</label>
+                    <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
+                  </div>
+                  <div class="col-md-6">
+                    <div>
+                      <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group">
+                          <input id="VTime" type="text" class="form-control timepicker" name="Time" readonly="">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </br>
+                <label>Event Organizer</label>
+                <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
+                </br>
+                <label>Event Description</label>
+                <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Back</button>
+              </div>
+            </div>
+          </div>
         </form>
         </div>
 
@@ -315,31 +356,49 @@ include_once('head.php');
               </div>
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
+                <label style="float: right">(* = Optional)</label>
                 <label class="hide">Event ID</label>
                 <input id="ID" type="text" class="form-control hide" placeholder="" name="ID">
-                <label>First Name</label>
-                <input type="text" class="form-control" placeholder="" name="FName" required="">
-                </br>
-                <label>Middle Name</label>
-                <input type="text" class="form-control" placeholder="" name="MName">
-                </br>
-                <label>Last Name</label>
-                <input type="text" class="form-control" placeholder="" name="LName" required="">
-                </br>
-                <label>Extension Name</label>
-                <input type="text" class="form-control" placeholder="" name="XName">
-                </br>
-                <label>Contact Number</label>
-                <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
-                </br>
-                <label>E-mail Address</label>
-                <input type="E-mail" class="form-control" placeholder="" name="Email" required="">
-                <div class="col-lg-12" style="align-content: center;" align:center;">
-                  <div class="checkbox col-xs-12" style="align-content: center;" align="center">
-                    <input type="checkbox" required="">
-                    <label>
-                       By clicking the checkbox, you agree to our <a href="TermsAndConditions.php">Terms of Use, Privacy Policy and Disclaimer.</a>
-                    </label>
+                <div div class="col-xs-12">
+                  <div class="col-xs-3">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" placeholder="" name="FName" required="">
+                  </div>
+                  <div class="col-xs-3">
+                    <label>Middle Name*</label>
+                    <input type="text" class="form-control" placeholder="" name="MName">
+                  </div>
+                  <div class="col-xs-3">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" placeholder="" name="LName" required="">
+                  </div>
+                  <div class="col-xs-3">
+                    <label>Extension Name*</label>
+                    <input type="text" class="form-control" placeholder="" name="XName">
+                  </div>
+                </div>
+                <div div class="col-xs-12" style="margin-top: 20px;">
+                  <div class="col-xs-12">
+                    <label>Contact Number</label>
+                    <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
+                    </br>
+                  </div>
+                  <div class="col-xs-12">
+                    <label>E-mail Address</label>
+                    <input type="E-mail" class="form-control" placeholder="" name="Email" required="">
+                    </br>
+                  </div>
+                  <div class="col-xs-12" style="margin:20px" align="center">
+                    <div class="col-xs-2">
+                    </div>
+                    <div class="checkbox icheck col-xs-8" align="center">
+                      <input type="checkbox" class="icheckbox_square-blue" required="">
+                      <label>
+                         By clicking the checkbox, you agree to our <a href="TermsAndConditions.php">Terms of Use, Privacy Policy and Disclaimer.</a>
+                      </label>
+                    </div>
+                    <div class="col-xs-2">
+                    </div>
                   </div>
                 </div>
                 <!-- END OF INPUTS SA MODAL -->
