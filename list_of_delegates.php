@@ -240,6 +240,10 @@ if(!isset($_SESSION['LoggedIn']))
                   <th>Name Extension</th>
                   <th>Contact</th>
                   <th>E-Mail</th>
+                  <th>Date Registered</th>
+                  <th>Payment Method</th>
+                  <th>Payment Status</th>
+                  <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -251,6 +255,11 @@ if(!isset($_SESSION['LoggedIn']))
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+
                 </tr>
                 <!-- 
                 <tr>
@@ -292,40 +301,53 @@ if(!isset($_SESSION['LoggedIn']))
   <!-- /.content-wrapper -->
 
   <!-- MODAL EDIT START HERE!!! -->
-        <div class="modal fade" id="modal-default_update">
+        <div class="modal fade" id="modal-default_balance">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit Event</h4>
+                <h4 class="modal-title">Check Balance</h4>
               </div>
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
-                <label>Event Title</label>
-                <input type="text" class="form-control" placeholder="">
+                <input id="RID" type="text" class="form-control hide" name="RID" placeholder="">
+                <div class="form-group" align="center">
+                  <h2><small id="LName" style="font-size: 40px">LName</small>, <small id="FName"  style="font-size: 15px">FName</small> <small id="MName"  style="font-size: 15px">MName </small> <small id="XName"  style="font-size: 15px">, XName</small></h2>
+                </div>
                 </br>
-                <label>Event Location</label>
-                <input type="text" class="form-control" placeholder="">
-                </br>
-                <label>End Date</label>
-                <input type="Date" class="form-control" placeholder="">
-                </br>
-                <label>Event Organizer</label>
-                <input type="text" class="form-control" placeholder="">
-                </br>
-                <!-- COMBO BOX HERE -->
-                <label>Event State</label>
-                  <select class="form-control">
-                    <option>Registration</option>
-                    <option>Ended</option>
-                    <option>Coming Soon</option>
-                  </select>
-                </br>
-                <label>Event Description</label>
-                <textarea class="form-control" rows="3" placeholder=""></textarea>
+                <div class="form-group col-xs-12">
+                  <div class="col-xs-6">
+                    <label>Contact: <small id="Contact" style="font-size: 20px">Contact</small></label>
+                    <!-- <input type="text" class="form-control" placeholder=""> -->
+                  </div>
+                  <div class="col-xs-6">
+                    <label>Email: <small id="Email" style="font-size: 20px">Email</small></label>
+                    <!-- <input type="text" class="form-control" placeholder=""> -->
+                  </br>
+                  </div>
+                </div>
+                <div class="form-group col-xs-12">
+                  <div class="col-xs-6" style="vertical-align: center;">
+                    <label>Payment Method: <small id="PaymentMethod" style="color: red">KAHIT ANO</small></label>
+                  </div>
+                  <div class="col-xs-6">
+                  <!-- COMBO BOX HERE -->
+                    <label class="col-xs-12">Status
+                    <select id="Payment" class="form-control">
+                      <option value="U">Unpaid</option>
+                      <option value="P">Partial</option>
+                      <option value ="F">Full Payment</option>
+                    </select>
+                    </label>
+                  </div>
+                </div>
+              </br>
+                <label>Date Registered: <small id="DateRegistered">Date</small></label><!-- 
+                <textarea class="form-control" rows="3" placeholder=""></textarea> -->
                 <!-- END OF INPUTS SA MODAL -->
               </div>
+
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary">Update</button>
@@ -426,6 +448,32 @@ if(!isset($_SESSION['LoggedIn']))
 </script> -->
 <script>
   $(document).ready(function(){
+
+  $(".EditEvent").click(function()
+  {
+    $("#RID").val($(this).closest("tbody tr").find("td:eq(0)").html());
+    $("#FName").val($(this).closest("tbody tr").find("td:eq(1)").html());
+    $("#MName").val($(this).closest("tbody tr").find("td:eq(2)").html());
+    $("#LName").val($(this).closest("tbody tr").find("td:eq(3)").html());
+    $("#XName").val($(this).closest("tbody tr").find("td:eq(4)").html());
+    $("#Contact").val($(this).closest("tbody tr").find("td:eq(5)").html());
+    $("#Email").val($(this).closest("tbody tr").find("td:eq(6)").html());
+    $("#DateRegistered").val($(this).closest("tbody tr").find("td:eq(7)").html());
+    $("#PaymentMethod").val($(this).closest("tbody tr").find("td:eq(8)").html());
+    $("#Payment").val($(this).closest("tbody tr").find("td:eq(9)").html());
+    // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
+    //         $("#editCheckA").prop("checked", true).trigger('click');
+    //     } else {
+    //         $("#editCheckI").prop("checked", true).trigger('click');
+    //     }
+    // if ($(this).closest("tbody tr").find("td:eq(16)").text() === "M") {
+    //         $("#EditGendM").prop("checked", true).trigger('click');
+    //     } else {
+    //         $("#EditGendF").prop("checked", true).trigger('click');
+    //     }
+    // ActOption = "option[value="+val($(this).closest("tbody tr").find("td:eq(4)").html())+"]";
+    // $("#PositionOption").find(ActOption).prop("selected",true);
+  });
 
 
   $('.printFunction').on('click',function(){

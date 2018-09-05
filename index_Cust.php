@@ -100,11 +100,13 @@ date_default_timezone_set('Asia/Manila');
                   <th class="hide">ID</th> 
                   <th>Title</th>
                   <th>Location</th>
-                  <th>Date</th>
+                  <th>Start Date</th>
+                  <th>Phases</th>
                   <th>Time</th>
                   <th class="hide">Organizer</th>
                   <th>State</th>
                   <th>Description</th>
+                  <th>Price</th>
                   <th>Actions</th>
                 </tr>
                 <?php
@@ -114,10 +116,12 @@ date_default_timezone_set('Asia/Manila');
                                           User_ID,
                                           Event_Title,
                                           IFNULL(Event_Date,"") AS Event_Date,
+                                          Event_Phases,
                                           IFNULL(Event_Time,"") AS Event_Time,
                                           Event_Location,
                                           Event_OrganizerDetail,
-                                          Event_Desc
+                                          Event_Desc,
+                                          Event_Price
                                    FROM tbl_t_event WHERE Event_Date >= CURRENT_DATE OR Event_Date IS NULL
                                    ORDER BY Event_ID DESC';
                   $EventList = mysqli_query($euceventMysqli,$EventListSQL) or die (mysqli_error($euceventMysqli));
@@ -129,10 +133,12 @@ date_default_timezone_set('Asia/Manila');
                       $UID = $row['User_ID'];
                       $Title = $row['Event_Title'];
                       $Date = $row['Event_Date'];
+                      $Phases = $row['Event_Phases'];
                       $Time = $row['Event_Time'];
                       $Location = $row['Event_Location'];
                       $Organizer = $row['Event_OrganizerDetail'];
                       $Desc = $row['Event_Desc'];
+                      $Price = $row['Event_Price'];
                       $RegisterFlag = 1;
                       if($Date!= '' || $Date!= null)
                       {
@@ -157,10 +163,12 @@ date_default_timezone_set('Asia/Manila');
                               <td>'.$Title.'</td>
                               <td>'.$Location.'</td>
                               <td>'.$Date.'</td>
+                              <td>'.$Phases.'</td>
                               <td>'.$Time.'</td>
                               <td class="hide">'.$Organizer.'</td>
                               <td>'.$Status.'</td>
-                              <td>'.$Desc.'</td>';
+                              <td>'.$Desc.'</td>
+                              <td>₱'.$Price.'</td>';
                             if($RegisterFlag == 1)
                             {
                               echo '
@@ -309,10 +317,14 @@ date_default_timezone_set('Asia/Manila');
                 </br>
                 <div class="col-md-12">
                   <div class="col-md-6">
-                    <label>Date</label>
+                    <label>Start Date</label>
                     <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-2">
+                    <label>Phases</label>
+                    <input id="VPhase" type="text" class="form-control" placeholder="" name="Phase" readonly="">
+                  </div>
+                  <div class="col-md-4">
                     <div>
                       <div class="form-group">
                         <label>Time</label>
@@ -332,6 +344,10 @@ date_default_timezone_set('Asia/Manila');
                 </br>
                 <label>Event Description</label>
                 <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
+                <div style="margin:auto;" align="right">
+                  <label><small style="font-size: 15px">Fee:<big id="VPrice" style="font-size: 30px;">00.00</big></small></label>
+                  
+                </div>
 
               </div>
               <div class="modal-footer">
@@ -356,43 +372,60 @@ date_default_timezone_set('Asia/Manila');
               </div>
               <div class="modal-body">
                 <!-- INPUTS SA MODAL HERE!! -->
-                <label style="float: right">(* = Optional)</label>
+                <label style="float: right">(* = Required)</label>
                 <label class="hide">Event ID</label>
                 <input id="ID" type="text" class="form-control hide" placeholder="" name="ID">
                 <div div class="col-xs-12">
                   <div class="col-xs-3">
-                    <label>First Name</label>
-                    <input type="text" class="form-control" placeholder="" name="FName" required="">
+                    <label>First Name*</label>
+                    <input id="FName" type="text" class="form-control" placeholder="" name="FName" required="">
                   </div>
                   <div class="col-xs-3">
-                    <label>Middle Name*</label>
-                    <input type="text" class="form-control" placeholder="" name="MName">
+                    <label>Middle Name</label>
+                    <input id="MName" type="text" class="form-control" placeholder="" name="MName">
                   </div>
                   <div class="col-xs-3">
-                    <label>Last Name</label>
-                    <input type="text" class="form-control" placeholder="" name="LName" required="">
+                    <label>Last Name*</label>
+                    <input id="LName" type="text" class="form-control" placeholder="" name="LName" required="">
                   </div>
                   <div class="col-xs-3">
-                    <label>Extension Name*</label>
-                    <input type="text" class="form-control" placeholder="" name="XName">
+                    <label>Extension Name</label>
+                    <input id="XName" type="text" class="form-control" placeholder="" name="XName">
                   </div>
                 </div>
                 <div div class="col-xs-12" style="margin-top: 20px;">
                   <div class="col-xs-12">
-                    <label>Contact Number</label>
-                    <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
-                    </br>
+                    <div class="col-xs-6">
+                      <label>Contact Number*</label>
+                      <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
+                    </div>
+                    <div class="col-xs-6">
+                      <label>Company/Agency*</label>
+                      <input id="Company" type="text" class="form-control" placeholder="" name="Company" required="">
+                    </div>
                   </div>
                   <div class="col-xs-12">
-                    <label>E-mail Address</label>
-                    <input type="E-mail" class="form-control" placeholder="" name="Email" required="">
+                    </br>
+                    <label>E-mail Address*</label>
+                    <input id="Email" type="E-mail" class="form-control" placeholder="" name="Email" required="">
+                    </br>
+                  </div>
+                  <div class=" form-group col-xs-12">
+                    <label>Payment Method*</label>
+                    </br>
+                    <label style="margin: 10px">
+                      <input type="radio" name="PaymentOption" id="PaymentPartial" value="Partial" checked="">Partial
+                    </label>
+                    <label style="margin: 10px">
+                      <input type="radio" name="PaymentOption" id="PaymentFull" value="FullPayment">Full Payment
+                    </label>
                     </br>
                   </div>
                   <div class="col-xs-12" style="margin:20px" align="center">
                     <div class="col-xs-2">
                     </div>
                     <div class="checkbox icheck col-xs-8" align="center">
-                      <input type="checkbox" class="icheckbox_square-blue" required="">
+                      <input id="TermsAndConditions" type="checkbox" class="icheckbox_square-blue" required="">
                       <label>
                          By clicking the checkbox, you agree to our <a href="TermsAndConditions.php">Terms of Use, Privacy Policy and Disclaimer.</a>
                       </label>
@@ -405,7 +438,8 @@ date_default_timezone_set('Asia/Manila');
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" onclick="window.open ('Registration_Print.php')">Register</button>
+                <!-- <button type="button" class="btn btn-primary" onclick="window.open ('Registration_Print.php')">Register</button> -->
+                <button id="submit" type="button" class="btn btn-primary">Register</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -471,6 +505,100 @@ date_default_timezone_set('Asia/Manila');
         });
         $(document).ready(function()
         {
+            $('#submit').on('click', function(){
+
+              // var Terms = $('#TermsAndConditions').val();
+              if($('#ID').val() != '')
+              {
+                if($('#FName').val() != '')
+                {
+                  if($('#LName').val() != '')
+                  {
+                    if($('#Contact').val() != '')
+                    {
+                      if($('#Company').val() != '')
+                      {
+                        if($('#Email').val() != '')
+                        {
+                          if($('#TermsAndConditions').prop('checked') === true)
+                          {
+                            var EID = $('#ID').val();
+                            var FName = $('#FName').val();
+                            var MName = $('#MName').val();
+                            var LName = $('#LName').val();
+                            var XName = $('#XName').val();
+                            var Contact = $('#Contact').val();
+                            var Company = $('#Company').val();
+                            var Email = $('#Email').val();
+
+                            if(document.getElementById('PaymentPartial').checked)
+                            {
+                              var Payment = "Partial";
+                            }
+                            else if(document.getElementById('PaymentFull').checked)
+                            {
+                              var Payment = "Full Payment";
+                            }
+
+                            var newWindow = window.open('');
+
+                            $.ajax({
+                              url:"Register.php",
+                              type:"POST",
+                              data: {ID:EID,FName:FName,MName:MName,LName:LName,XName:XName,Company:Company,Contact:Contact,Email:Email,Payment:Payment},
+                              success:function(data)
+                              {
+                                var Link = data;
+                                alert("Register Successful.")
+                                newWindow.location.href = Link;
+                              },
+                              error:function()
+                              {
+                                alert("Register Failed.");
+                              }
+                            });
+
+                          }
+                          else
+                          {
+                            alert("You have to accept the Terms of Use, Privacy Policy and Disclaimer to continue");
+                          }
+                        }
+                        else
+                        {
+                          alert("Please enter the required information to continue");
+                        }
+                      }
+                      else
+                      {
+                        alert("Please enter the required information to continue");
+                      }
+                    }
+                    else
+                    {
+                      alert("Please enter the required information to continue");
+                    }
+                  }
+                  else
+                  {
+                    alert("Please enter the required information to continue");
+                  }
+                }
+                else
+                {
+                  alert("Please enter the required information to continue");
+                }    
+              }
+              else
+              {
+                alert("Please enter the required information to continue");
+              }
+                
+              
+
+              
+            });
+
 
             $(".ViewEvent").click(function()
             {
@@ -478,9 +606,11 @@ date_default_timezone_set('Asia/Manila');
                 $("#VTitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
                 $("#VLocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
                 $("#VDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
-                $("#VTime").val($(this).closest("tbody tr").find("td:eq(4)").html());
-                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(5)").html());
-                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                $("#VPhase").val($(this).closest("tbody tr").find("td:eq(4)").html());
+                $("#VTime").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(6)").html());
+                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(8)").html());
+                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(9)").html());
                 // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
                 //         $("#editCheckA").prop("checked", true).trigger('click');
                 //     } else {

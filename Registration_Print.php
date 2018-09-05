@@ -1,9 +1,70 @@
 <?php
 $Title='EUC Events | Registration Print';
 include_once('head.php');
-
 date_default_timezone_set('Asia/Manila');
+include('config.php');
+if(!isset($_GET['event']) || !isset($_GET['R']))
+{
+  $header = 'Location:/euc_regi/index_Cust.php';
+  header($header);
+}
+else
+{
+  $EventID = $_GET['event'];
+  $Registrant = $_GET['R'];
 
+  $CheckRegisterSQL = 'SELECT * FROM tbl_t_registration WHERE Event_ID = '.$EventID.' AND Registrant_ID = '.$Registrant.' ';
+  $CheckRegister = mysqli_query($euceventMysqli,$CheckRegisterSQL) or die (mysqli_error($euceventMysqli));
+  if(mysqli_num_rows($CheckRegister) > 0)
+  {
+    $EventSQL = 'SELECT * FROM tbl_t_event WHERE Event_ID = '.$EventID.' ';
+    $Event = mysqli_query($euceventMysqli,$EventSQL) or die (mysqli_error($euceventMysqli));
+    if(mysqli_num_rows($Event) > 0)
+    {
+      while($row = mysqli_fetch_assoc($Event))
+      {
+        $ID = $row['Event_ID'];
+        $Title = $row['Event_Title'];
+        $Date = $row['Event_Date'];
+        $Time = $row['Event_Time'];
+        $Location = $row['Event_Location'];
+        $OrganizerDetail = $row['Event_OrganizerDetail'];
+        $Desc = $row['Event_Desc'];
+      }
+    }
+
+    $RegistrantSQL = 'SELECT IFNULL(tbl_t_registrant.Registrant_ID,"") AS Registrant_ID,
+                              IFNULL(tbl_t_registrant.First_Name,"") AS First_Name,
+                              IFNULL(tbl_t_registrant.Middle_Name,"") AS Middle_Name,
+                              IFNULL(tbl_t_registrant.Last_Name,"") AS Last_Name,
+                              IFNULL(tbl_t_registrant.Ext_Name,"") AS Ext_Name,
+                              IFNULL(tbl_t_registrant.Company,"") AS Company,
+                              IFNULL(aes_decrypt(tbl_t_registrant.Contact,"eucevent")," ") AS Contact,
+                              IFNULL(aes_decrypt(tbl_t_registrant.Email,"eucevent")," ") AS Email 
+                      FROM tbl_t_registrant WHERE Registrant_ID = '.$Registrant.' ';
+    $Registrant = mysqli_query($euceventMysqli,$RegistrantSQL) or die (mysqli_error($euceventMysqli));
+    if(mysqli_num_rows($Registrant) > 0)
+    {
+      while($row2 = mysqli_fetch_assoc($Registrant))
+      {
+        $RID = $row2['Registrant_ID'];
+        $FName = $row2['First_Name'];
+        $MName = $row2['Middle_Name'];
+        $LName = $row2['Last_Name'];
+        $XName = $row2['Ext_Name'];
+        $Company = $row2['Company'];
+        $Contact = $row2['Contact'];
+        $Email = $row2['Email'];
+      }
+    }
+  }
+  else
+  {
+    $header = 'Location:/euc_regi/index_Cust.php';
+    header($header);
+  }
+}
+echo '<h6 id="QR" class="hide">'.$ID.$RID.$Title.'</h6>';
 ?>
 <!--  -->
 <body onload="window.print();">
@@ -22,7 +83,25 @@ date_default_timezone_set('Asia/Manila');
         </h2>
       </div>
       <div class="col-xs-12">
-       
+          <?php
+
+            echo '
+
+            <h1>
+            '.$Title.'
+            </h1>
+            <h3>
+              '.$Location.'
+            </h3>
+            <h4>
+              '.$Date.' at '.$Time.'
+            </h4>
+            <h5>
+              '.$Desc.'
+            </h5>
+            ';
+
+          ?><!-- 
           <h1>
             Event Title
           </h1>
@@ -34,42 +113,63 @@ date_default_timezone_set('Asia/Manila');
           </h4>
           <h5>
             Event Description 
-          </h5>
+          </h5> -->
 
 
         </br>
-<table style="width:100%">
-  <tr>
-    <th></th>
-    <th></th> 
-  </tr>
+        <table style="width:100%">
+          <tr>
+            <th></th>
+            <th></th> 
+          </tr>
+          <tr>
+            <td width="25%">
+              <!-- QR HERE!!! HUHU Sa loob ng script yung php kaya ba yun? -->
+              <div id="qrcodeCanvas">
+              <script>
+                $(document).ready(function(){
+                  var QRKey = $('#QR').text();
+                  var Sample  = "OLOL";
+                });
 
-<tr>
-  
-  <td width="35%">
-          <!-- QR HERE!!! HUHU Sa loob ng script yung php kaya ba yun? -->
-            <div id="qrcodeCanvas" >
-             <script>
                 jQuery('#qrcodeCanvas').qrcode({                      
-                        text  : "code sa QR here",
-                        width : 200,
-                        height: 200,
-
-                      }); 
+                text  : <?php echo "'".$RID.$ID.$Title."'";?>,
+                width : 150,
+                height: 150,
+                }); 
               </script>
-  </td>
-  <td width="65%">
+              <!-- <script>
+                $(document).ready(function(){
+                  var QRKey = $('QR').val();
+                });
 
-              <h2>Peter John Teneza </h2>
+                jQuery('#qrcodeCanvas').qrcode({                      
+                text  : "code sa QR here",
+                width : 150,
+                height: 150,
+                }); 
+              </script> -->
+            </td>
+            <td width="75%">
+              <?php
+              
+              echo '<h2>'.$FName.' '.$MName.' '.$LName.' '.$XName.'</h2>';
+              echo '<h3>'.$Company.'</h4>';
+              echo '<h4>'.$Contact.'</h4>';
+              echo '<h4>'.$Email.'</h4>';
+              ?>
+              <!-- <h2>Peter John Teneza </h2>
               <h4>0926 419 2129 </h4>
-              <h4> peterjohnteneza@gmail.com </h4>
-  </td>
-</tr>
-</table>
-                </br>
-              <h5>This serves as your gate pass to the event. You may or may not print this but have this with you at all times.</h5>
-                </br>
-            </div>
+              <h4> peterjohnteneza@gmail.com </h4> -->
+            </td>
+          </tr>
+        </table>
+        </br>
+        <h5>
+          <strong>This serves as your gate pass to the event. You may or may not print this but bring this with you at all times.</strong>
+        </h5>
+        </br>
+      </div>
 
 
       </div>

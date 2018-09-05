@@ -207,11 +207,13 @@ date_default_timezone_set('Asia/Manila');
                   <th class="hide">ID</th> 
                   <th>Title</th>
                   <th>Location</th>
-                  <th>Date</th>
+                  <th>Start Date</th>
+                  <th>Phases</th>
                   <th>Time</th>
                   <th class="hide">Organizer</th>
                   <th>State</th>
                   <th>Description</th>
+                  <th>Price</th>
                   <th>Actions</th>
                 </tr>
                 <?php
@@ -227,10 +229,12 @@ date_default_timezone_set('Asia/Manila');
                       $UID = $row['User_ID'];
                       $Title = $row['Event_Title'];
                       $Date = $row['Event_Date'];
+                      $Phases = $row['Event_Phases'];
                       $Time = $row['Event_Time'];
                       $Location = $row['Event_Location'];
                       $Organizer = $row['Event_OrganizerDetail'];
                       $Desc = $row['Event_Desc'];
+                      $Price = $row['Event_Price'];
 
                       if($Date!= '' || $Date!= null)
                       {
@@ -262,10 +266,12 @@ date_default_timezone_set('Asia/Manila');
                               <td>'.$Title.'</td>
                               <td>'.$Location.'</td>
                               <td>'.$Date.'</td>
+                              <td>'.$Phases.'</td>
                               <td>'.$Time.'</td>
                               <td class="hide">'.$Organizer.'</td>
                               <td>'.$Status.'</td>
                               <td>'.$Desc.'</td>
+                              <td>'.$Price.'</td>
                               <td>
                                 <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view">View Details</button>
                                 <button type="button" class="btn btn-primary EditEvent" data-toggle="modal" data-target="#modal-default_update">Edit</button>
@@ -332,6 +338,8 @@ date_default_timezone_set('Asia/Manila');
   <!-- /.content-wrapper -->
 
   <!-- MODAL EDIT START HERE!!! -->
+
+  <!--HERE-->
         <div class="modal fade" id="modal-default_update">
           <form id="EventEdit" action="EventEditAdmin.php" method="POST">
           <div class="modal-dialog">
@@ -342,7 +350,7 @@ date_default_timezone_set('Asia/Manila');
                 <h4 class="modal-title">Edit Event</h4>
               </div>
               <div class="modal-body">
-                <!-- INPUTS SA MODAL HERE!! -->
+
                 <label class="hide">Event ID</label>
                 <input id="EID" type="text" class="form-control hide" placeholder="" name="EID">
                 </br>
@@ -354,12 +362,14 @@ date_default_timezone_set('Asia/Manila');
                 </br>
                 <div class="col-md-12">
                   <div class="col-md-6">
-                    <label>Date</label>
+                    <label>Start Date</label>
                     <input id="EDate" type="Date" class="form-control" placeholder="" name="EDate">
                   </div>
-                  <div class="col-md-6">
-                    <!-- <label>Time</label>
-                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
+                  <div class="col-md-2">
+                    <label>Phases</label>
+                    <input id="EPhase" type="Number" min="1" class="form-control" placeholder="" name="EPhase">
+                  </div>
+                  <div class="col-md-4">
                     <div class="bootstrap-timepicker">
                       <div class="form-group">
                         <label>Time</label>
@@ -369,37 +379,31 @@ date_default_timezone_set('Asia/Manila');
                             <i class="fa fa-clock-o"></i>
                           </div>
                         </div>
-                        <!-- /.input group -->
                       </div>
-                      <!-- /.form group -->
                     </div>
                   </div>
                 </div>
-                <!-- COMBO BOX HERE -->
-                <!-- <label>Event State</label>
-                  <select class="form-control">
-                    <option>Registration</option>
-                    <option>Ended</option>
-                    <option>Coming Soon</option>
-                  </select>
-                </br> -->
+                </br>
                 <label>Event Organizer</label>
                 <input id="EOrganizer" type="text" class="form-control" placeholder="" name="EOrganizer" value="EUC" readonly="">
                 </br>
                 <label>Event Description</label>
                 <textarea id="EDesc" class="form-control" rows="3" placeholder="" name="EDesc"></textarea>
-                <!-- END OF INPUTS SA MODAL -->
+                <div style="margin:auto;" align="right">
+                  <label><small style="font-size: 15px">Fee: ₱<input id="EPrice" type="text" class="form-control" placeholder="" name="EPrice"></input></small></label>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Update</button>
               </div>
             </div>
-            <!-- /.modal-content -->
           </div>
-          <!-- /.modal-dialog -->
         </form>
         </div>
+
+  <!--HERE-->
+        
 
   <!-- MODAL EDIT ENDS HERE!!! -->
 
@@ -414,7 +418,7 @@ date_default_timezone_set('Asia/Manila');
                 <h4 class="modal-title">View Event</h4>
               </div>
               <div class="modal-body">
-                <!-- INPUTS SA MODAL HERE!! -->
+
                 <label class="hide">Event ID</label>
                 <input id="VID" type="text" class="form-control hide" placeholder="" name="ID" readonly="">
                 </br>
@@ -426,12 +430,14 @@ date_default_timezone_set('Asia/Manila');
                 </br>
                 <div class="col-md-12">
                   <div class="col-md-6">
-                    <label>Date</label>
+                    <label>Start Date</label>
                     <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
                   </div>
-                  <div class="col-md-6">
-                    <!-- <label>Time</label>
-                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
+                  <div class="col-md-2">
+                    <label>Phases</label>
+                    <input id="VPhase" type="text" class="form-control" placeholder="" name="Phase" readonly="">
+                  </div>
+                  <div class="col-md-4">
                     <div>
                       <div class="form-group">
                         <label>Time</label>
@@ -441,35 +447,27 @@ date_default_timezone_set('Asia/Manila');
                             <i class="fa fa-clock-o"></i>
                           </div>
                         </div>
-                        <!-- /.input group -->
                       </div>
-                      <!-- /.form group -->
                     </div>
                   </div>
                 </div>
                 </br>
-                <!-- COMBO BOX HERE -->
-                <!-- <label>Event State</label>
-                  <select class="form-control">
-                    <option>Registration</option>
-                    <option>Ended</option>
-                    <option>Coming Soon</option>
-                  </select>
-                </br> -->
                 <label>Event Organizer</label>
                 <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
                 </br>
                 <label>Event Description</label>
                 <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
-                <!-- END OF INPUTS SA MODAL -->
+                <div style="margin:auto;" align="right">
+                  <label><small style="font-size: 15px">Fee: ₱<big id="VPrice" style="font-size: 30px;">00.00</big></small></label>
+                  
+                </div>
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Back</button>
               </div>
             </div>
-            <!-- /.modal-content -->
           </div>
-          <!-- /.modal-dialog -->
         </form>
         </div>
 
@@ -486,51 +484,45 @@ date_default_timezone_set('Asia/Manila');
                 <h4 class="modal-title">Add New Event</h4>
               </div>
               <div class="modal-body">
-                <!-- INPUTS SA MODAL HERE!! -->
+                </br>
                 <label>Event Title</label>
-                <input type="text" class="form-control" placeholder="Event Title" name="Title" required="">
+                <input id="Title" type="text" class="form-control" placeholder="" name="Title">
                 </br>
                 <label>Event Location</label>
-                <input type="text" class="form-control" placeholder="Location" name="Location">
+                <input id="Location" type="text" class="form-control" placeholder="" name="Location">
                 </br>
                 <div class="col-md-12">
                   <div class="col-md-6">
-                    <label>Date</label>
-                    <input type="Date" class="form-control" placeholder="" name="Date">
+                    <label>Start Date</label>
+                    <input id="Date" type="Date" class="form-control" placeholder="" name="Date">
                   </div>
-                  <div class="col-md-6">
-                    <!-- <label>Time</label>
-                    <input type="Date" class="form-control" placeholder="" name="Date"> -->
+                  <div class="col-md-2">
+                    <label>Phases</label>
+                    <input id="Phase" type="Number" min="1" class="form-control" placeholder="" name="Phase">
+                  </div>
+                  <div class="col-md-4">
                     <div class="bootstrap-timepicker">
                       <div class="form-group">
                         <label>Time</label>
                         <div class="input-group">
-                          <input type="text" class="form-control timepicker" name="Time">
+                          <input id="Time" type="text" class="form-control timepicker" name="Time">
                           <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                           </div>
                         </div>
-                        <!-- /.input group -->
                       </div>
-                      <!-- /.form group -->
                     </div>
                   </div>
                 </div>
                 </br>
-                <!-- COMBO BOX HERE -->
-                <!-- <label>Event State</label>
-                  <select class="form-control">
-                    <option>Registration</option>
-                    <option>Ended</option>
-                    <option>Coming Soon</option>
-                  </select>
-                </br> -->
-                <label>Event Organizer Details</label>
-                <input class="form-control" rows="3" placeholder="Event Organizer Details" name="Organizer" value="EUC" readonly=""></input>
+                <label>Event Organizer</label>
+                <input id="EOrganizer" type="text" class="form-control" placeholder="" name="Organizer" value="EUC" readonly="">
                 </br>
                 <label>Event Description</label>
-                <textarea class="form-control" rows="5" placeholder="Event Description" name="Desc" required=""></textarea>
-                <!-- END OF INPUTS SA MODAL -->
+                <textarea id="EDesc" class="form-control" rows="3" placeholder="" name="Desc"></textarea>
+                <div style="margin:auto;" align="right">
+                  <label><small style="font-size: 15px">Fee: ₱<input id="Price" type="text" class="form-control" placeholder="" name="Price"></input></small></label>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
@@ -575,6 +567,8 @@ date_default_timezone_set('Asia/Manila');
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 
+<script src="plugins/input-mask/jquery.mask.js"></script>
+
 
 </body>
 </html>
@@ -582,10 +576,19 @@ date_default_timezone_set('Asia/Manila');
 <script type="text/javascript">
         $(document).ready(function()
         {
+          $('#EPhase').on('change',function(){
+            if($('#EPhase').val() < 1)
+            {
+              $('#EPhase').val(1);
+            }
+          });
 
           $('.timepicker').timepicker({
             showInputs: false
           });
+
+          $('#EPrice').mask('#####0.00', {reverse: true});
+          $('#Price').mask('#####0.00', {reverse: true});
 
             $(".EditEvent").click(function()
             {
@@ -593,9 +596,11 @@ date_default_timezone_set('Asia/Manila');
                 $("#ETitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
                 $("#ELocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
                 $("#EDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
-                $("#ETime").val($(this).closest("tbody tr").find("td:eq(4)").html());
-                $("#EOrganizer").val($(this).closest("tbody tr").find("td:eq(5)").html());
-                $("#EDesc").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                $("#EPhase").val($(this).closest("tbody tr").find("td:eq(4)").html());
+                $("#ETime").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#EOrganizer").val($(this).closest("tbody tr").find("td:eq(6)").html());
+                $("#EDesc").val($(this).closest("tbody tr").find("td:eq(8)").html());
+                $("#EPrice").val($(this).closest("tbody tr").find("td:eq(9)").html());
                 // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
                 //         $("#editCheckA").prop("checked", true).trigger('click');
                 //     } else {
@@ -615,9 +620,11 @@ date_default_timezone_set('Asia/Manila');
                 $("#VTitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
                 $("#VLocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
                 $("#VDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
-                $("#VTime").val($(this).closest("tbody tr").find("td:eq(4)").html());
-                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(5)").html());
-                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                $("#VPhase").val($(this).closest("tbody tr").find("td:eq(4)").html());
+                $("#VTime").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(6)").html());
+                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(8)").html());
+                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(9)").html());
                 // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
                 //         $("#editCheckA").prop("checked", true).trigger('click');
                 //     } else {

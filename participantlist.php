@@ -9,6 +9,9 @@
 									IFNULL(tbl_t_registrant.Middle_Name," ") AS Middle_Name,
 									IFNULL(tbl_t_registrant.Last_Name," ") AS Last_Name,
 									IFNULL(tbl_t_registrant.Ext_Name," ") AS Ext_Name,
+									IFNULL(tbl_t_registration.Date_Registered," ") AS Date_Registered,
+									IFNULL(tbl_t_registration.Payment_Type," ") AS Payment_Type,
+									IFNULL(tbl_t_registration.Payment_Status," ") AS Payment_Status,
 									IFNULL(aes_decrypt(tbl_t_registrant.Contact,"eucevent")," ") AS Contact,
                                   IFNULL(aes_decrypt(tbl_t_registrant.Email,"eucevent")," ") AS Email
 							 FROM tbl_t_registration
@@ -27,6 +30,21 @@
 				$XName = $row['Ext_Name'];
 				$Contact = $row['Contact'];
 				$Email = $row['Email'];
+				$Date = $row['Date_Registered'];
+				$PaymentType = $row['Payment_Type'];
+
+				if($row['Payment_Status'] == "F")
+				{
+					$PaymentStatus = "Fully Paid";
+				}
+				else if($row['Payment_Status'] == "P")
+				{
+					$PaymentStatus = "Partial Paid";
+				}
+				else
+				{
+					$PaymentStatus = "Unpaid";
+				}
 
 				$List .='
 					<tr>
@@ -37,7 +55,12 @@
 	                  <td>'.$XName.'</td>
 	                  <td>'.$Contact.'</td>
 	                  <td>'.$Email.'</td>
-	                  
+	                  <td>'.$Date.'</td>
+	                  <td>'.$PaymentType.'</td>
+	                  <td>'.$PaymentStatus.'</td>
+	                  <td>
+                        <button type="button" class="btn btn-primary CheckBalance" data-toggle="modal" data-target="#modal-default_balance">Edit</button>
+                      </td>
 	                </tr>';
 			}
 		}
@@ -52,7 +75,9 @@
 	                  <td>N/A</td>
 	                  <td>N/A</td>
 	                  <td>N/A</td>
-	                  
+	                  <td>N/A</td>
+	                  <td>N/A</td>
+	                  <td>N/A</td>
 	                </tr>';
 		}
 	}
@@ -61,6 +86,9 @@
 		$List .='
 					<tr>
 	                  <td class="hide">N/A</td>
+	                  <td>N/A</td>
+	                  <td>N/A</td>
+	                  <td>N/A</td>
 	                  <td>N/A</td>
 	                  <td>N/A</td>
 	                  <td>N/A</td>
