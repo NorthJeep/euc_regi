@@ -1,13 +1,7 @@
 <?php
 $Title='EUC Events | Registration Print';
 include_once('head.php');
-session_start();
-if(!isset($_SESSION['LoggedIn']))
-{
-  $header = 'Location:/euc_regi/index.php';
-  session_destroy();
-  header($header);
-}
+
 date_default_timezone_set('Asia/Manila');
 
 ?>
