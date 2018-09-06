@@ -59,7 +59,7 @@
 	                  <td>'.$PaymentType.'</td>
 	                  <td>'.$PaymentStatus.'</td>
 	                  <td>
-                        <button type="button" class="btn btn-primary CheckBalance" data-toggle="modal" data-target="#modal-default_balance">Edit</button>
+                        <button type="button" class="btn btn-primary BalanceCheck" data-toggle="modal" data-target="#modal-default_check">Edit</button>
                       </td>
 	                </tr>';
 			}
@@ -69,6 +69,7 @@
 			$List .='
 					<tr>
 	                  <td class="hide">N/A</td>
+	                  <td>N/A</td>
 	                  <td>N/A</td>
 	                  <td>N/A</td>
 	                  <td>N/A</td>
@@ -95,7 +96,7 @@
 	                  <td>N/A</td>
 	                  <td>N/A</td>
 	                  <td>N/A</td>
-	                  
+	                  <td>N/A</td>
 	                </tr>';
 	}
 	echo $List;

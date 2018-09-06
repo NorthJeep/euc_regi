@@ -247,6 +247,7 @@ if(!isset($_SESSION['LoggedIn']))
                 </tr>
                 </thead>
                 <tbody>
+
                 <tr>
                   <td class="hide">N/A</td>
                   <td>N/A</td>
@@ -259,30 +260,7 @@ if(!isset($_SESSION['LoggedIn']))
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
-
                 </tr>
-                <!-- 
-                <tr>
-                  <td class="hide">183</td>
-                  <td>Ma. Michaela </td>
-                  <td>Cruz</td>
-                  <td>Alejandria</td>
-                  <td>Sr.</td>
-                  <td>09123456789</td>
-                  <td>mikaemail@gmail.com</td>
-                  
-                </tr>
-                  
-                <tr>
-                  <td class="hide">183</td>
-                  <td>Peter John </td>
-                  <td>  </td>
-                  <td>Teneza</td>
-                  <td> </td>
-                  <td>09264192129</td>
-                  <td>peterjohnteneza@gmail.com</td>
-                  
-                </tr> -->
                </tbody>
               </table>
             </div>
@@ -300,8 +278,10 @@ if(!isset($_SESSION['LoggedIn']))
   </div>
   <!-- /.content-wrapper -->
 
+
+
   <!-- MODAL EDIT START HERE!!! -->
-        <div class="modal fade" id="modal-default_balance">
+        <div class="modal fade" id="modal-default_check">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -310,42 +290,42 @@ if(!isset($_SESSION['LoggedIn']))
                 <h4 class="modal-title">Check Balance</h4>
               </div>
               <div class="modal-body">
-                <!-- INPUTS SA MODAL HERE!! -->
-                <input id="RID" type="text" class="form-control hide" name="RID" placeholder="">
+
+
+                <input id="ERID" type="text" class="form-control hide" name="RID" placeholder="">
                 <div class="form-group" align="center">
-                  <h2><small id="LName" style="font-size: 40px">LName</small>, <small id="FName"  style="font-size: 15px">FName</small> <small id="MName"  style="font-size: 15px">MName </small> <small id="XName"  style="font-size: 15px">, XName</small></h2>
+                  <h2><small id="ELName" style="font-size: 40px">LName</small>, <small id="EFName"  style="font-size: 15px">FName</small> <small id="EMName"  style="font-size: 15px">MName </small> <small id="EXName"  style="font-size: 15px">, XName</small></h2>
                 </div>
                 </br>
                 <div class="form-group col-xs-12">
                   <div class="col-xs-6">
-                    <label>Contact: <small id="Contact" style="font-size: 20px">Contact</small></label>
-                    <!-- <input type="text" class="form-control" placeholder=""> -->
+                    <label>Contact: <small id="EContact" style="font-size: 20px">Contact</small></label>
+
                   </div>
                   <div class="col-xs-6">
-                    <label>Email: <small id="Email" style="font-size: 20px">Email</small></label>
-                    <!-- <input type="text" class="form-control" placeholder=""> -->
+                    <label>Email: <small id="EEmail" style="font-size: 20px">Email</small></label>
+
+
                   </br>
                   </div>
                 </div>
                 <div class="form-group col-xs-12">
                   <div class="col-xs-6" style="vertical-align: center;">
-                    <label>Payment Method: <small id="PaymentMethod" style="color: red">KAHIT ANO</small></label>
+                    <label>Payment Method: <small id="EPaymentMethod" style="color: red">KAHIT ANO</small></label>
                   </div>
                   <div class="col-xs-6">
-                  <!-- COMBO BOX HERE -->
+
                     <label class="col-xs-12">Status
-                    <select id="Payment" class="form-control">
-                      <option value="U">Unpaid</option>
-                      <option value="P">Partial</option>
-                      <option value ="F">Full Payment</option>
+                    <select id="EPayment" class="form-control">
+                      <option value="Unpaid">Unpaid</option>
+                      <option value="Partial">Partial</option>
+                      <option value ="Full">Full Payment</option>
                     </select>
                     </label>
                   </div>
                 </div>
               </br>
-                <label>Date Registered: <small id="DateRegistered">Date</small></label><!-- 
-                <textarea class="form-control" rows="3" placeholder=""></textarea> -->
-                <!-- END OF INPUTS SA MODAL -->
+                <label>Date Registered: <small id="EDateRegistered">Date</small></label>
               </div>
 
               <div class="modal-footer">
@@ -353,68 +333,22 @@ if(!isset($_SESSION['LoggedIn']))
                 <button type="button" class="btn btn-primary">Update</button>
               </div>
             </div>
-            <!-- /.modal-content -->
+
           </div>
-          <!-- /.modal-dialog -->
+
         </div>
-
-  <!-- MODAL EDIT ENDS HERE!!! -->
-
-  <!-- MODAL ADD STARTS HERE!!! -->
-<div class="modal fade" id="modal-default_add">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Add New Event</h4>
-              </div>
-              <div class="modal-body">
-                <!-- INPUTS SA MODAL HERE!! -->
-                <label>Event Title</label>
-                <input type="text" class="form-control" placeholder="">
-                </br>
-                <label>Event Location</label>
-                <input type="text" class="form-control" placeholder="">
-                </br>
-                <label>End Date</label>
-                <input type="Date" class="form-control" placeholder="">
-                </br>
-                <label>Event Organizer</label>
-                <input type="text" class="form-control" placeholder="">
-                </br>
-                <!-- COMBO BOX HERE -->
-                <label>Event State</label>
-                  <select class="form-control">
-                    <option>Registration</option>
-                    <option>Ended</option>
-                    <option>Coming Soon</option>
-                  </select>
-                </br>
-                <label>Event Description</label>
-                <textarea class="form-control" rows="3" placeholder=""></textarea>
-                <!-- END OF INPUTS SA MODAL -->
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success">Add</button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-
-
-
-
-  <!-- MODAL ADD ENDS HERE!!! -->
 
 <?php
   include('footer.php');
 ?>  
 </div>
 <!-- ./wrapper -->
+
+
+
+</body>
+</html>
+
 
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -423,7 +357,7 @@ if(!isset($_SESSION['LoggedIn']))
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<!-- <script src="dist/js/adminlte.min.js"></script> -->
 <!-- Sparkline -->
 <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
 <!-- jvectormap  -->
@@ -434,47 +368,13 @@ if(!isset($_SESSION['LoggedIn']))
 <!-- ChartJS -->
 <script src="bower_components/chart.js/Chart.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard2.js"></script>
+<!-- <script src="dist/js/pages/dashboard2.js"></script> -->
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<!-- <script src="dist/js/demo.js"></script> -->
 
-</body>
-</html>
-<!-- <script>
-  function printFunction(this){
-    var EID = $('#event-select').val();
-    window.open("/euc_delegates_print.php?Event"+EID+"");
-  }
-</script> -->
-<script>
-  $(document).ready(function(){
-
-  $(".EditEvent").click(function()
+<script type="text/javascript">
+  $(document).ready(function()
   {
-    $("#RID").val($(this).closest("tbody tr").find("td:eq(0)").html());
-    $("#FName").val($(this).closest("tbody tr").find("td:eq(1)").html());
-    $("#MName").val($(this).closest("tbody tr").find("td:eq(2)").html());
-    $("#LName").val($(this).closest("tbody tr").find("td:eq(3)").html());
-    $("#XName").val($(this).closest("tbody tr").find("td:eq(4)").html());
-    $("#Contact").val($(this).closest("tbody tr").find("td:eq(5)").html());
-    $("#Email").val($(this).closest("tbody tr").find("td:eq(6)").html());
-    $("#DateRegistered").val($(this).closest("tbody tr").find("td:eq(7)").html());
-    $("#PaymentMethod").val($(this).closest("tbody tr").find("td:eq(8)").html());
-    $("#Payment").val($(this).closest("tbody tr").find("td:eq(9)").html());
-    // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
-    //         $("#editCheckA").prop("checked", true).trigger('click');
-    //     } else {
-    //         $("#editCheckI").prop("checked", true).trigger('click');
-    //     }
-    // if ($(this).closest("tbody tr").find("td:eq(16)").text() === "M") {
-    //         $("#EditGendM").prop("checked", true).trigger('click');
-    //     } else {
-    //         $("#EditGendF").prop("checked", true).trigger('click');
-    //     }
-    // ActOption = "option[value="+val($(this).closest("tbody tr").find("td:eq(4)").html())+"]";
-    // $("#PositionOption").find(ActOption).prop("selected",true);
-  });
-
 
   $('.printFunction').on('click',function(){
     var EID = $('#event-select').val();
@@ -490,9 +390,25 @@ if(!isset($_SESSION['LoggedIn']))
         data: {ID:Event},
         success:function(data)
         {
-          $('.participant-table tbody').append(data);
+          $('.participant-table tbody').append().html(data);
+
         } 
       });
+    });
+
+    $('.BalanceCheck').on('click', function(){
+      alert("asdasd");
+        // $("#ERID").value($(this).closest("tbody tr").find("td:eq(0)").html());
+        // $("#EFName").text($(this).closest("tbody tr").find("td:eq(1)").html());
+        // $("#EMName").text($(this).closest("tbody tr").find("td:eq(2)").html());
+        // $("#ELName").text($(this).closest("tbody tr").find("td:eq(3)").html());
+        // $("#EXName").text($(this).closest("tbody tr").find("td:eq(4)").html());
+        // $("#EContact").text($(this).closest("tbody tr").find("td:eq(5)").html());
+        // $("#EEmail").text($(this).closest("tbody tr").find("td:eq(6)").html());
+        // $("#EDateRegistered").text($(this).closest("tbody tr").find("td:eq(7)").html());
+        // $("#EPaymentMethod").text($(this).closest("tbody tr").find("td:eq(8)").html());
+        // $("#EPayment").value($(this).closest("tbody tr").find("td:eq(9)").html());
+        
     });
 });
 </script>
