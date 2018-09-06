@@ -10,7 +10,6 @@
 	$Company = $_POST['Company'];
 	$Contact = $_POST['Contact'];
 	$Email = $_POST['Email'];
-	$Payment = $_POST['Payment'];
 
 	// CHECK IF THERE IS EXISTING DATA ABOUT THE REGISTRANT
 
@@ -33,8 +32,9 @@
 
 		// REGISTER INTO EVENT
 
-		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered,Payment_Type) VALUES ('.$ID.','.$RID.',CURRENT_DATE,"'.$Payment.'")';
+		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered) VALUES ('.$ID.','.$RID.',CURRENT_DATE)';
 		$RegisterEvent = mysqli_query($euceventMysqli,$RegisterEventSQL) or die (mysqli_error($euceventMysqli));
+
 
 		// echo 'OK';
 		// $header = 'Location:/euc_regi/index_Cust.php?stat=2';
@@ -67,16 +67,25 @@
 
 		// INSERT REGISTRATION
 
-		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered,Payment_Type) VALUES ('.$ID.','.$RID.',CURRENT_DATE,"'.$Payment.'")';
+		$RegisterEventSQL = 'INSERT INTO tbl_t_registration (Event_ID,Registrant_ID,Date_Registered) VALUES ('.$ID.','.$RID.',CURRENT_DATE)';
 		$RegisterEvent = mysqli_query($euceventMysqli,$RegisterEventSQL) or die (mysqli_error($euceventMysqli));
 
 
 		// echo 'OK';
 		// $header = 'Location:/euc_regi/index_Cust.php?stat=1';
 		// header($header);
-	}	
+	}
 
-	$Output = "Registration_Print.php?event=".$ID."&R=".$RID."";
+	$RegistrationIDSQL = 'SELECT MAX(Registration_No) AS Reg_ID FROM tbl_t_registration';
+	$RegistrationID = mysqli_query($euceventMysqli,$RegistrationIDSQL) or die (mysqli_error($euceventMysqli));
+		if(mysqli_num_rows($RegistrationID) > 0)
+		{
+			while($row = mysqli_fetch_assoc($RegistrationID))
+			{
+				$RID = $row['Reg_ID'];	
+			}
+		}
+	$Output = "Registration_Print.php?R=".$RID."";
 	echo $Output;
 	
 ?>

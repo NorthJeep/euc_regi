@@ -3,20 +3,25 @@ $Title='EUC Events | Registration Print';
 include_once('head.php');
 date_default_timezone_set('Asia/Manila');
 include('config.php');
-if(!isset($_GET['event']) || !isset($_GET['R']))
+if(!isset($_GET['R']))
 {
   $header = 'Location:/euc_regi/index_Cust.php';
   header($header);
 }
 else
 {
-  $EventID = $_GET['event'];
-  $Registrant = $_GET['R'];
+  $Registration = $_GET['R'];
 
-  $CheckRegisterSQL = 'SELECT * FROM tbl_t_registration WHERE Event_ID = '.$EventID.' AND Registrant_ID = '.$Registrant.' ';
+  $CheckRegisterSQL = 'SELECT * FROM tbl_t_registration WHERE Registration_No = '.$Registration.' ';
   $CheckRegister = mysqli_query($euceventMysqli,$CheckRegisterSQL) or die (mysqli_error($euceventMysqli));
   if(mysqli_num_rows($CheckRegister) > 0)
   {
+    while($row0 = mysqli_fetch_assoc($CheckRegister))
+    {
+      $EventID = $row0['Event_ID'];
+      $Registrant_ID = $row0['Registrant_ID'];
+      $Date_Registered = $row0['Date_Registered'];
+    }
     $EventSQL = 'SELECT * FROM tbl_t_event WHERE Event_ID = '.$EventID.' ';
     $Event = mysqli_query($euceventMysqli,$EventSQL) or die (mysqli_error($euceventMysqli));
     if(mysqli_num_rows($Event) > 0)
@@ -26,6 +31,8 @@ else
         $ID = $row['Event_ID'];
         $Title = $row['Event_Title'];
         $Date = $row['Event_Date'];
+        $Phases = $row['Event_Phases'];
+        $Price = $row['Event_Price'];
         $Time = $row['Event_Time'];
         $Location = $row['Event_Location'];
         $OrganizerDetail = $row['Event_OrganizerDetail'];
@@ -41,7 +48,7 @@ else
                               IFNULL(tbl_t_registrant.Company,"") AS Company,
                               IFNULL(aes_decrypt(tbl_t_registrant.Contact,"eucevent")," ") AS Contact,
                               IFNULL(aes_decrypt(tbl_t_registrant.Email,"eucevent")," ") AS Email 
-                      FROM tbl_t_registrant WHERE Registrant_ID = '.$Registrant.' ';
+                      FROM tbl_t_registrant WHERE Registrant_ID = '.$Registrant_ID.' ';
     $Registrant = mysqli_query($euceventMysqli,$RegistrantSQL) or die (mysqli_error($euceventMysqli));
     if(mysqli_num_rows($Registrant) > 0)
     {
@@ -64,7 +71,7 @@ else
     header($header);
   }
 }
-echo '<h6 id="QR" class="hide">'.$ID.$RID.$Title.'</h6>';
+echo '<h6 id="QR" class="hide">'.$RID.$LName.$ID.'</h6>';
 ?>
 <!--  -->
 <body onload="window.print();">
@@ -87,17 +94,12 @@ echo '<h6 id="QR" class="hide">'.$ID.$RID.$Title.'</h6>';
 
             echo '
 
-            <h1>
-            '.$Title.'
-            </h1>
-            <h3>
-              '.$Location.'
-            </h3>
-            <h4>
-              '.$Date.' at '.$Time.'
-            </h4>
-            <h5>
-              '.$Desc.'
+            <h1>'.$Title.'</h1>
+            <h3>Price: '.$Price.'</h3>
+            <h4>'.$Phases.' Day/s</h4>
+            <h4>Location: '.$Location.'</h4>
+            <h4>'.$Date.' at '.$Time.'</h4>
+            <h5>'.$Desc.'
             </h5>
             ';
 
@@ -127,21 +129,17 @@ echo '<h6 id="QR" class="hide">'.$ID.$RID.$Title.'</h6>';
               <!-- QR HERE!!! HUHU Sa loob ng script yung php kaya ba yun? -->
               <div id="qrcodeCanvas">
               <script>
-                $(document).ready(function(){
-                  var QRKey = $('#QR').text();
-                  var Sample  = "OLOL";
-                });
+                
 
                 jQuery('#qrcodeCanvas').qrcode({                      
-                text  : <?php echo "'".$RID.$ID.$Title."'";?>,
+                text  : <?php echo "'".$Registration.$LName.$RID."'";?>,
                 width : 150,
                 height: 150,
                 }); 
               </script>
+
               <!-- <script>
-                $(document).ready(function(){
-                  var QRKey = $('QR').val();
-                });
+                
 
                 jQuery('#qrcodeCanvas').qrcode({                      
                 text  : "code sa QR here",
@@ -166,7 +164,8 @@ echo '<h6 id="QR" class="hide">'.$ID.$RID.$Title.'</h6>';
         </table>
         </br>
         <h5>
-          <strong>This serves as your gate pass to the event. You may or may not print this but bring this with you at all times.</strong>
+          <strong>This serves as your gate pass to the event. You may or may not print this but bring this with you at all times.</strong></br>
+          You can pay through bank through this bank number <strong>XXXXXXXXXXXXXX</strong> and send your deposit slip to this email: <strong>sample.sample@sample.com</strong>
         </h5>
         </br>
       </div>

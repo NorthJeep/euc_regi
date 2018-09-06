@@ -1,5 +1,5 @@
 <?php
-$Title='EUC Events | Event Reports ';
+$Title='EUC Events | Attendance ';
 include_once('head.php');
 session_start();
 if(!isset($_SESSION['LoggedIn']))
@@ -238,10 +238,10 @@ date_default_timezone_set('Asia/Manila');
                   <th>Middle Name</th>
                   <th>Last Name</th>
                   <th>Name Extension</th>
-                  <th>Company</th>
+                  <th>Contact</th>
+                  <th>E-Mail</th>
                   <th>Date Registered</th>
-                  <th class="">Price</th>
-                  <th>Amount Paid</th>
+                  <th>Payment Method</th>
                   <th>Payment Status</th>
                   <th>Actions</th>
                 </tr>
@@ -256,7 +256,7 @@ date_default_timezone_set('Asia/Manila');
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
-                  <td class="">N/A</td>
+                  <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
@@ -290,26 +290,20 @@ date_default_timezone_set('Asia/Manila');
                 <h4 class="modal-title">Check Balance</h4>
               </div>
               <div class="modal-body">
-                <h5>Event Name:<h4 id="EName">title</h4></h5>
-                <h5>Event Price:<h4 id="EPrice">price</h4></h5>
+
 
                 <input id="ERID" type="text" class="form-control hide" name="RID" placeholder="">
-
-                <small>Name:</small>
-                <div class="form-group" style="margin-top: 10px">
-                  <h2 style="margin-top: 10px"><small id="ELName" style="font-size: 30px">LName</small>, <small id="EFName"  style="font-size: 30px">FName</small> <small id="EMName"  style="font-size: 30px">MName </small> <small id="EXName"  style="font-size: 30px">, XName</small></h2>
-                  <h5 id ="ECompany">
-                    Company
-                  </h5>
+                <div class="form-group" align="center">
+                  <h2><small id="ELName" style="font-size: 40px">LName</small>, <small id="EFName"  style="font-size: 15px">FName</small> <small id="EMName"  style="font-size: 15px">MName </small> <small id="EXName"  style="font-size: 15px">, XName</small></h2>
                 </div>
                 </br>
                 <div class="form-group col-xs-12">
                   <div class="col-xs-6">
-                    <label>Contact: <small id="EContact" style="font-size: 15px">Contact</small></label>
+                    <label>Contact: <small id="EContact" style="font-size: 20px">Contact</small></label>
 
                   </div>
                   <div class="col-xs-6">
-                    <label>Email: <small id="EEmail" style="font-size: 15px">Email</small></label>
+                    <label>Email: <small id="EEmail" style="font-size: 20px">Email</small></label>
 
 
                   </br>
@@ -317,18 +311,17 @@ date_default_timezone_set('Asia/Manila');
                 </div>
                 <div class="form-group col-xs-12">
                   <div class="col-xs-6" style="vertical-align: center;">
-                    <label>Payment Status: <h4 id="EPaymentStatus" style="color: red">STATUS</h4></label>
+                    <label>Payment Method: <small id="EPaymentMethod" style="color: red">KAHIT ANO</small></label>
                   </div>
                   <div class="col-xs-6">
-                    <label>Payment Balance: <h4 id="EPaymentBalance" style="color: red">BALANCE</h4></label>
-                    <!-- <label class="col-xs-12">Balance
 
+                    <label class="col-xs-12">Status
                     <select id="EPayment" class="form-control">
                       <option value="Unpaid">Unpaid</option>
                       <option value="Partial">Partial</option>
                       <option value ="Full">Full Payment</option>
                     </select>
-                    </label> -->
+                    </label>
                   </div>
                 </div>
               </br>
@@ -396,54 +389,15 @@ date_default_timezone_set('Asia/Manila');
         success:function(data)
         {
           $('.participant-table tbody').append(data);
-          
+
         } 
       });
-
     });
-
-    // $('.BalanceChecksss').on('click',function(){
-
-    //     alert("asdasd");
-        
-    // });
-
-    
-
   });
 
-  function EditRecord(Rno){
+  // $('.BalanceCheck').on('click',function(){
 
-        $.ajax({
-        url:"delegatechange.php",
-        method:"POST",
-        data: {Rno:Rno},
-        dataType:"json",
-        success:function(data)
-        {
-          // alert(data.EName);
-          $('#EName').text(data.EName);
-          $('#EPrice').text(data.EPrice);
-          $('#ELName').text(data.LName);
-          $('#EMName').text(data.MName);
-          $('#EFName').text(data.FName);
-          $('#EXName').text(data.XName);
-          $('#ECompany').text(data.Company);
-          $('#EContact').text(data.Contact);
-          $('#EEmail').text(data.Email);
-          $('#EDateRegistered').text(data.Date);
-          $('#EPaymentStatus').text(data.Status);
-
-          var Balance = (data.EPrice - data.Amount);
-
-          $('#EPaymentBalance').text(Balance);
-
-          // $('.participant-table tbody').append(data);
-          // alert('ASDASD');
-        } 
-        });
-
-        // $("#EFName").text("HERE I GO");
+  //       alert("asdasd");
         // $("#ERID").value($(this).closest("tbody tr").find("td:eq(0)").html());
         // $("#EFName").text($(this).closest("tbody tr").find("td:eq(1)").html());
         // $("#EMName").text($(this).closest("tbody tr").find("td:eq(2)").html());
@@ -454,11 +408,5 @@ date_default_timezone_set('Asia/Manila');
         // $("#EDateRegistered").text($(this).closest("tbody tr").find("td:eq(7)").html());
         // $("#EPaymentMethod").text($(this).closest("tbody tr").find("td:eq(8)").html());
         // $("#EPayment").value($(this).closest("tbody tr").find("td:eq(9)").html());
-  }
-
-  // $('#BalanceChecksss').click(function() {
-  //       alert('haha');
-  // });
-
-  
+    // });
 </script>

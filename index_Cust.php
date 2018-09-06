@@ -402,6 +402,7 @@ date_default_timezone_set('Asia/Manila');
                     <div class="col-xs-6">
                       <label>Company/Agency*</label>
                       <input id="Company" type="text" class="form-control" placeholder="" name="Company" required="">
+                      <div class="company_list"></div>
                     </div>
                   </div>
                   <div class="col-xs-12">
@@ -409,7 +410,7 @@ date_default_timezone_set('Asia/Manila');
                     <label>E-mail Address*</label>
                     <input id="Email" type="E-mail" class="form-control" placeholder="" name="Email" required="">
                     </br>
-                  </div>
+                  </div><!-- 
                   <div class=" form-group col-xs-12">
                     <label>Payment Method*</label>
                     </br>
@@ -420,7 +421,7 @@ date_default_timezone_set('Asia/Manila');
                       <input type="radio" name="PaymentOption" id="PaymentFull" value="FullPayment">Full Payment
                     </label>
                     </br>
-                  </div>
+                  </div> -->
                   <div class="col-xs-12" style="margin:20px" align="center">
                     <div class="col-xs-2">
                     </div>
@@ -502,6 +503,34 @@ date_default_timezone_set('Asia/Manila');
                 
             });
             $('#Contact').mask('00000000000');
+            
+            $('#Company').keyup(function(){
+              var CompanyName = $(this).val();
+              {
+                if(CompanyName != '')
+                {
+                  $.ajax({  
+                         url:"companysearch.php",  
+                         type:"POST",  
+                         data:{Text:CompanyName},  
+                         success:function(data)  
+                         {    
+                              $('.company_list').html(data); 
+                         }  
+                    });
+                }
+                else
+                {
+                  $(".company_list").empty();
+                }
+              }
+            });
+
+            $(document).on('click', 'li', function(){  
+                $('#Company').val($(this).text());
+                $(".company_list").empty(); 
+          });
+
         });
         $(document).ready(function()
         {
@@ -531,21 +560,21 @@ date_default_timezone_set('Asia/Manila');
                             var Company = $('#Company').val();
                             var Email = $('#Email').val();
 
-                            if(document.getElementById('PaymentPartial').checked)
-                            {
-                              var Payment = "Partial";
-                            }
-                            else if(document.getElementById('PaymentFull').checked)
-                            {
-                              var Payment = "Full Payment";
-                            }
+                            // if(document.getElementById('PaymentPartial').checked)
+                            // {
+                            //   var Payment = "Partial";
+                            // }
+                            // else if(document.getElementById('PaymentFull').checked)
+                            // {
+                            //   var Payment = "Full Payment";
+                            // }
 
                             var newWindow = window.open('');
 
                             $.ajax({
                               url:"Register.php",
                               type:"POST",
-                              data: {ID:EID,FName:FName,MName:MName,LName:LName,XName:XName,Company:Company,Contact:Contact,Email:Email,Payment:Payment},
+                              data: {ID:EID,FName:FName,MName:MName,LName:LName,XName:XName,Company:Company,Contact:Contact,Email:Email},
                               success:function(data)
                               {
                                 var Link = data;

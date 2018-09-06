@@ -38,6 +38,7 @@ date_default_timezone_set('Asia/Manila');
                 <li><a href="#">List of Everthing</a></li> -->
               </ul>
             </li>
+            <li class=""><a href="Attendance.php">Attendance <span class="sr-only"></span></a></li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
           <!--   <div class="form-group">
