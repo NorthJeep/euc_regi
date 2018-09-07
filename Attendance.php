@@ -180,7 +180,7 @@ date_default_timezone_set('Asia/Manila');
                   <select id="event-select" class="form-control">
                     <?php
                       include('config.php');
-                      $EventSelectSQL = 'SELECT * FROM tbl_t_event ORDER BY Event_Title';
+                      $EventSelectSQL = 'SELECT Event_ID,Event_Title,Event_Phases,Event_Date,DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY) AS EndDate FROM tbl_t_event WHERE CURRENT_DATE BETWEEN Event_Date AND DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY) ORDER BY Event_Title';
                       $EventSelect = mysqli_query($euceventMysqli,$EventSelectSQL) or die (mysqli_error($euceventMysqli));
                       if(mysqli_num_rows($EventSelect) > 0)
                       {
@@ -238,10 +238,10 @@ date_default_timezone_set('Asia/Manila');
                   <th>Middle Name</th>
                   <th>Last Name</th>
                   <th>Name Extension</th>
-                  <th>Contact</th>
-                  <th>E-Mail</th>
+                  <th>Company</th>
                   <th>Date Registered</th>
-                  <th>Payment Method</th>
+                  <th class="">Price</th>
+                  <th>Amount Paid</th>
                   <th>Payment Status</th>
                   <th>Actions</th>
                 </tr>
@@ -256,7 +256,7 @@ date_default_timezone_set('Asia/Manila');
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
-                  <td>N/A</td>
+                  <td class="">N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
@@ -378,12 +378,11 @@ date_default_timezone_set('Asia/Manila');
       window.open("euc_delegates_print.php?Event="+EID+"");
     });
 
-    
     $('#event-select').on('change', function(){
       $('.participant-table tbody tr').remove();
       var Event = $(this).val();
       $.ajax({
-        url:"participantlist.php",
+        url:"AttendanceList.php",
         type:"POST",
         data: {ID:Event},
         success:function(data)

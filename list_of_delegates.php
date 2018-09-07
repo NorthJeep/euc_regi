@@ -220,10 +220,10 @@ date_default_timezone_set('Asia/Manila');
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                  <input id="search-box" type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
                   <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
                   </div>
                 </div>
               </div>
@@ -316,10 +316,10 @@ date_default_timezone_set('Asia/Manila');
                   </div>
                 </div>
                 <div class="form-group col-xs-12">
-                  <div class="col-xs-6" style="vertical-align: center;">
+                  <div class="col-xs-4" style="vertical-align: center;">
                     <label>Payment Status: <h4 id="EPaymentStatus" style="color: red">STATUS</h4></label>
                   </div>
-                  <div class="col-xs-6">
+                  <div class="col-xs-4">
                     <label>Payment Balance: <h4 id="EPaymentBalance" style="color: red">BALANCE</h4></label>
                     <!-- <label class="col-xs-12">Balance
 
@@ -329,6 +329,13 @@ date_default_timezone_set('Asia/Manila');
                       <option value ="Full">Full Payment</option>
                     </select>
                     </label> -->
+                  </div>
+                  <div id="PayDiv" class="col-xs-4" style="vertical-align: center;">
+                    <label>Pay Balance: 
+                      <input id="EPay" type="text" class="form-control" placeholder="" name="Payment">
+                      <button id="SubmitPay" class="btn btn-warning">Pay</button>
+                    </label>
+                    <!-- <input>Pay: <h4 id="EPaymentStatus" style="color: red">STATUS</h4></input> -->
                   </div>
                 </div>
               </br>
@@ -376,9 +383,73 @@ date_default_timezone_set('Asia/Manila');
 <!-- AdminLTE for demo purposes -->
 <!-- <script src="dist/js/demo.js"></script> -->
 
+<script src="plugins/input-mask/jquery.mask.js"></script>
+
 <script type="text/javascript">
   $(document).ready(function()
   {
+    $('#EPay').mask('########0.00', {reverse: true});
+
+    $('#SubmitPay').click(function(){
+      if($('#EPay').val() === '')
+      {
+        alert('Please insert an amount to continue.');
+      }
+      else
+      {
+        var Rno = $('#ERID').val();
+        var Amount = $('#EPay').val();
+        var newWindow = window.open('');
+
+        $.ajax({
+          url:"updatepay.php",
+          type:"POST",
+          data: {Rno:Rno,Amount:Amount},
+          success:function(data)
+          {
+            newWindow.location.href = Link;
+            // $('.participant-table tbody').append(data);
+            
+          } 
+        });
+      }
+    });
+    $('#search-box').keyup(function(){
+
+      $('.participant-table tbody tr').remove();
+      if($(this).val() != '')
+      {
+        var SearchText = $(this).val();
+        var EventID = $('#event-select').val();
+        $.ajax({
+          url:"searchparticipantlist.php",
+          type:"POST",
+          data: {ID:EventID,Search:SearchText},
+          success:function(data)
+          {
+            $('.participant-table tbody').append(data);
+            
+          } 
+        });
+
+      }
+      else
+      {
+        $('.participant-table tbody tr').remove();
+        var Event = $('#event-select').val();
+        $.ajax({
+          url:"participantlist.php",
+          type:"POST",
+          data: {ID:Event},
+          success:function(data)
+          {
+            $('.participant-table tbody').append(data);
+            
+          } 
+        });
+      }
+
+    });
 
     $('.printFunction').on('click',function(){
       var EID = $('#event-select').val();
@@ -438,6 +509,15 @@ date_default_timezone_set('Asia/Manila');
 
           $('#EPaymentBalance').text(Balance);
 
+          if(data.Status != "Fully Paid")
+          {
+            $('#PayDiv').show();
+          }
+          else
+          {
+            $('#PayDiv').hide();
+          }
+          $('#ERID').val(data.Rno);
           // $('.participant-table tbody').append(data);
           // alert('ASDASD');
         } 
