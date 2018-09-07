@@ -63,15 +63,15 @@
 					$TotalAmount = 0.00;
 				}
 				
-				if($TotalAmount == $Price)
+				if($TotalAmount >= $Price)
 				{
 					$PaymentStatus = "Fully Paid";
 				}
-				else if($TotalAmount < $Price && $TotalAmount != 0.00)
+				else if($TotalAmount < $Price && $TotalAmount > 0.00)
 				{
 					$PaymentStatus = "Partially Paid";
 				}
-				else
+				else if($TotalAmount == 0.00)
 				{
 					$PaymentStatus = "Unpaid";
 				}

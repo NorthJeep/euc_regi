@@ -407,6 +407,7 @@ date_default_timezone_set('Asia/Manila');
           data: {Rno:Rno,Amount:Amount},
           success:function(data)
           {
+            var Link = data;
             newWindow.location.href = Link;
             // $('.participant-table tbody').append(data);
             

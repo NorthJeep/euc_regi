@@ -176,7 +176,7 @@ date_default_timezone_set('Asia/Manila');
            <button href="euc_delegates_print.php" target="_blank" class="btn btn-default printFunction"><i class="fa fa-print"></i> Print</button> 
          </br>
          </br>
-           <label>Select Event</label>
+           <label>Select Ongoing Event</label>
                   <select id="event-select" class="form-control">
                     <?php
                       include('config.php');
@@ -220,7 +220,7 @@ date_default_timezone_set('Asia/Manila');
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                  <input id="search-box" type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -233,30 +233,29 @@ date_default_timezone_set('Asia/Manila');
               <table class="table table-hover participant-table">
                 <thead>
                 <tr>
-                  <th class="hide">ID</th> 
+                  <th>Registration Code</th> 
                   <th>First Name</th>
                   <th>Middle Name</th>
                   <th>Last Name</th>
                   <th>Name Extension</th>
                   <th>Company</th>
                   <th>Date Registered</th>
-                  <th class="">Price</th>
-                  <th>Amount Paid</th>
-                  <th>Payment Status</th>
+                  <th>Phases</th>
+                  <th>Phases Attended</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <tr>
-                  <td class="hide">N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
-                  <td class="">N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
                   <td>N/A</td>
@@ -372,6 +371,42 @@ date_default_timezone_set('Asia/Manila');
 <script type="text/javascript">
   $(document).ready(function()
   {
+    $('#search-box').keyup(function(){
+
+      $('.participant-table tbody tr').remove();
+      if($(this).val() != '')
+      {
+        var SearchText = $(this).val();
+        var EventID = $('#event-select').val();
+        $.ajax({
+          url:"searchattendancelist.php",
+          type:"POST",
+          data: {ID:EventID,Search:SearchText},
+          success:function(data)
+          {
+            $('.participant-table tbody').append(data);
+            
+          } 
+        });
+
+      }
+      else
+      {
+        $('.participant-table tbody tr').remove();
+        var Event = $('#event-select').val();
+        $.ajax({
+          url:"AttendanceList.php",
+          type:"POST",
+          data: {ID:Event},
+          success:function(data)
+          {
+            $('.participant-table tbody').append(data);
+            
+          } 
+        });
+      }
+
+    });
 
     $('.printFunction').on('click',function(){
       var EID = $('#event-select').val();
@@ -393,6 +428,22 @@ date_default_timezone_set('Asia/Manila');
       });
     });
   });
+
+  function RecordAttend(Rno)
+  {
+    var Rno2 = Rno;
+    $.ajax({
+        url:"InsertAttendance.php",
+        type:"POST",
+        data: {Rno:Rno2},
+        success:function(data)
+        {
+          alert(data);
+        //   $('.participant-table tbody').append(data);
+
+        } 
+      });
+  }
 
   // $('.BalanceCheck').on('click',function(){
 

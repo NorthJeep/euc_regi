@@ -87,6 +87,7 @@ echo '<h6 id="QR" class="hide">'.$RID.$LName.$ID.'</h6>';
         <h2 class="page-header">
            <img src="dist/img/euc_logo.jpg" class="user-image" alt="User Image" style="width:100px;height:100px;"> Electronic Financials Users Circle (EUC), Inc. 
           <small class="pull-right">Date: <?php echo DATE("m-d-Y");?></small>
+          <small>Registration Code: <?php echo $Registration?></small>
         </h2>
       </div>
       <div class="col-xs-12">
