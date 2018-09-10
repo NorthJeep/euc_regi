@@ -2,6 +2,9 @@
 $Title='EUC Events | Official Receipt';
 include_once('head.php');
 
+$Amount = $_GET['Amount'];
+  $Rno = $_GET['R'];
+
 ?>
 <!--  -->
 <body onload="window.print();">

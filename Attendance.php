@@ -26,18 +26,30 @@ date_default_timezone_set('Asia/Manila');
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class=""><a href="index_Admin.php">Events <span class="sr-only"></span></a></li>
+            <li>
+            <?php echo'<a href="index_Admin.php?user='.$_SESSION['LoggedIn'].'">Events <span class="sr-only">(current)</span></a>';?>
+              
+            </li>
            <!--  <li><a href="index_Admin.php">Link</a></li> -->
-             
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="list_of_events.php" class="active">List of Events</a></li>
+                <li>
+                  <?php echo'<a href="list_of_events.php?user='.$_SESSION['LoggedIn'].'">List of Events</a>';?>
+                  <!-- <a href="list_of_events.php">List of Events</a> -->
+                </li>
               <!--   <li class="divider"></li> -->
-                <li><a href="list_of_delegates.php">List of Delegates</a></li>
-        <!--         <li class="divider"></li>
+                <li>
+                  <?php echo'<a href="list_of_delegates.php?user='.$_SESSION['LoggedIn'].'">List of Delegates</a>';?>
+                  <!-- <a href="list_of_delegates.php">List of Delegates</a> -->
+                </li>
+        <!--    <li class="divider"></li>
                 <li><a href="#">List of Everthing</a></li> -->
               </ul>
+            </li>
+            <li class="">
+              <?php echo'<a href="Attendance.php?user='.$_SESSION['LoggedIn'].'">Attendance <span class="sr-only"></span></a>';?>
+              <!-- <a href="Attendance.php">Attendance <span class="sr-only"></span></a> -->
             </li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
@@ -423,7 +435,7 @@ date_default_timezone_set('Asia/Manila');
         success:function(data)
         {
           $('.participant-table tbody').append(data);
-
+          TableLoad();
         } 
       });
     });
@@ -439,10 +451,25 @@ date_default_timezone_set('Asia/Manila');
         success:function(data)
         {
           alert(data);
+          // $('.participant-table tbody tr').remove();
+          location.reload();
         //   $('.participant-table tbody').append(data);
 
         } 
       });
+  }
+
+  function TableLoad()
+  {
+    $.ajax({
+          url:"AttendanceList.php",
+          type:"POST",
+          data: {ID:Event},
+          success:function(data)
+          {
+            $('.participant-table tbody').append(data); 
+          } 
+        });
   }
 
   // $('.BalanceCheck').on('click',function(){

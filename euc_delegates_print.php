@@ -10,6 +10,17 @@ if(!isset($_SESSION['LoggedIn']))
   session_destroy();
   header($header);
 }
+$EventParticipantCountSQL = 'SELECT COUNT(tbl_t_registrant.Registrant_ID) AS Registrant_Count
+                               FROM tbl_t_registration
+                               INNER JOIN tbl_t_registrant
+                                ON tbl_t_registrant.Registrant_ID = tbl_t_registration.Registrant_ID
+                               WHERE tbl_t_registration.Event_ID = '.$EID.'';
+$EventParticipantCount = mysqli_query($euceventMysqli,$EventParticipantCountSQL) or die (mysqli_error($euceventMysqli));
+  while($row3 = mysqli_fetch_assoc($EventParticipantCount))
+  {
+    $Reg_Count = $row3['Registrant_Count'];
+  }
+
 ?>
 <body onload="window.print();">
 <div class="wrapper">
@@ -32,6 +43,7 @@ if(!isset($_SESSION['LoggedIn']))
                   ">
                     <?php
                       include('config.php');
+
                       $EventSelectSQL = 'SELECT * FROM tbl_t_event ORDER BY Event_Title';
                       $EventSelect = mysqli_query($euceventMysqli,$EventSelectSQL) or die (mysqli_error($euceventMysqli));
                       if(mysqli_num_rows($EventSelect) > 0)
@@ -70,7 +82,7 @@ if(!isset($_SESSION['LoggedIn']))
           <div class="box">
             <div class="box-header">
               <h3 class="box-title"> Event Participants</h3>
-
+              <h3>Total Count: <?php echo $Reg_Count; ?></h3>
               <!-- <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -91,6 +103,7 @@ if(!isset($_SESSION['LoggedIn']))
                   <th>Middle Name</th>
                   <th>Last Name</th>
                   <th>Name Extension</th>
+                  <th>Company</th>
                   <th>Contact</th>
                   <th>E-Mail</th>
                 </tr>
@@ -103,6 +116,7 @@ if(!isset($_SESSION['LoggedIn']))
                                   IFNULL(tbl_t_registrant.Middle_Name," ") AS Middle_Name,
                                   IFNULL(tbl_t_registrant.Last_Name," ") AS Last_Name,
                                   IFNULL(tbl_t_registrant.Ext_Name," ") AS Ext_Name,
+                                  IFNULL(tbl_t_registrant.Company," ") AS Company,
                                   IFNULL(aes_decrypt(tbl_t_registrant.Contact,"eucevent")," ") AS Contact,
                                   IFNULL(aes_decrypt(tbl_t_registrant.Email,"eucevent")," ") AS Email
                                FROM tbl_t_registration
@@ -118,6 +132,7 @@ if(!isset($_SESSION['LoggedIn']))
                         $FName = $row['First_Name'];
                         $MName = $row['Middle_Name'];
                         $LName = $row['Last_Name'];
+                        $Company = $row['Company'];
                         $XName = $row['Ext_Name'];
                         $Contact = $row['Contact'];
                         $Email = $row['Email'];
@@ -129,6 +144,7 @@ if(!isset($_SESSION['LoggedIn']))
                                     <td>'.$MName.'</td>
                                     <td>'.$LName.'</td>
                                     <td>'.$XName.'</td>
+                                    <td>'.$Company.'</td>
                                     <td>'.$Contact.'</td>
                                     <td>'.$Email.'</td>
                                     

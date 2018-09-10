@@ -41,6 +41,6 @@ include('config.php');
 						$SelectPaymentID = $row['Payment_ID'];
 					}
 				}
-	echo  "OfficialReceipt_Print.php?R=".$RID."";
+	echo  "OR_Print.php?R=".$SelectPaymentID."&";
 
 ?>

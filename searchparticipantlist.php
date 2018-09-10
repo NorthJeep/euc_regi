@@ -22,20 +22,34 @@
 
 
 		$ParticipantSQL = 'SELECT 
-								IFNULL(tbl_t_registrant.Registrant_ID," ") AS Registrant_ID,
-								IFNULL(tbl_t_registrant.First_Name," ") AS First_Name,
-								IFNULL(tbl_t_registrant.Middle_Name," ") AS Middle_Name,
-								IFNULL(tbl_t_registrant.Last_Name," ") AS Last_Name,
-								IFNULL(tbl_t_registrant.Ext_Name," ") AS Ext_Name,
-								IFNULL(tbl_t_registrant.Company," ") AS Company,
-								IFNULL(tbl_t_registration.Registration_No," ") AS Registration_No,
-								IFNULL(tbl_t_registration.Date_Registered," ") AS Date_Registered,
-								IFNULL(aes_decrypt(tbl_t_registrant.Contact,"eucevent")," ") AS Contact,
-                                IFNULL(aes_decrypt(tbl_t_registrant.Email,"eucevent")," ") AS Email
-							 FROM tbl_t_registration
-							 INNER JOIN tbl_t_registrant
-							 	ON tbl_t_registrant.Registrant_ID = tbl_t_registration.Registrant_ID
-							 WHERE (tbl_t_registration.Event_ID ='.$ID.')
+								IFNULL(R.Registration_No," ") AS Registration_No,
+								IFNULL(T.Registrant_ID," ") AS Registrant_ID,
+								IFNULL(T.First_Name," ") AS First_Name,
+								IFNULL(T.Middle_Name," ") AS Middle_Name,
+								IFNULL(T.Last_Name," ") AS Last_Name,
+								IFNULL(T.Ext_Name," ") AS Ext_Name,
+								IFNULL(T.Company," ") AS Company,
+								IFNULL(E.Event_Date," ") AS EventDate,
+								IFNULL(E.Event_Phases," ") AS Phases,
+								IFNULL(R.Date_Registered," ") AS Date_Registered,
+								IFNULL(aes_decrypt(T.Contact,"eucevent")," ") AS Contact,
+                                IFNULL(aes_decrypt(T.Email,"eucevent")," ") AS Email
+							 FROM tbl_t_registration AS R
+							 INNER JOIN tbl_t_registrant AS T
+							 	ON T.Registrant_ID = R.Registrant_ID
+							 INNER JOIN tbl_t_event AS E
+							 	ON R.Event_ID = E.Event_ID
+							 INNER JOIN 
+                             	(SELECT
+                                     P2.Registration_No,
+                                    SUM(P2.Payment_Amount) AS Pay_Amount 
+                                    FROM tbl_t_payment AS P2
+                                    INNER JOIN tbl_t_registration AS R2
+                                    	ON P2.Registration_No = R2.Registration_No
+                                    GROUP BY P2.Registration_No) AS P
+ 							 WHERE (R.Event_ID = '.$ID.'
+                             	AND P.Registration_No = R.Registration_No
+                             	AND P.Pay_Amount >= E.Event_Price)
 							 	AND (tbl_t_registrant.First_Name LIKE "'.$Search.'%"
 							 		OR tbl_t_registrant.Middle_Name LIKE "'.$Search.'%"
 							 		OR tbl_t_registrant.Last_Name LIKE "'.$Search.'%"

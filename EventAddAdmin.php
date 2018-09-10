@@ -9,6 +9,7 @@
 	$Time = $_POST['Time'];
 	$Organizer = $_POST['Organizer'];
 	$Desc = $_POST['Desc'];
+	$Price = $_POST['Price'];
 
 	
 	$AddEventSQL = 'INSERT INTO tbl_t_event (User_ID,
@@ -17,14 +18,16 @@
 											Event_Time,
 											Event_Location,
 											Event_OrganizerDetail,
-											Event_Desc)
+											Event_Desc,
+											Event_Price)
 									VALUES  ('.$ID.',
 											"'.$Title.'",
 											"'.$Date.'",
 											"'.$Time.'",
 											"'.$Location.'",
 											"'.$Organizer.'",
-											"'.$Desc.'")';
+											"'.$Desc.'",
+											'.$Price.')';
 	$AddEvent = mysqli_query($euceventMysqli,$AddEventSQL) or die (mysqli_error($euceventMysqli));
 	echo 'OK';
 	$header = 'Location:/euc_regi/index_Admin.php?id='.$ID.'';

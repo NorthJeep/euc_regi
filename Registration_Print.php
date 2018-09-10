@@ -75,7 +75,8 @@ echo '<h6 id="QR" class="hide">'.$RID.$LName.$ID.'</h6>';
 ?>
 <!--  -->
 <body onload="window.print();">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> -->
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="bower_components/qr/qrcode.js"></script>
 <script type="text/javascript" src="bower_components/qr/jquery.qrcode.min.js"></script>
 <div class="wrapper">

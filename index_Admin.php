@@ -26,19 +26,31 @@ date_default_timezone_set('Asia/Manila');
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index_Admin.php">Events <span class="sr-only">(current)</span></a></li>
+            <li class="active">
+              <?php echo'<a href="index_Admin.php?user='.$_SESSION['LoggedIn'].'">Events <span class="sr-only">(current)</span></a>';?>
+              
+            </li>
            <!--  <li><a href="index_Admin.php">Link</a></li> -->
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="list_of_events.php">List of Events</a></li>
+                <li>
+                  <?php echo'<a href="list_of_events.php?user='.$_SESSION['LoggedIn'].'">List of Events</a>';?>
+                  <!-- <a href="list_of_events.php">List of Events</a> -->
+                </li>
               <!--   <li class="divider"></li> -->
-                <li><a href="list_of_delegates.php">List of Delegates</a></li>
-        <!--         <li class="divider"></li>
+                <li>
+                  <?php echo'<a href="list_of_delegates.php?user='.$_SESSION['LoggedIn'].'">List of Delegates</a>';?>
+                  <!-- <a href="list_of_delegates.php">List of Delegates</a> -->
+                </li>
+        <!--    <li class="divider"></li>
                 <li><a href="#">List of Everthing</a></li> -->
               </ul>
             </li>
-            <li class=""><a href="Attendance.php">Attendance <span class="sr-only"></span></a></li>
+            <li class="">
+              <?php echo'<a href="Attendance.php?user='.$_SESSION['LoggedIn'].'">Attendance <span class="sr-only"></span></a>';?>
+              <!-- <a href="Attendance.php">Attendance <span class="sr-only"></span></a> -->
+            </li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
           <!--   <div class="form-group">
@@ -209,6 +221,7 @@ date_default_timezone_set('Asia/Manila');
                   <th>Title</th>
                   <th>Location</th>
                   <th>Start Date</th>
+                  <th>End Date</th>
                   <th>Phases</th>
                   <th>Time</th>
                   <th class="hide">Organizer</th>
@@ -220,7 +233,7 @@ date_default_timezone_set('Asia/Manila');
                 <?php
                   include('config.php');
                   $CurrDate = time();
-                  $EventListSQL = 'SELECT * FROM tbl_t_event ORDER BY Event_ID DESC';
+                  $EventListSQL = 'SELECT Event_ID,User_ID,Event_Title,Event_Phases,Event_Date,DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY) AS EndDate, Event_Time,Event_Location, Event_OrganizerDetail, Event_Desc, Event_Price FROM tbl_t_event ORDER BY Event_Title';
                   $EventList = mysqli_query($euceventMysqli,$EventListSQL) or die (mysqli_error($euceventMysqli));
                   if(mysqli_num_rows($EventList) > 0)
                   {
@@ -230,6 +243,7 @@ date_default_timezone_set('Asia/Manila');
                       $UID = $row['User_ID'];
                       $Title = $row['Event_Title'];
                       $Date = $row['Event_Date'];
+                      $EndDate = $row['EndDate'];
                       $Phases = $row['Event_Phases'];
                       $Time = $row['Event_Time'];
                       $Location = $row['Event_Location'];
@@ -239,20 +253,18 @@ date_default_timezone_set('Asia/Manila');
 
                       if($Date!= '' || $Date!= null)
                       {
-                        // if (strtotime($Date) > $CurrDate) 
-                        if($Date > DATE("Y-m-d"))
+                        if ($Date > DATE("Y-m-d")) 
                         {
-                          $Status = '<span class="label label-success">Registration</span>';
-                            #$date occurs in the future
+                            $Status = '<span class="label label-success">Registration</span>';
+                            
                         } 
-                        else if ($Date == DATE("Y-m-d"))
+                        elseif ($Date <= DATE("Y-m-d") && $EndDate >= DATE("Y-m-d"))
                         {
                           $Status = '<span class="label label-warning">Ongoing</span>';
-                            #$date occurs now or in the past
                         }
                         else
                         {
-                          $Status = '<span class="label label-danger">Finished</span>';
+                            $Status = '<span class="label label-danger">Finished</span>';
                         }
                       }
                       else
@@ -267,6 +279,7 @@ date_default_timezone_set('Asia/Manila');
                               <td>'.$Title.'</td>
                               <td>'.$Location.'</td>
                               <td>'.$Date.'</td>
+                              <td>'.$EndDate.'</td>
                               <td>'.$Phases.'</td>
                               <td>'.$Time.'</td>
                               <td class="hide">'.$Organizer.'</td>
