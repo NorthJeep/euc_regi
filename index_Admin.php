@@ -214,8 +214,9 @@ date_default_timezone_set('Asia/Manila');
               </div> -->
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
                 <tr>
                   <th class="hide">ID</th> 
                   <th>Title</th>
@@ -228,8 +229,10 @@ date_default_timezone_set('Asia/Manila');
                   <th>State</th>
                   <th>Description</th>
                   <th>Price</th>
-                  <th>Actions</th>
+                  <th width="10%">Actions</th>
                 </tr>
+                </thead>
+                <tbody>
                 <?php
                   include('config.php');
                   $CurrDate = time();
@@ -287,8 +290,8 @@ date_default_timezone_set('Asia/Manila');
                               <td>'.$Desc.'</td>
                               <td>'.$Price.'</td>
                               <td>
-                                <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view">View Details</button>
-                                <button type="button" class="btn btn-primary EditEvent" data-toggle="modal" data-target="#modal-default_update">Edit</button>
+                                <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view"><i class="fa fa-eye"></i></button>
+                                <button type="button" class="btn btn-primary EditEvent" data-toggle="modal" data-target="#modal-default_update"><i class="fa fa-cog"></i></button>
                               </td>
                             </tr>';
 
@@ -296,45 +299,23 @@ date_default_timezone_set('Asia/Manila');
                   }
 
                 ?>
-                <!-- <tr>
-                  <td class="hide">183</td>
-                  <td>Barangay IT Seminar </td>
-                  <td> Vigan City </td>
-                  <td>11-7-2014</td>
-                  <td> Peter John Teneza</td>
-                  <td><span class="label label-success">Registration</span></td>
-                  <td>A seminar about the barangay IT system that will greatly revolutionize the way our barangays manage their businesses</td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
-                Edit
-              </button></td>
-                </tr> -->
-      <!--  -->
-                <!-- <tr>
-                  <td class="hide">183</td>
-                  <td>SAD Lecture </td>
-                  <td> Quezon City </td>
-                  <td>11-7-2014</td>
-                  <td> Lowell Dave Agnir</td>
-                  <td><span class="label label-warning">Coming Soon</span></td>
-                  <td>huhuhuhuhu</td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
-                Edit
-              </button></td>
-                </tr> -->
-
-      <!--  -->
-                <!-- <tr>
-                  <td class="hide">183</td>
-                  <td>Extension Project </td>
-                  <td> Makati City </td>
-                  <td>11-7-2014</td>
-                  <td>Ma. Michaela Alejandria</td>
-                  <td><span class="label label-danger">Ended</span></td>
-                  <td>Yiieeee! Only Binay, only Binay! hart hart xD </td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default_update">
-                Edit
-              </button></td>
-                </tr> -->
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th class="hide">ID</th> 
+                  <th>Title</th>
+                  <th>Location</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Phases</th>
+                  <th>Time</th>
+                  <th class="hide">Organizer</th>
+                  <th>State</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                </tr>
+                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
@@ -561,6 +542,10 @@ date_default_timezone_set('Asia/Manila');
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -610,23 +595,11 @@ date_default_timezone_set('Asia/Manila');
                 $("#ETitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
                 $("#ELocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
                 $("#EDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
-                $("#EPhase").val($(this).closest("tbody tr").find("td:eq(4)").html());
-                $("#ETime").val($(this).closest("tbody tr").find("td:eq(5)").html());
-                $("#EOrganizer").val($(this).closest("tbody tr").find("td:eq(6)").html());
-                $("#EDesc").val($(this).closest("tbody tr").find("td:eq(8)").html());
-                $("#EPrice").val($(this).closest("tbody tr").find("td:eq(9)").html());
-                // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
-                //         $("#editCheckA").prop("checked", true).trigger('click');
-                //     } else {
-                //         $("#editCheckI").prop("checked", true).trigger('click');
-                //     }
-                // if ($(this).closest("tbody tr").find("td:eq(16)").text() === "M") {
-                //         $("#EditGendM").prop("checked", true).trigger('click');
-                //     } else {
-                //         $("#EditGendF").prop("checked", true).trigger('click');
-                //     }
-                // ActOption = "option[value="+val($(this).closest("tbody tr").find("td:eq(4)").html())+"]";
-                // $("#PositionOption").find(ActOption).prop("selected",true);
+                $("#EPhase").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#ETime").val($(this).closest("tbody tr").find("td:eq(6)").html());
+                $("#EOrganizer").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                $("#EDesc").val($(this).closest("tbody tr").find("td:eq(9)").html());
+                $("#EPrice").val($(this).closest("tbody tr").find("td:eq(10)").html());
             });
             $(".ViewEvent").click(function()
             {
@@ -634,24 +607,23 @@ date_default_timezone_set('Asia/Manila');
                 $("#VTitle").val($(this).closest("tbody tr").find("td:eq(1)").html());
                 $("#VLocation").val($(this).closest("tbody tr").find("td:eq(2)").html());
                 $("#VDate").val($(this).closest("tbody tr").find("td:eq(3)").html());
-                $("#VPhase").val($(this).closest("tbody tr").find("td:eq(4)").html());
-                $("#VTime").val($(this).closest("tbody tr").find("td:eq(5)").html());
-                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(6)").html());
-                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(8)").html());
-                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(9)").html());
-                // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
-                //         $("#editCheckA").prop("checked", true).trigger('click');
-                //     } else {
-                //         $("#editCheckI").prop("checked", true).trigger('click');
-                //     }
-                // if ($(this).closest("tbody tr").find("td:eq(16)").text() === "M") {
-                //         $("#EditGendM").prop("checked", true).trigger('click');
-                //     } else {
-                //         $("#EditGendF").prop("checked", true).trigger('click');
-                //     }
-                // ActOption = "option[value="+val($(this).closest("tbody tr").find("td:eq(4)").html())+"]";
-                // $("#PositionOption").find(ActOption).prop("selected",true);
+                $("#VPhase").val($(this).closest("tbody tr").find("td:eq(5)").html());
+                $("#VTime").val($(this).closest("tbody tr").find("td:eq(6)").html());
+                $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(7)").html());
+                $("#VDesc").val($(this).closest("tbody tr").find("td:eq(9)").html());
+                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(10)").html());
             });
         });
+        $(function () {
+          $('#example1').DataTable()
+          // $('#example2').DataTable({
+          //   'paging'      : true,
+          //   'lengthChange': false,
+          //   'searching'   : false,
+          //   'ordering'    : true,
+          //   'info'        : true,
+          //   'autoWidth'   : false
+          // })
+        })
 
     </script> 

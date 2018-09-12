@@ -41,6 +41,8 @@ include('config.php');
 						$SelectPaymentID = $row['Payment_ID'];
 					}
 				}
-	echo  "OR_Print.php?R=".$SelectPaymentID."&";
+	// echo  "OR_Print.php?R=".$SelectPaymentID."&";
+
+	echo 'Successfully paid '.$Amount.';
 
 ?>

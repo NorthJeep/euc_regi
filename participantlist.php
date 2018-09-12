@@ -114,7 +114,7 @@
 	                  <td>'.$TotalAmount.'</td>
 	                  <td>'.$PaymentStatus.'</td>
 	                  <td>
-                        <button class="btn btn-primary" id="BalanceChecksss" onclick="EditRecord('.$Rno.')" data-toggle="modal" data-target="#modal-default_check">Edit</button>
+                        <button class="btn btn-primary" id="BalanceChecksss" onclick="EditRecord('.$Rno.')" data-toggle="modal" data-target="#modal-default_check"><i class="fa fa-cogs"></i></button>
                       </td>
 	                </tr>';
 			}

@@ -212,7 +212,7 @@ date_default_timezone_set('Asia/Manila');
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">EUC Participants</h3>
+              <h3 class="box-title">EUC Events</h3>
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">

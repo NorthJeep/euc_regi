@@ -50,10 +50,10 @@
  							 WHERE (R.Event_ID = '.$ID.'
                              	AND P.Registration_No = R.Registration_No
                              	AND P.Pay_Amount >= E.Event_Price)
-							 	AND (tbl_t_registrant.First_Name LIKE "'.$Search.'%"
-							 		OR tbl_t_registrant.Middle_Name LIKE "'.$Search.'%"
-							 		OR tbl_t_registrant.Last_Name LIKE "'.$Search.'%"
-							 		OR tbl_t_registrant.Ext_Name LIKE "'.$Search.'%")';
+							 	AND (T.First_Name LIKE "'.$Search.'%"
+							 		OR T.Middle_Name LIKE "'.$Search.'%"
+							 		OR T.Last_Name LIKE "'.$Search.'%"
+							 		OR T.Ext_Name LIKE "'.$Search.'%")';
 		$Participant = mysqli_query($euceventMysqli,$ParticipantSQL) or die(mysqli_error($euceventMysqli));
 		if(mysqli_num_rows($Participant) > 0)
 		{

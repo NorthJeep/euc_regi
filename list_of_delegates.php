@@ -345,7 +345,7 @@ date_default_timezone_set('Asia/Manila');
                   <div id="PayDiv" class="col-xs-4" style="vertical-align: center;">
                     <label>Pay Balance: 
                       <input id="EPay" type="text" class="form-control" placeholder="" name="Payment">
-                      <button id="SubmitPay" class="btn btn-warning">Pay</button>
+                      <button id="SubmitPay" class="btn btn-warning"><i class="fa fa-check-square-o"></i> Pay</button>
                     </label>
                     <!-- <input>Pay: <h4 id="EPaymentStatus" style="color: red">STATUS</h4></input> -->
                   </div>
@@ -355,8 +355,8 @@ date_default_timezone_set('Asia/Manila');
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Back</button>
+                <!-- <button type="button" class="btn btn-primary">Update</button> -->
               </div>
             </div>
 
@@ -411,7 +411,7 @@ date_default_timezone_set('Asia/Manila');
       {
         var Rno = $('#ERID').val();
         var Amount = $('#EPay').val();
-        var newWindow = window.open('');
+        // var newWindow = window.open('');
 
         $.ajax({
           url:"updatepay.php",
@@ -419,8 +419,9 @@ date_default_timezone_set('Asia/Manila');
           data: {Rno:Rno,Amount:Amount},
           success:function(data)
           {
-            var Link = data;
-            newWindow.location.href = Link;
+            // var Link = data;
+            // newWindow.location.href = Link;
+            alert(data);
             // $('.participant-table tbody').append(data);
             
           } 
