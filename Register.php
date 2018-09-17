@@ -17,7 +17,7 @@
 														Middle_Name = "'.$MName.'" AND 
 														Last_Name = "'.$LName.'" AND  
 														Ext_Name = "'.$XName.'") OR
-														Email = aes_decrypt("'.$Email.'","eucevent") ';
+														Email = aes_encrypt("'.$Email.'","eucevent") ';
 	$Check = mysqli_query($euceventMysqli,$CheckSQL) or die (mysqli_error($euceventMysqli));							
 	if(mysqli_num_rows($Check) > 0)
 	{

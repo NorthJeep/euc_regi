@@ -17,16 +17,17 @@
 			{
 				$ID = $row['User_ID'];
 			}
-			echo 'Login Successful';
 
 			session_start();
 			$_SESSION['LoggedIn'] = $ID;
-			$header = 'Location:/euc_regi/index_Admin.php?id='.$ID.'';
+			$header = 'Location: index_Admin.php?id='.$ID.'';
 			header($header);
 
 		}
 		else
 		{
+			$header = 'Location: index.php';
+			header($header);
 			echo 'Wrong Username and Password';
 		} 
 	}

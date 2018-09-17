@@ -29,7 +29,7 @@
 											"'.$Desc.'",
 											'.$Price.')';
 	$AddEvent = mysqli_query($euceventMysqli,$AddEventSQL) or die (mysqli_error($euceventMysqli));
-	echo 'OK';
+	
 	$header = 'Location:/euc_regi/index_Admin.php?id='.$ID.'';
 	header($header);
 ?>

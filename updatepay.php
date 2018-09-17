@@ -43,6 +43,6 @@ include('config.php');
 				}
 	// echo  "OR_Print.php?R=".$SelectPaymentID."&";
 
-	echo 'Successfully paid '.$Amount.';
+	echo 'Successfully paid '.$Amount.'';
 
 ?>

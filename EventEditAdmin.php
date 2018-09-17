@@ -23,8 +23,7 @@
 										WHERE Event_ID = '.$ID.' ';
 					
 	$EditEvent = mysqli_query($euceventMysqli,$EditEventSQL) or die (mysqli_error($euceventMysqli));
-	echo 'OK';
-	echo $Price;
+	
 	$header = 'Location:/euc_regi/index_Admin.php?id='.$ID.'';
 	header($header);
 ?>

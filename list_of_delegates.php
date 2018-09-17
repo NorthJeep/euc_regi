@@ -185,11 +185,20 @@ date_default_timezone_set('Asia/Manila');
       <section class="content-header">
  <!--        <h1> EUC Events </h1> -->
            <!-- <a href="euc_delegates_print.php" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>  -->
-           <button href="euc_delegates_print.php" target="_blank" class="btn btn-default printFunction"><i class="fa fa-print"></i> Print</button> 
-         </br>
-         </br>
+        <button href="euc_delegates_print.php" target="_blank" class="btn btn-default printFunction"><i class="fa fa-print"></i> Print</button>
+          <button id="Export" class="btn btn-primary ExportButton"><i class="fa fa-file-archive-o"></i> Export</button>
+          <button id="Import" class="btn btn-primary ImportButton"><i class="fa fa-file-archive-o"></i> Import</button>
+        </br>
+        </br>
+        <form id="importForm" method="post" action="import.php" enctype="multipart/form-data" style="margin-bottom: 0px; padding: 0px;">
+          <input type="file" id="importSubmit" accept=".xlsx, .xls, .csv" name="ImportFile" style="visibility:hidden"/>
+        </form>
+        <form action="export.php" method="post">
+          <input type="submit" id="triggerSubmit" name="Type" value="Delegates" style="visibility:hidden"/>
+        <div class="col-xs-12" style="margin-bottom: 2%;">
+          <div class="col-xs-6">
            <label>Select Event</label>
-                  <select id="event-select" class="form-control">
+                  <select id="event-select" name="Event" class="form-control">
                     <?php
                       include('config.php');
                       $EventSelectSQL = 'SELECT * FROM tbl_t_event ORDER BY Event_Title';
@@ -197,28 +206,52 @@ date_default_timezone_set('Asia/Manila');
                       if(mysqli_num_rows($EventSelect) > 0)
                       {
                         echo '<option value="0" selected>No selected event.</option>';
-                        while($row = mysqli_fetch_assoc($EventSelect))
-                        {
-                          $Title = $row['Event_Title'];
-                          $ID =  $row['Event_ID'];
-                          echo '<option value="'.$ID.'">'.$Title.'</option>';
-                        }
+                          while($row = mysqli_fetch_assoc($EventSelect))
+                          {
+                            $Title = $row['Event_Title'];
+                            $ID =  $row['Event_ID'];
+                            echo '<option value="'.$ID.'">'.$Title.'</option>';
+                          }
                       }
                       else
                       {
                         echo '<option value="0" selected>No registered events.</option>';
                       }
+                    ?>
+                    
+                  </select>
+          </div>
+          <div class="col-xs-6">
+            <label>Select Company</label>
+                  <select id="company-select" name="Company" class="form-control">
+                    <?php
+                      include('config.php');
+                      $CompanySelectSQL = 'SELECT DISTINCT Company FROM tbl_t_registrant ORDER BY Company';
+                      $CompanySelect = mysqli_query($euceventMysqli,$CompanySelectSQL) or die (mysqli_error($euceventMysqli));
+                      if(mysqli_num_rows($CompanySelect) > 0)
+                      {
+                        echo '<option value="All" selected>All</option>';
+                        while($row2 = mysqli_fetch_assoc($CompanySelect))
+                        {
+                          $Company_Name = $row2['Company'];
+                          echo '<option value="'.$Company_Name.'">'.$Company_Name.'</option>';
+                        }
+                      }
+                      else
+                      {
+                        echo '<option value="All" selected>All</option>';
+                      }
 
                     ?>
-                    <!-- <option>Barangay IT Seminar</option>
-                    <option>SAD Lecture</option>
-                    <option>Extension Project</option> -->
                   </select>
+          </div>
        <!--  <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li><a href="#">Layout</a></li>
           <li class="active">Top Navigation</li>
         </ol> -->
+        </div>
+      </form>
       </section>
     </br>
 
@@ -241,7 +274,7 @@ date_default_timezone_set('Asia/Manila');
               </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
+            <div id="DataTable" class="box-body table-responsive no-padding">
               <table class="table table-hover participant-table">
                 <thead>
                 <tr>
@@ -342,11 +375,12 @@ date_default_timezone_set('Asia/Manila');
                     </select>
                     </label> -->
                   </div>
-                  <div id="PayDiv" class="col-xs-4" style="vertical-align: center;">
+                  <div id="PayDiv" class="col-xs-4">
                     <label>Pay Balance: 
-                      <input id="EPay" type="text" class="form-control" placeholder="" name="Payment">
-                      <button id="SubmitPay" class="btn btn-warning"><i class="fa fa-check-square-o"></i> Pay</button>
+                      <!-- <input id="EPay" type="text" class="form-control" placeholder="" name="Payment"> -->
                     </label>
+                    </br>
+                    <button id="SubmitPay" class="btn btn-warning"><i class="fa fa-check-square-o"></i> Pay</button>
                     <!-- <input>Pay: <h4 id="EPaymentStatus" style="color: red">STATUS</h4></input> -->
                   </div>
                 </div>
@@ -363,7 +397,6 @@ date_default_timezone_set('Asia/Manila');
           </div>
 
         </div>
-
 <?php
   include('footer.php');
 ?>  
@@ -400,6 +433,18 @@ date_default_timezone_set('Asia/Manila');
 <script type="text/javascript">
   $(document).ready(function()
   {
+    $('#Import').click(function(){
+      $("#importSubmit").click();
+    });
+
+    $('#importSubmit').on('change',function(){
+      $('#importForm').submit();
+    });
+
+    $('#Export').click(function(){
+      $("#triggerSubmit").click();
+    });
+
     $('#EPay').mask('########0.00', {reverse: true});
 
     $('#SubmitPay').click(function(){
@@ -410,7 +455,7 @@ date_default_timezone_set('Asia/Manila');
       else
       {
         var Rno = $('#ERID').val();
-        var Amount = $('#EPay').val();
+        var Amount = $('#EPaymentBalance').text();
         // var newWindow = window.open('');
 
         $.ajax({
@@ -422,6 +467,7 @@ date_default_timezone_set('Asia/Manila');
             // var Link = data;
             // newWindow.location.href = Link;
             alert(data);
+            location.reload();
             // $('.participant-table tbody').append(data);
             
           } 
@@ -473,18 +519,33 @@ date_default_timezone_set('Asia/Manila');
     
     $('#event-select').on('change', function(){
       $('.participant-table tbody tr').remove();
-      var Event = $(this).val();
+      var Event = $('#event-select').val();
+      var Company = $('#company-select').val();
       $.ajax({
-        url:"participantlist.php",
+        url:"companyparticipantlist.php",
         type:"POST",
-        data: {ID:Event},
+        data: {Event:Event,Company:Company},
+        success:function(data)
+        {
+          $('.participant-table tbody').append(data);
+        } 
+      });
+    });
+
+    $('#company-select').on('change',function(){
+      $('.participant-table tbody tr').remove();
+      var Event = $('#event-select').val();
+      var Company = $('#company-select').val();
+      $.ajax({
+        url:"companyparticipantlist.php",
+        type:"POST",
+        data: {Event:Event,Company:Company},
         success:function(data)
         {
           $('.participant-table tbody').append(data);
           
         } 
       });
-
     });
 
     // $('.BalanceChecksss').on('click',function(){
@@ -537,17 +598,6 @@ date_default_timezone_set('Asia/Manila');
         } 
         });
 
-        // $("#EFName").text("HERE I GO");
-        // $("#ERID").value($(this).closest("tbody tr").find("td:eq(0)").html());
-        // $("#EFName").text($(this).closest("tbody tr").find("td:eq(1)").html());
-        // $("#EMName").text($(this).closest("tbody tr").find("td:eq(2)").html());
-        // $("#ELName").text($(this).closest("tbody tr").find("td:eq(3)").html());
-        // $("#EXName").text($(this).closest("tbody tr").find("td:eq(4)").html());
-        // $("#EContact").text($(this).closest("tbody tr").find("td:eq(5)").html());
-        // $("#EEmail").text($(this).closest("tbody tr").find("td:eq(6)").html());
-        // $("#EDateRegistered").text($(this).closest("tbody tr").find("td:eq(7)").html());
-        // $("#EPaymentMethod").text($(this).closest("tbody tr").find("td:eq(8)").html());
-        // $("#EPayment").value($(this).closest("tbody tr").find("td:eq(9)").html());
   }
 
   // $('#BalanceChecksss').click(function() {

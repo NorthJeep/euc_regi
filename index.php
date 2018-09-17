@@ -47,8 +47,8 @@ include_once('head.php');
           Google+</a>
       </div> -->
       <!-- /.social-auth-links -->
-
-      <a href="index_Cust.php">Register</a><br>
+    </br>
+      <a href="index_Cust.php">Register in an Event</a><br>
    <!--    <a href="register.html" class="text-center">Register a new membership</a> -->
 
     </div>
@@ -62,6 +62,7 @@ include_once('head.php');
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <!-- iCheck -->
   <script src="plugins/iCheck/icheck.min.js"></script>
+
   <script>
     $(function () {
       $('input').iCheck({
