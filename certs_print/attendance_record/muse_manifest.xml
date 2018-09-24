@@ -1,7 +1,7 @@
-<manifest alg="2" build="2018.1.0.386" opt="true" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="euc-inc.ph" resolutions="1x" timestamp="1537314855316">
+<manifest alg="2" build="2018.1.0.386" opt="true" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="euc-inc.ph" resolutions="1x" timestamp="1537782423884">
   <folder name="css">
     <file name="site_global.css" crc="444006867"/>
-    <file name="index.css" crc="255840478" ref="index"/>
+    <file name="index.css" crc="148553253" ref="index"/>
   </folder>
   <folder name="scripts">
     <file name="jquery-1.8.3.min.js" crc="209076791" ref="index"/>
@@ -17,9 +17,9 @@
     <file name="signature_sample.jpg" crc="3909949887" seo="true" ref="index">
       <caption webpage="index" alt=""/>
     </file>
-    <file name="qr.jpg" crc="170713428" seo="true" ref="index">
+    <file name="qr-crop-u332.jpg" crc="300529930" seo="true" ref="index">
       <caption webpage="index" alt=""/>
     </file>
   </folder>
-  <file name="index.html" crc="404122854" seo="true" mt="1537314844021" redirect="true"/>
+  <file name="index.html" crc="4087536262" seo="true" mt="1537782377035" redirect="true"/>
 </manifest>
