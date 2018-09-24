@@ -1,3 +1,46 @@
+<?php
+  include('../../config.php');
+  date_default_timezone_set('Asia/Manila');
+  session_start();
+
+  $Rno = $_GET['R'];
+
+  $EventInfoSQL = 'SELECT IFNULL(tbl_t_registration.Registration_No,"") AS Registration_No,
+                          IFNULL(tbl_t_event.Event_Title,"") AS Event_Title,
+                          IFNULL(tbl_t_event.Event_CPD,"") AS Event_CPD,
+                          IFNULL(tbl_t_event.Event_Date,"") AS Event_Date,
+                          IFNULL(tbl_t_event.Event_Phases,"") AS Event_Phases,
+                          IFNULL(tbl_t_event.Event_Location,"") AS Event_Location,
+                          IFNULL(tbl_t_registrant.Registrant_ID,"") AS Registrant_ID,
+                          IFNULL(tbl_t_registrant.First_Name,"") AS First_Name,
+                          IFNULL(tbl_t_registrant.Middle_Name,"") AS Middle_Name,
+                          IFNULL(tbl_t_registrant.Last_Name,"") AS Last_Name,
+                          IFNULL(tbl_t_registrant.Ext_Name,"") AS Ext_Name
+                  FROM    tbl_t_registration
+                  INNER JOIN tbl_t_registrant
+                    ON tbl_t_registration.Registrant_ID = tbl_t_registrant.Registrant_ID
+                  INNER JOIN tbl_t_event
+                    ON tbl_t_registration.Event_ID = tbl_t_event.Event_ID
+                  WHERE tbl_t_registration.Registration_No = '.$Rno.' ';
+  $EventInfo = mysqli_query($euceventMysqli,$EventInfoSQL) or die(mysqli_error($euceventMysqli));
+  if(mysqli_num_rows($EventInfo) > 0)
+    {
+      while($row = mysqli_fetch_assoc($EventInfo))
+      {
+        $RNo = $row['Registration_No'];
+        $Title = $row['Event_Title'];
+        $CPD = $row['Event_CPD'];
+        $Date = $row['Event_Date'];
+        $Phases = $row['Event_Phases'];
+        $Location = $row['Event_Location'];
+        $RID = $row['Registrant_ID'];
+        $FName = $row['First_Name'];
+        $MName = $row['Middle_Name'];
+        $LName = $row['Last_Name'];
+        $XName = $row['Ext_Name'];
+      }
+    }
+?>
 <!DOCTYPE html>
 <html class="nojs html" lang="en-US">
  <head>
@@ -32,19 +75,19 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     <p>This document confirms that</p>
    </div>
    <div class="clearfix grpelem" id="u110-4"><!-- content -->
-    <p>Delegate's Name Here</p>
+    <p><?php echo(''.$FName.' '.$MName.' '.$LName.' '.$XName.' '); ?></p>
    </div>
    <div class="clearfix grpelem" id="u113-4"><!-- content -->
     <p>Has attended the</p>
    </div>
    <div class="clearfix grpelem" id="u116-4"><!-- content -->
-    <p>Seminar Name Here</p>
+    <p><?php echo $Title; ?></p>
    </div>
    <div class="clearfix grpelem" id="u119-4"><!-- content -->
     <p>This attendance is valid for&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Continuing Professional Development (CPD) credits.</p>
    </div>
    <div class="clearfix grpelem" id="u122-4" data-sizePolicy="fixed" data-pintopage="page_fixedLeft"><!-- content -->
-    <p>50</p>
+    <p><?php echo $CPD; ?></p>
    </div>
    <div class="clearfix grpelem" id="u125-4"><!-- content -->
     <p>Held at:</p>
@@ -53,10 +96,10 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     <p>Course Completion Date:</p>
    </div>
    <div class="clearfix grpelem" id="u135-4"><!-- content -->
-    <p>Event Location here</p>
+    <p><?php echo $Location; ?></p>
    </div>
    <div class="clearfix grpelem" id="u138-4"><!-- content -->
-    <p>Date ended here</p>
+    <p><?php echo $Date; ?></p>
    </div>
    <div class="clearfix grpelem" id="u156-19"><!-- content -->
     <p id="u156-2">EUC</p>

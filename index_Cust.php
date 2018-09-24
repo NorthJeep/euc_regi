@@ -31,6 +31,7 @@ else
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index_Cust.php">Registration <span class="sr-only">(current)</span></a></li>
+            <li><a data-toggle="modal" data-target="#modal-default_PrintCert">Print your Certificate</a></li>
            <!--  <li><a href="index_Admin.php">Link</a></li> -->
             
           </ul>
@@ -191,7 +192,7 @@ else
                               echo '
                               <td>
                                 <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view"><i class="fa fa-eye"></i> View Details</button>
-                                <button type="button" class="btn btn-success RegisterEvent" data-toggle="modal" data-target="#modal-defaul_Register"><i class="fa fa-hand-o-right"></i> Register
+                                <button type="button" class="btn btn-success RegisterEvent" data-toggle="modal" data-target="#modal-default_Register"><i class="fa fa-hand-o-right"></i> Register
                                 </button>
                               </td>
                               </tr>';
@@ -209,45 +210,6 @@ else
                   }
 
                 ?>
-                <!-- <tr>
-                  <td class="hide">183</td>
-                  <td>Barangay IT Seminar </td>
-                  <td> Vigan City </td>
-                  <td>11-7-2014</td>
-                  <td> Peter John Teneza</td>
-                  <td><span class="label label-success">Registration</span></td>
-                  <td>A seminar about the barangay IT system that will greatly revolutionize the way our barangays manage their businesses</td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-defaul_Register">
-                Register
-              </button></td>
-                </tr> -->
-      <!--  -->
-                <!-- <tr>
-                  <td class="hide">183</td>
-                  <td>SAD Lecture </td>
-                  <td> Quezon City </td>
-                  <td>11-7-2014</td>
-                  <td> Lowell Dave Agnir</td>
-                  <td><span class="label label-warning">Coming Soon</span></td>
-                  <td>huhuhuhuhu</td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-defaul_Register">
-                Register
-              </button></td>
-                </tr> -->
-
-      <!--  -->
-                <!-- <tr>
-                  <td class="hide">183</td>
-                  <td>Extension Project </td>
-                  <td> Makati City </td>
-                  <td>11-7-2014</td>
-                  <td>Ma. Michaela Alejandria</td>
-                  <td><span class="label label-danger">Ended</span></td>
-                  <td>Yiieeee! Only Binay, only Binay! hart hart xD </td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-defaul_Register">
-                Register
-              </button></td>
-                </tr> -->
               </tbody>
               </table>
             </div>
@@ -256,6 +218,37 @@ else
           <!-- /.box -->
         </div>
       </div>
+
+<!-- MODAL PRINT START HERE!!! -->
+        <div class="modal fade" id="modal-default_PrintCert">
+          <form id="PrintCertForm" action="#" method="POST">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Print your Certificate</h4>
+              </div>
+              <div class="modal-body">
+                <!-- INPUTS SA MODAL HERE!! -->
+                <label>Please type your Registration Number inside the box.</label>
+                <input id="PRno" type="text" class="form-control" placeholder="Registration Number" name="PRno">
+                </br>
+                <!-- END OF INPUTS SA MODAL -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <!-- <button type="button" class="btn btn-primary" onclick="window.open ('Registration_Print.php')">Register</button> -->
+                <button id="PrintCertButton" type="button" class="btn btn-success">Print Certificate</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </form>
+        </div>
+
+  <!-- MODAL PRINT ENDS HERE!!! -->
 
 <!-- MODAL VIEW START HERE!!! -->
         <!-- <div class="modal fade" id="modal-default_view">
@@ -382,13 +375,13 @@ else
               </div>
             </div>
           </div>
-        </form>
+          </form>
         </div>
 
   <!-- MODAL VIEW ENDS HERE!!! -->
 
 <!-- MODAL EDIT START HERE!!! -->
-        <div class="modal fade" id="modal-defaul_Register">
+        <div class="modal fade" id="modal-default_Register">
           <form id="Regster" action="Register.php" method="POST">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -514,6 +507,7 @@ else
                 $("#ID").val($(this).closest("tbody tr").find("td:eq(0)").html());
                 
             });
+
             $('#Contact').mask('00000000000');
             
             $('#Company').keyup(function(){
@@ -541,7 +535,26 @@ else
             $(document).on('click', 'li', function(){  
                 $('#Company').val($(this).text());
                 $(".company_list").empty(); 
-          });
+            });
+
+            $('#PrintCertButton').on('click', function(){
+              var PRno = $('#PRno').val();
+              $.ajax({
+                    url:"PrintCertificate.php",
+                    type:"POST",
+                    data: {Rno:PRno},
+                    success:function(data)
+                    {
+                        var newWindow = window.open('');
+                        var Link = data;
+                        newWindow.location.href = Link;
+                    },
+                    error:function()
+                    {
+                      alert("Register Failed.");
+                    }
+                    });
+            });
 
         });
         $(document).ready(function()
@@ -589,8 +602,9 @@ else
                               data: {ID:EID,FName:FName,MName:MName,LName:LName,XName:XName,Company:Company,Contact:Contact,Email:Email},
                               success:function(data)
                               {
+
                                 var Link = data;
-                                alert("Register Successful.")
+                                alert("Register Successful.");
                                 newWindow.location.href = Link;
                               },
                               error:function()

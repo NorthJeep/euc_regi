@@ -467,7 +467,7 @@ date_default_timezone_set('Asia/Manila');
             // var Link = data;
             // newWindow.location.href = Link;
             alert(data);
-            location.reload();
+            // location.reload();
             // $('.participant-table tbody').append(data);
             
           } 
