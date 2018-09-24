@@ -6,7 +6,7 @@
 	if($_POST['Text'] != '')
 	{
 		$List = '<ul class="list-unstyled">'; 
-		$CompanySQL = 'SELECT Company FROM tbl_t_registrant WHERE Company LIKE "'.$Text.'%" LIMIT 5';
+		$CompanySQL = 'SELECT DISTINCT Company FROM tbl_t_registrant WHERE Company LIKE "'.$Text.'%" LIMIT 5';
 		$Company = mysqli_query($euceventMysqli,$CompanySQL) or die(mysqli_error($euceventMysqli));
 		if(mysqli_num_rows($Company) > 0)
 		{

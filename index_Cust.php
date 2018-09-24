@@ -2,6 +2,16 @@
 $Title='EUC Events | Registration';
 include_once('head.php');
 date_default_timezone_set('Asia/Manila');
+session_start();
+if(isset($_SESSION['LoggedIn']))
+{
+  $header = 'Location: index_Admin.php?id='.$_SESSION['LoggedIn'].'';
+  header($header);
+}
+else
+{
+  session_destroy();
+}
 ?>
 
 <body class="hold-transition skin-blue layout-top-nav">
@@ -95,20 +105,24 @@ date_default_timezone_set('Asia/Manila');
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
+              <table class="table table-hover table-striped">
+                <thead>
                 <tr>
                   <th class="hide">ID</th> 
-                  <th>Title</th>
-                  <th>Location</th>
-                  <th>Start Date</th>
-                  <th>Phases</th>
-                  <th>Time</th>
+                  <th width="55%">Title</th>
+                  <th class="hide">Location</th>
+                  <th class="hide">Start Date</th>
+                  <th class="hide">Phases</th>
+                  <th class="hide">Time</th>
                   <th class="hide">Organizer</th>
-                  <th>State</th>
-                  <th>Description</th>
-                  <th>Price</th>
-                  <th>Actions</th>
+                  <th width="5%">State</th>
+                  <th class="hide">Description</th>
+                  <th width="10%">CPD Points</th>
+                  <th width="10%">Price</th>
+                  <th width="20%">Actions</th>
                 </tr>
+                </thead>
+                <tbody>
                 <?php
                   include('config.php');
                   $CurrDate = time();
@@ -121,6 +135,7 @@ date_default_timezone_set('Asia/Manila');
                                           Event_Location,
                                           Event_OrganizerDetail,
                                           Event_Desc,
+                                          Event_CPD,
                                           Event_Price
                                    FROM tbl_t_event WHERE Event_Date >= CURRENT_DATE OR Event_Date IS NULL
                                    ORDER BY Event_ID DESC';
@@ -138,6 +153,7 @@ date_default_timezone_set('Asia/Manila');
                       $Location = $row['Event_Location'];
                       $Organizer = $row['Event_OrganizerDetail'];
                       $Desc = $row['Event_Desc'];
+                      $CPD = $row['Event_CPD'];
                       $Price = $row['Event_Price'];
                       $RegisterFlag = 1;
                       if($Date!= '' || $Date!= null)
@@ -161,20 +177,21 @@ date_default_timezone_set('Asia/Manila');
                             <tr>
                               <td class="hide">'.$ID.'</td>
                               <td>'.$Title.'</td>
-                              <td>'.$Location.'</td>
-                              <td>'.$Date.'</td>
-                              <td>'.$Phases.'</td>
-                              <td>'.$Time.'</td>
+                              <td class="hide">'.$Location.'</td>
+                              <td class="hide">'.$Date.'</td>
+                              <td class="hide">'.$Phases.'</td>
+                              <td class="hide">'.$Time.'</td>
                               <td class="hide">'.$Organizer.'</td>
                               <td>'.$Status.'</td>
-                              <td>'.$Desc.'</td>
+                              <td class="hide">'.$Desc.'</td>
+                              <td>'.$CPD.'</td>
                               <td>₱'.$Price.'</td>';
                             if($RegisterFlag == 1)
                             {
                               echo '
                               <td>
-                                <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view">View Details</button>
-                                <button type="button" class="btn btn-success RegisterEvent" data-toggle="modal" data-target="#modal-defaul_Register"> Register
+                                <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view"><i class="fa fa-eye"></i> View Details</button>
+                                <button type="button" class="btn btn-success RegisterEvent" data-toggle="modal" data-target="#modal-defaul_Register"><i class="fa fa-hand-o-right"></i> Register
                                 </button>
                               </td>
                               </tr>';
@@ -231,7 +248,7 @@ date_default_timezone_set('Asia/Manila');
                 Register
               </button></td>
                 </tr> -->
-               
+              </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -312,15 +329,25 @@ date_default_timezone_set('Asia/Manila');
                 <label>Event Title</label>
                 <input id="VTitle" type="text" class="form-control" placeholder="" name="Title" readonly="">
                 </br>
-                <label>Event Location</label>
-                <input id="VLocation" type="text" class="form-control" placeholder="" name="Location" readonly="">
-                </br>
-                <div class="col-md-12">
+                <div>
                   <div class="col-md-6">
+                    <label>Event Organizer</label>
+                    <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
+                  </div>
+                  <div class="col-md-6">
+                    <label>CPD Points</label>
+                    <input id="VCPDPoint" type="text" class="form-control" placeholder="" name="CPD" readonly="">
+                  </div>
+                </div> 
+                </br>
+              </br></br></br>
+                <div>
+                  <div class="col-md-4">
                     <label>Start Date</label>
                     <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
                   </div>
-                  <div class="col-md-2">
+                  
+                  <div class="col-md-4">
                     <label>Phases</label>
                     <input id="VPhase" type="text" class="form-control" placeholder="" name="Phase" readonly="">
                   </div>
@@ -339,14 +366,14 @@ date_default_timezone_set('Asia/Manila');
                   </div>
                 </div>
                 </br>
-                <label>Event Organizer</label>
-                <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
+                <label>Event Location</label>
+                <textarea id="VLocation" class="form-control" rows="4" placeholder="" name="Location" readonly="">
+                </textarea> 
                 </br>
                 <label>Event Description</label>
-                <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
+                <textarea id="VDesc" class="form-control" rows="4" placeholder="" name="Desc" readonly=""></textarea>
                 <div style="margin:auto;" align="right">
                   <label><small style="font-size: 15px">Fee:<big id="VPrice" style="font-size: 30px;">00.00</big></small></label>
-                  
                 </div>
 
               </div>
@@ -370,58 +397,46 @@ date_default_timezone_set('Asia/Manila');
                   <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Event Registration</h4>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" style="min-height: 400px">
                 <!-- INPUTS SA MODAL HERE!! -->
-                <label style="float: right">(* = Required)</label>
+                <label style="float: right; color: red;">(* = Required)</label>
                 <label class="hide">Event ID</label>
                 <input id="ID" type="text" class="form-control hide" placeholder="" name="ID">
                 <div div class="col-xs-12">
-                  <div class="col-xs-3">
+                  <div class="col-xs-6">
                     <label>First Name*</label>
                     <input id="FName" type="text" class="form-control" placeholder="" name="FName" required="">
                   </div>
-                  <div class="col-xs-3">
+                  <div class="col-xs-6">
                     <label>Middle Name</label>
                     <input id="MName" type="text" class="form-control" placeholder="" name="MName">
                   </div>
-                  <div class="col-xs-3">
+                  <div class="col-xs-6">
                     <label>Last Name*</label>
                     <input id="LName" type="text" class="form-control" placeholder="" name="LName" required="">
                   </div>
-                  <div class="col-xs-3">
+                  <div class="col-xs-6">
                     <label>Extension Name</label>
                     <input id="XName" type="text" class="form-control" placeholder="" name="XName">
                   </div>
                 </div>
                 <div div class="col-xs-12" style="margin-top: 20px;">
-                  <div class="col-xs-12">
-                    <div class="col-xs-6">
-                      <label>Contact Number*</label>
-                      <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
-                    </div>
-                    <div class="col-xs-6">
-                      <label>Company/Agency*</label>
-                      <input id="Company" type="text" class="form-control" placeholder="" name="Company" required="">
-                      <div class="company_list"></div>
-                    </div>
+                  <div class="col-xs-6">
+                    <label>Contact Number*</label>
+                    <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
                   </div>
+
+                  <div class="col-xs-6">
+                    <label>Company/Agency*</label>
+                    <input id="Company" type="text" class="form-control" placeholder="" name="Company" required="">
+                    <div class="company_list"></div>
+                  </div>
+                </br></br></br></br>
                   <div class="col-xs-12">
-                    </br>
-                    <label>E-mail Address*</label>
-                    <input id="Email" type="E-mail" class="form-control" placeholder="" name="Email" required="">
-                    </br>
-                  </div><!-- 
-                  <div class=" form-group col-xs-12">
-                    <label>Payment Method*</label>
-                    </br>
-                    <label style="margin: 10px">
-                      <input type="radio" name="PaymentOption" id="PaymentPartial" value="Partial" checked="">Partial
-                    </label>
-                    <label style="margin: 10px">
-                      <input type="radio" name="PaymentOption" id="PaymentFull" value="FullPayment">Full Payment
-                    </label>
-                    </br>
-                  </div> -->
+                      <label>E-mail Address*</label>
+                      <input id="Email" type="text" class="form-control" placeholder="" name="Email" required="">
+                  </div>
+                </div>
                   <div class="col-xs-12" style="margin:20px" align="center">
                     <div class="col-xs-2">
                     </div>
@@ -431,10 +446,7 @@ date_default_timezone_set('Asia/Manila');
                          By clicking the checkbox, you agree to our <a href="TermsAndConditions.php">Terms of Use, Privacy Policy and Disclaimer.</a>
                       </label>
                     </div>
-                    <div class="col-xs-2">
-                    </div>
                   </div>
-                </div>
                 <!-- END OF INPUTS SA MODAL -->
               </div>
               <div class="modal-footer">
@@ -446,7 +458,7 @@ date_default_timezone_set('Asia/Manila');
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
-        </form>
+          </form>
         </div>
 
   <!-- MODAL EDIT ENDS HERE!!! -->
@@ -639,7 +651,8 @@ date_default_timezone_set('Asia/Manila');
                 $("#VTime").val($(this).closest("tbody tr").find("td:eq(5)").html());
                 $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(6)").html());
                 $("#VDesc").val($(this).closest("tbody tr").find("td:eq(8)").html());
-                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(9)").html());
+                $("#VCPDPoint").val($(this).closest("tbody tr").find("td:eq(9)").html());
+                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(10)").html());
                 // if ($(this).closest("tbody tr").find("td:eq(13)").text() === "Active") {
                 //         $("#editCheckA").prop("checked", true).trigger('click');
                 //     } else {

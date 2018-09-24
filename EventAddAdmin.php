@@ -6,6 +6,7 @@
 	$Title = $_POST['Title'];
 	$Location = $_POST['Location'];
 	$Date = $_POST['Date'];
+	$CPD = $_POST['CPD'];
 	$Time = $_POST['Time'];
 	$Organizer = $_POST['Organizer'];
 	$Desc = $_POST['Desc'];
@@ -19,6 +20,7 @@
 											Event_Location,
 											Event_OrganizerDetail,
 											Event_Desc,
+											Event_CPD,
 											Event_Price)
 									VALUES  ('.$ID.',
 											"'.$Title.'",
@@ -27,6 +29,7 @@
 											"'.$Location.'",
 											"'.$Organizer.'",
 											"'.$Desc.'",
+											'.$CPD.',
 											'.$Price.')';
 	$AddEvent = mysqli_query($euceventMysqli,$AddEventSQL) or die (mysqli_error($euceventMysqli));
 	

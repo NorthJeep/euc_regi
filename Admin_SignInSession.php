@@ -9,7 +9,7 @@
 	}
 	else
 	{
-		$UserSignInSQL = 'SELECT * FROM tbl_r_config WHERE Username ="'.$Username.'" AND Password = "'.$Password.'" ';
+		$UserSignInSQL = 'SELECT * FROM tbl_r_config WHERE aes_decrypt(Username,"eucevent") ="'.$Username.'" AND aes_decrypt(Password,"eucevent") = "'.$Password.'" ';
 		$UserSignIn = mysqli_query($euceventMysqli,$UserSignInSQL) or die (mysqli_error($euceventMysqli));
 		if(mysqli_num_rows($UserSignIn) > 0)
 		{

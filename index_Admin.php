@@ -184,9 +184,7 @@ date_default_timezone_set('Asia/Manila');
       <!-- Content Header (Page header) -->
       <section class="content-header">
  <!--        <h1> EUC Events </h1> -->
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default_add">
-                Add New Event
-            </button>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default_add"><i class="fa fa-plus"></i> New Event</button>
        <!--  <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li><a href="#">Layout</a></li>
@@ -215,20 +213,20 @@ date_default_timezone_set('Asia/Manila');
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example1" class="table table-bordered table-striped" width="100%">
                 <thead>
                 <tr>
                   <th class="hide">ID</th> 
-                  <th>Title</th>
-                  <th>Location</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Phases</th>
-                  <th>Time</th>
+                  <th width="65%">Title</th>
+                  <th class="hide">Location</th>
+                  <th class="hide">Start Date</th>
+                  <th class="hide">Phases</th>
+                  <th class="hide">Time</th>
                   <th class="hide">Organizer</th>
-                  <th>State</th>
-                  <th>Description</th>
-                  <th>Price</th>
+                  <th width="5%">State</th>
+                  <th class="hide">Description</th>
+                  <th width="10%">CPD Points</th>
+                  <th width="10%">Price</th>
                   <th width="10%">Actions</th>
                 </tr>
                 </thead>
@@ -236,7 +234,7 @@ date_default_timezone_set('Asia/Manila');
                 <?php
                   include('config.php');
                   $CurrDate = time();
-                  $EventListSQL = 'SELECT Event_ID,User_ID,Event_Title,Event_Phases,Event_Date,DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY) AS EndDate, Event_Time,Event_Location, Event_OrganizerDetail, Event_Desc, Event_Price FROM tbl_t_event ORDER BY Event_Title';
+                  $EventListSQL = 'SELECT Event_ID,User_ID,Event_Title,Event_Phases,Event_Date,DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY) AS EndDate, Event_Time,Event_Location, Event_OrganizerDetail, Event_Desc, Event_CPD, Event_Price FROM tbl_t_event ORDER BY Event_Title';
                   $EventList = mysqli_query($euceventMysqli,$EventListSQL) or die (mysqli_error($euceventMysqli));
                   if(mysqli_num_rows($EventList) > 0)
                   {
@@ -249,6 +247,7 @@ date_default_timezone_set('Asia/Manila');
                       $EndDate = $row['EndDate'];
                       $Phases = $row['Event_Phases'];
                       $Time = $row['Event_Time'];
+                      $CPD = $row['Event_CPD'];
                       $Location = $row['Event_Location'];
                       $Organizer = $row['Event_OrganizerDetail'];
                       $Desc = $row['Event_Desc'];
@@ -280,14 +279,15 @@ date_default_timezone_set('Asia/Manila');
                             <tr>
                               <td class="hide">'.$ID.'</td>
                               <td>'.$Title.'</td>
-                              <td>'.$Location.'</td>
-                              <td>'.$Date.'</td>
-                              <td>'.$EndDate.'</td>
-                              <td>'.$Phases.'</td>
-                              <td>'.$Time.'</td>
+                              <td class="hide">'.$Location.'</td>
+                              <td class="hide">'.$Date.'</td>
+                              <td class="hide">'.$EndDate.'</td>
+                              <td class="hide">'.$Phases.'</td>
+                              <td class="hide">'.$Time.'</td>
                               <td class="hide">'.$Organizer.'</td>
                               <td>'.$Status.'</td>
-                              <td>'.$Desc.'</td>
+                              <td class="hide">'.$Desc.'</td>
+                              <td>'.$CPD.'</td>
                               <td>'.$Price.'</td>
                               <td>
                                 <button type="button" class="btn btn-info ViewEvent" data-toggle="modal" data-target="#modal-default_view"><i class="fa fa-eye"></i></button>
@@ -303,17 +303,17 @@ date_default_timezone_set('Asia/Manila');
                 <tfoot>
                 <tr>
                   <th class="hide">ID</th> 
-                  <th>Title</th>
-                  <th>Location</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Phases</th>
-                  <th>Time</th>
+                  <th width="55%">Title</th>
+                  <th class="hide">Location</th>
+                  <th class="hide">Start Date</th>
+                  <th class="hide">Phases</th>
+                  <th class="hide">Time</th>
                   <th class="hide">Organizer</th>
-                  <th>State</th>
-                  <th>Description</th>
-                  <th>Price</th>
-                  <th>Actions</th>
+                  <th width="5%">State</th>
+                  <th class="hide">Description</th>
+                  <th width="10%">CPD Points</th>
+                  <th width="10%">Price</th>
+                  <th width="20%">Actions</th>
                 </tr>
                 </tfoot>
               </table>
@@ -352,17 +352,27 @@ date_default_timezone_set('Asia/Manila');
                 <label>Event Title</label>
                 <input id="ETitle" type="text" class="form-control" placeholder="" name="ETitle">
                 </br>
-                <label>Event Location</label>
-                <input id="ELocation" type="text" class="form-control" placeholder="" name="ELocation">
-                </br>
-                <div class="col-md-12">
+                <div>
                   <div class="col-md-6">
+                    <label>Event Organizer</label>
+                    <input id="EOrganizer" type="text" class="form-control" placeholder="" name="EOrganizer" readonly="">
+                  </div>
+                  <div class="col-md-6">
+                    <label>CPD Points</label>
+                    <input id="ECPDPoint" type="Number" class="form-control" placeholder="" name="ECPD">
+                  </div>
+                </div> 
+                </br>
+              </br></br></br>
+                <div>
+                  <div class="col-md-4">
                     <label>Start Date</label>
                     <input id="EDate" type="Date" class="form-control" placeholder="" name="EDate">
                   </div>
-                  <div class="col-md-2">
+                  
+                  <div class="col-md-4">
                     <label>Phases</label>
-                    <input id="EPhase" type="Number" min="1" class="form-control" placeholder="" name="EPhase">
+                    <input id="EPhase" type="text" class="form-control" placeholder="" name="EPhase">
                   </div>
                   <div class="col-md-4">
                     <div class="bootstrap-timepicker">
@@ -379,14 +389,16 @@ date_default_timezone_set('Asia/Manila');
                   </div>
                 </div>
                 </br>
-                <label>Event Organizer</label>
-                <input id="EOrganizer" type="text" class="form-control" placeholder="" name="EOrganizer" value="EUC" readonly="">
+                <label>Event Location</label>
+                <textarea id="ELocation" class="form-control" rows="4" placeholder="" name="ELocation">
+                </textarea> 
                 </br>
                 <label>Event Description</label>
-                <textarea id="EDesc" class="form-control" rows="3" placeholder="" name="EDesc"></textarea>
+                <textarea id="EDesc" class="form-control" rows="4" placeholder="" name="EDesc"></textarea>
                 <div style="margin:auto;" align="right">
                   <label><small style="font-size: 15px">Fee: ₱<input id="EPrice" type="text" class="form-control" placeholder="" name="EPrice"></input></small></label>
                 </div>
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
@@ -394,7 +406,7 @@ date_default_timezone_set('Asia/Manila');
               </div>
             </div>
           </div>
-        </form>
+          </form>
         </div>
 
   <!--HERE-->
@@ -420,15 +432,25 @@ date_default_timezone_set('Asia/Manila');
                 <label>Event Title</label>
                 <input id="VTitle" type="text" class="form-control" placeholder="" name="Title" readonly="">
                 </br>
-                <label>Event Location</label>
-                <input id="VLocation" type="text" class="form-control" placeholder="" name="Location" readonly="">
-                </br>
-                <div class="col-md-12">
+                <div>
                   <div class="col-md-6">
+                    <label>Event Organizer</label>
+                    <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
+                  </div>
+                  <div class="col-md-6">
+                    <label>CPD Points</label>
+                    <input id="VCPDPoint" type="Number" class="form-control" placeholder="" name="CPD" readonly="">
+                  </div>
+                </div> 
+                </br>
+              </br></br></br>
+                <div>
+                  <div class="col-md-4">
                     <label>Start Date</label>
                     <input id="VDate" type="Date" class="form-control" placeholder="" name="Date" readonly="">
                   </div>
-                  <div class="col-md-2">
+                  
+                  <div class="col-md-4">
                     <label>Phases</label>
                     <input id="VPhase" type="text" class="form-control" placeholder="" name="Phase" readonly="">
                   </div>
@@ -447,14 +469,14 @@ date_default_timezone_set('Asia/Manila');
                   </div>
                 </div>
                 </br>
-                <label>Event Organizer</label>
-                <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
+                <label>Event Location</label>
+                <textarea id="VLocation" class="form-control" rows="4" placeholder="" name="Location" readonly="">
+                </textarea> 
                 </br>
                 <label>Event Description</label>
-                <textarea id="VDesc" class="form-control" rows="3" placeholder="" name="Desc" readonly=""></textarea>
+                <textarea id="VDesc" class="form-control" rows="4" placeholder="" name="Desc" readonly=""></textarea>
                 <div style="margin:auto;" align="right">
-                  <label><small style="font-size: 15px">Fee: ₱<big id="VPrice" style="font-size: 30px;">00.00</big></small></label>
-                  
+                  <label><small style="font-size: 15px">Fee:<big id="VPrice" style="font-size: 30px;">00.00</big></small></label>
                 </div>
 
               </div>
@@ -463,13 +485,84 @@ date_default_timezone_set('Asia/Manila');
               </div>
             </div>
           </div>
-        </form>
+          </form>
         </div>
 
   <!-- MODAL VIEW ENDS HERE!!! -->
 
   <!-- MODAL ADD STARTS HERE!!! -->
-<div class="modal fade" id="modal-default_add">
+<!--HERE-->
+  <div class="modal fade" id="modal-default_add">
+          <form id="EventAdd" action="EventAddAdmin.php" method="POST">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Event</h4>
+              </div>
+              <div class="modal-body">
+
+                <label>Event Title</label>
+                <input type="text" class="form-control" placeholder="" name="Title">
+                </br>
+                <div>
+                  <div class="col-md-6">
+                    <label>Event Organizer</label>
+                    <input type="text" class="form-control" placeholder="" name="Organizer" value="EUC" readonly="">
+                  </div>
+                  <div class="col-md-6">
+                    <label>CPD Points</label>
+                    <input type="Number" class="form-control" placeholder="" name="CPD">
+                  </div>
+                </div> 
+                </br>
+              </br></br></br>
+                <div>
+                  <div class="col-md-4">
+                    <label>Start Date</label>
+                    <input type="Date" class="form-control" placeholder="" name="Date">
+                  </div>
+                  
+                  <div class="col-md-4">
+                    <label>Phases</label>
+                    <input type="text" class="form-control" placeholder="" name="Phase">
+                  </div>
+                  <div class="col-md-4">
+                    <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control timepicker" name="Time">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </br>
+                <label>Event Location</label>
+                <textarea class="form-control" rows="4" placeholder="" name="Location"></textarea> 
+                </br>
+                <label>Event Description</label>
+                <textarea class="form-control" rows="4" placeholder="" name="Desc"></textarea>
+                <div style="margin:auto;" align="right">
+                  <label><small style="font-size: 15px">Fee: ₱<input id="Price" type="text" class="form-control" placeholder="" name="Price"></input></small></label>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+          </div>
+          </form>
+        </div>
+<!--HERE-->
+  <!-- <div class="modal fade" id="modal-default_add">
     <form id="EventAdd" action="EventAddAdmin.php" method="POST">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -524,12 +617,9 @@ date_default_timezone_set('Asia/Manila');
                 <button type="submit" class="btn btn-success">Add</button>
               </div>
             </div>
-            <!-- /.modal-content -->
           </div>
-          <!-- /.modal-dialog -->
         </form>
-        </div>
-  <!-- MODAL ADD ENDS HERE!!! -->
+  </div> -->
 <?php
   include('footer.php');
 ?>  
@@ -599,7 +689,8 @@ date_default_timezone_set('Asia/Manila');
                 $("#ETime").val($(this).closest("tbody tr").find("td:eq(6)").html());
                 $("#EOrganizer").val($(this).closest("tbody tr").find("td:eq(7)").html());
                 $("#EDesc").val($(this).closest("tbody tr").find("td:eq(9)").html());
-                $("#EPrice").val($(this).closest("tbody tr").find("td:eq(10)").html());
+                $("#ECPDPoint").val($(this).closest("tbody tr").find("td:eq(10)").html());
+                $("#EPrice").val($(this).closest("tbody tr").find("td:eq(11)").html());
             });
             $(".ViewEvent").click(function()
             {
@@ -611,7 +702,8 @@ date_default_timezone_set('Asia/Manila');
                 $("#VTime").val($(this).closest("tbody tr").find("td:eq(6)").html());
                 $("#VOrganizer").val($(this).closest("tbody tr").find("td:eq(7)").html());
                 $("#VDesc").val($(this).closest("tbody tr").find("td:eq(9)").html());
-                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(10)").html());
+                $("#VCPDPoint").val($(this).closest("tbody tr").find("td:eq(10)").html());
+                $("#VPrice").text($(this).closest("tbody tr").find("td:eq(11)").html());
             });
         });
         $(function () {

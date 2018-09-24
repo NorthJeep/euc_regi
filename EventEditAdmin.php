@@ -8,6 +8,7 @@
 	$Date = $_POST['EDate'];
 	$Phase = $_POST['EPhase'];
 	$Time = $_POST['ETime'];
+	$CPD = $_POST['ECPD'];
 	$Organizer = $_POST['EOrganizer'];
 	$Desc = $_POST['EDesc'];
 	$Price = $_POST['EPrice'];
@@ -17,6 +18,7 @@
 											Event_Time = "'.$Time.'",
 											Event_Phases = "'.$Phase.'",
 											Event_Location = "'.$Location.'",
+											Event_CPD = '.$CPD.',
 											Event_OrganizerDetail = "'.$Organizer.'",
 											Event_Desc = "'.$Desc.'",
 											Event_Price = '.$Price.'
