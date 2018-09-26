@@ -231,7 +231,7 @@ date_default_timezone_set('Asia/Manila');
               <table class="table table-hover event-list">
                 <thead>
                 <tr>
-                  <th class="hide">ID</th> 
+                  <th >ID</th> 
                   <th>Title</th>
                   <th>Location</th>
                   <th>Date</th>
@@ -287,7 +287,7 @@ date_default_timezone_set('Asia/Manila');
 
                       echo '
                             <tr>
-                              <td class="hide">'.$ID.'</td>
+                              <td>'.$ID.'</td>
                               <td>'.$Title.'</td>
                               <td>'.$Location.'</td>
                               <td>'.$Date.'</td>

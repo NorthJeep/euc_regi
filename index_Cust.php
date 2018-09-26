@@ -15,7 +15,7 @@ else
 }
 ?>
 
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="hold-transition skin-blue layout-top-nav" onload="$('#modal-default_Register').modal('show')">
 <div class="wrapper">
 
    <header class="main-header">
@@ -396,6 +396,19 @@ else
                 <label style="float: right; color: red;">(* = Required)</label>
                 <label class="hide">Event ID</label>
                 <input id="ID" type="text" class="form-control hide" placeholder="" name="ID">
+          <!-- Checks URL for Event ID -->
+               <?php
+                  if(isset($_GET['e_id']))
+                  {
+                      echo '<input id="ID" type="text" class="form-control hide" value="'.$_GET['e_id'].'" placeholder="" name="ID">';
+                  }
+                  else
+                  {
+                    echo '<input id="ID" type="text" class="form-control hide" placeholder="" name="ID">';
+                  }
+                ?>
+
+
                 <div div class="col-xs-12">
                   <div class="col-xs-6">
                     <label>First Name*</label>
