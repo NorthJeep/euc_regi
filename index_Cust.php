@@ -1,4 +1,5 @@
 <?php
+@ob_start();
 $Title='EUC Events | Registration';
 include_once('head.php');
 date_default_timezone_set('Asia/Manila');
@@ -105,8 +106,8 @@ else
               </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover table-striped">
+            <div id="example1_wrapper" class="box-body table-responsive no-padding">
+              <table class="table table-hover table-striped dataTables_wrapper form-inline dt-bootstrap">
                 <thead>
                 <tr>
                   <th class="hide">ID</th> 
@@ -477,6 +478,10 @@ else
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -545,9 +550,17 @@ else
                     data: {Rno:PRno},
                     success:function(data)
                     {
-                        var newWindow = window.open('');
-                        var Link = data;
-                        newWindow.location.href = Link;
+                        var dataValue = data;
+                        if(dataValue != 0)
+                        {
+                          var newWindow = window.open('');
+                          var Link = data;
+                          newWindow.location.href = Link;
+                        }
+                        else
+                        {
+                          alert("Registration Number does not exist or does not fully paid on their balance.");
+                        }
                     },
                     error:function()
                     {

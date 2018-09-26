@@ -1,4 +1,5 @@
 <?php
+@ob_start();
 $Title='EUC Events | Print';
 include_once('head.php');
 include('config.php');

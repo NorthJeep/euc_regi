@@ -1,4 +1,5 @@
 <?php
+@ob_start();
 $Title='EUC Events | Registration Print';
 include_once('head.php');
 date_default_timezone_set('Asia/Manila');

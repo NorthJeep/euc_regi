@@ -1,4 +1,5 @@
 <?php
+@ob_start();
 $Title='EUC Events | Admin';
 include_once('head.php');
 session_start();
@@ -212,8 +213,9 @@ date_default_timezone_set('Asia/Manila');
               </div> -->
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped" width="100%">
+            <div class="box-body table-responsive no-padding">
+              <table id="example1" class="table table-bordered table-striped dataTables_wrapper form-inline dt-bootstrap" width="100%">
+                
                 <thead>
                 <tr>
                   <th class="hide">ID</th> 
@@ -708,14 +710,14 @@ date_default_timezone_set('Asia/Manila');
         });
         $(function () {
           $('#example1').DataTable()
-          // $('#example2').DataTable({
-          //   'paging'      : true,
-          //   'lengthChange': false,
-          //   'searching'   : false,
-          //   'ordering'    : true,
-          //   'info'        : true,
-          //   'autoWidth'   : false
-          // })
+          $('#example2').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : false,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : false
+          })
         })
 
     </script> 

@@ -1,4 +1,5 @@
 <?php
+@ob_start();
 $Title='EUC Events | Event Reports ';
 include_once('head.php');
 session_start();
@@ -467,7 +468,7 @@ date_default_timezone_set('Asia/Manila');
             // var Link = data;
             // newWindow.location.href = Link;
             alert(data);
-            // location.reload();
+            location.reload();
             // $('.participant-table tbody').append(data);
             
           } 
@@ -481,10 +482,11 @@ date_default_timezone_set('Asia/Manila');
       {
         var SearchText = $(this).val();
         var EventID = $('#event-select').val();
+        var Company = $('#company-select').val();
         $.ajax({
           url:"searchparticipantlist.php",
           type:"POST",
-          data: {ID:EventID,Search:SearchText},
+          data: {ID:EventID,Search:SearchText,Company:Company},
           success:function(data)
           {
             $('.participant-table tbody').append(data);
@@ -497,10 +499,11 @@ date_default_timezone_set('Asia/Manila');
       {
         $('.participant-table tbody tr').remove();
         var Event = $('#event-select').val();
+        var Company = $('#company-select').val();
         $.ajax({
           url:"participantlist.php",
           type:"POST",
-          data: {ID:Event},
+          data: {ID:Event,Company:Company},
           success:function(data)
           {
             $('.participant-table tbody').append(data);

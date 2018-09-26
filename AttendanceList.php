@@ -53,8 +53,8 @@
                                     INNER JOIN tbl_t_registration AS R2
                                     	ON P2.Registration_No = R2.Registration_No
                                     GROUP BY P2.Registration_No) AS P
+                                ON P.Registration_No = R.Registration_No
  							 WHERE R.Event_ID = '.$ID.'
-                             	AND P.Registration_No = R.Registration_No
                              	AND P.Pay_Amount >= E.Event_Price';
 		$Participant = mysqli_query($euceventMysqli,$ParticipantSQL) or die(mysqli_error($euceventMysqli));
 		if(mysqli_num_rows($Participant) > 0)
@@ -85,8 +85,27 @@ WHERE tbl_t_attendance.Registration_No = '.$Rno.' ';
 					}
 				}
 
-
-				$List .='
+				if($PhaseAttended >= $Phase)
+				{
+					$List .='
+					<tr>
+	                  <td>'.$Rno.'</td>
+	                  <td>'.$FName.'</td>
+	                  <td>'.$MName.'</td>
+	                  <td>'.$LName.'</td>
+	                  <td>'.$XName.'</td>
+	                  <td>'.$Company.'</td>
+	                  <td>'.$Date.'</td>
+	                  <td>'.$Phase.'</td>
+	                  <td>'.$PhaseAttended.'</td>
+	                  <td>
+                        <button type="button" class="btn btn-success" onclick="RecordAttend('.$Rno.')" disabled="">Completed</button>
+                      </td>
+	                </tr>';
+				}
+				else
+				{
+					$List .='
 					<tr>
 	                  <td>'.$Rno.'</td>
 	                  <td>'.$FName.'</td>
@@ -101,6 +120,9 @@ WHERE tbl_t_attendance.Registration_No = '.$Rno.' ';
                         <button type="button" class="btn btn-warning" onclick="RecordAttend('.$Rno.')">Attend</button>
                       </td>
 	                </tr>';
+				}
+
+				
 			}
 		}
 		else

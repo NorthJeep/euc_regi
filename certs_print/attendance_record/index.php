@@ -10,7 +10,9 @@
                           IFNULL(tbl_t_event.Event_CPD,"") AS Event_CPD,
                           IFNULL(tbl_t_event.Event_Date,"") AS Event_Date,
                           IFNULL(tbl_t_event.Event_Phases,"") AS Event_Phases,
+                          IFNULL(DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY),"") AS End_Date,
                           IFNULL(tbl_t_event.Event_Location,"") AS Event_Location,
+                          IFNULL(tbl_t_event.Event_Price,"") AS Event_Price,
                           IFNULL(tbl_t_registrant.Registrant_ID,"") AS Registrant_ID,
                           IFNULL(tbl_t_registrant.First_Name,"") AS First_Name,
                           IFNULL(tbl_t_registrant.Middle_Name,"") AS Middle_Name,
@@ -31,6 +33,7 @@
         $Title = $row['Event_Title'];
         $CPD = $row['Event_CPD'];
         $Date = $row['Event_Date'];
+        $EDate = $row['End_Date'];
         $Phases = $row['Event_Phases'];
         $Location = $row['Event_Location'];
         $RID = $row['Registrant_ID'];
@@ -49,6 +52,10 @@
   <meta name="generator" content="2018.1.0.386"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
+  <script type="text/javascript" src="../../bower_components/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="../../bower_components/qr/qrcode.js"></script>
+  <script type="text/javascript" src="../../bower_components/qr/jquery.qrcode.min.js"></script>
+
   <script type="text/javascript">
    // Update the 'nojs'/'js' class on the html node
 document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
@@ -99,7 +106,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     <p><?php echo $Location; ?></p>
    </div>
    <div class="clearfix grpelem" id="u138-4"><!-- content -->
-    <p><?php echo $Date; ?></p>
+    <p><?php echo $EDate; ?></p>
    </div>
    <div class="clearfix grpelem" id="u156-19"><!-- content -->
     <p id="u156-2">EUC</p>
@@ -122,10 +129,22 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
     <p>EUC President</p>
    </div>
    <div class="clip_frame grpelem" id="u332"><!-- image -->
-    <img class="block" id="u332_img" src="images/qr-crop-u332.jpg?crc=300529930" alt="" data-heightwidthratio="0.9064748201438849" data-image-width="139" data-image-height="126"/>
+    <!-- <img class="block" id="u332_img" src="images/qr-crop-u332.jpg?crc=300529930" alt="" data-heightwidthratio="0.9064748201438849" data-image-width="139" data-image-height="126"/> -->
+    <div id="qrCanvass">
+    
+    </div>
+    <script>
+      jQuery('#u332').qrcode({                      
+      text  : <?php echo "'".$RNo.$LName.$RID."'";?>,
+      width : 100,
+      height: 100,
+      }); 
+    </script>
    </div>
   </div>
   <!-- Other scripts -->
+
+
   <script type="text/javascript">
    // Decide whether to suppress missing file error or not based on preference setting
 var suppressMissingFileError = false

@@ -4,6 +4,7 @@
 	{
 		$ID = $_POST['ID'];
 		$List = "";
+		$Company = $_POST['Company'];
 
 		$EventSQL = 'SELECT * FROM tbl_t_event WHERE Event_ID ='.$ID.' ';
 		$Event = mysqli_query($euceventMysqli,$EventSQL) or die(mysqli_error($euceventMysqli));
@@ -19,8 +20,9 @@
 			}
 		}
 
-
-		$ParticipantSQL = 'SELECT 
+		if($Company == "All")
+		{
+			$ParticipantSQL = 'SELECT 
 								IFNULL(tbl_t_registrant.Registrant_ID," ") AS Registrant_ID,
 								IFNULL(tbl_t_registrant.First_Name," ") AS First_Name,
 								IFNULL(tbl_t_registrant.Middle_Name," ") AS Middle_Name,
@@ -35,6 +37,27 @@
 							 INNER JOIN tbl_t_registrant
 							 	ON tbl_t_registrant.Registrant_ID = tbl_t_registration.Registrant_ID
 							 WHERE tbl_t_registration.Event_ID ='.$ID.'';
+		}
+		else
+		{
+			$ParticipantSQL = 'SELECT 
+								IFNULL(tbl_t_registrant.Registrant_ID," ") AS Registrant_ID,
+								IFNULL(tbl_t_registrant.First_Name," ") AS First_Name,
+								IFNULL(tbl_t_registrant.Middle_Name," ") AS Middle_Name,
+								IFNULL(tbl_t_registrant.Last_Name," ") AS Last_Name,
+								IFNULL(tbl_t_registrant.Ext_Name," ") AS Ext_Name,
+								IFNULL(tbl_t_registrant.Company," ") AS Company,
+								IFNULL(tbl_t_registration.Registration_No," ") AS Registration_No,
+								IFNULL(tbl_t_registration.Date_Registered," ") AS Date_Registered,
+								IFNULL(aes_decrypt(tbl_t_registrant.Contact,"eucevent")," ") AS Contact,
+                                IFNULL(aes_decrypt(tbl_t_registrant.Email,"eucevent")," ") AS Email
+							 FROM tbl_t_registration
+							 INNER JOIN tbl_t_registrant
+							 	ON tbl_t_registrant.Registrant_ID = tbl_t_registration.Registrant_ID
+							 WHERE tbl_t_registration.Event_ID ='.$ID.'
+							 AND tbl_t_registrant.Company = "'.$Company.'" ';
+		}
+		
 		$Participant = mysqli_query($euceventMysqli,$ParticipantSQL) or die(mysqli_error($euceventMysqli));
 		if(mysqli_num_rows($Participant) > 0)
 		{

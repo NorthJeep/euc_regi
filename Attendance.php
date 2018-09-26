@@ -1,4 +1,5 @@
 <?php
+@ob_start();
 $Title='EUC Events | Attendance ';
 include_once('head.php');
 session_start();

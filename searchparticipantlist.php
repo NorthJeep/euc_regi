@@ -4,6 +4,7 @@
 	{
 		$ID = $_POST['ID'];
 		$Search = $_POST['Search'];
+		$Company = $_POST['Company'];
 		$List = "";
 
 		$EventSQL = 'SELECT * FROM tbl_t_event WHERE Event_ID ='.$ID.' ';
@@ -19,6 +20,45 @@
 				$Price = $row['Event_Price'];
 			}
 		}
+
+		if($Company == "All")
+		{
+			$ParticipantSQL = 'SELECT 
+								IFNULL(R.Registration_No," ") AS Registration_No,
+								IFNULL(T.Registrant_ID," ") AS Registrant_ID,
+								IFNULL(T.First_Name," ") AS First_Name,
+								IFNULL(T.Middle_Name," ") AS Middle_Name,
+								IFNULL(T.Last_Name," ") AS Last_Name,
+								IFNULL(T.Ext_Name," ") AS Ext_Name,
+								IFNULL(T.Company," ") AS Company,
+								IFNULL(E.Event_Date," ") AS EventDate,
+								IFNULL(E.Event_Phases," ") AS Phases,
+								IFNULL(R.Date_Registered," ") AS Date_Registered,
+								IFNULL(aes_decrypt(T.Contact,"eucevent")," ") AS Contact,
+                                IFNULL(aes_decrypt(T.Email,"eucevent")," ") AS Email
+							 FROM tbl_t_registration AS R
+							 INNER JOIN tbl_t_registrant AS T
+							 	ON T.Registrant_ID = R.Registrant_ID
+							 INNER JOIN tbl_t_event AS E
+							 	ON R.Event_ID = E.Event_ID
+							 INNER JOIN 
+                             	(SELECT
+                                     P2.Registration_No,
+                                    SUM(P2.Payment_Amount) AS Pay_Amount 
+                                    FROM tbl_t_payment AS P2
+                                    INNER JOIN tbl_t_registration AS R2
+                                    	ON P2.Registration_No = R2.Registration_No
+                                    GROUP BY P2.Registration_No) AS P
+ 							 WHERE (R.Event_ID = '.$ID.'
+                             	AND P.Registration_No = R.Registration_No
+                             	AND P.Pay_Amount >= E.Event_Price)
+							 	AND (T.First_Name LIKE "'.$Search.'%"
+							 		OR T.Middle_Name LIKE "'.$Search.'%"
+							 		OR T.Last_Name LIKE "'.$Search.'%"
+							 		OR T.Ext_Name LIKE "'.$Search.'%")';
+		}
+		else
+		{
 
 
 		$ParticipantSQL = 'SELECT 
@@ -53,7 +93,9 @@
 							 	AND (T.First_Name LIKE "'.$Search.'%"
 							 		OR T.Middle_Name LIKE "'.$Search.'%"
 							 		OR T.Last_Name LIKE "'.$Search.'%"
-							 		OR T.Ext_Name LIKE "'.$Search.'%")';
+							 		OR T.Ext_Name LIKE "'.$Search.'%")
+							 	AND T.Company = "'.$Company.'"';
+		}
 		$Participant = mysqli_query($euceventMysqli,$ParticipantSQL) or die(mysqli_error($euceventMysqli));
 		if(mysqli_num_rows($Participant) > 0)
 		{
