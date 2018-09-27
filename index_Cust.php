@@ -384,7 +384,7 @@ else
 <!-- MODAL EDIT START HERE!!! -->
         <div class="modal fade" id="modal-default_Register">
           <form id="Regster" action="Register.php" method="POST">
-          <div class="modal-dialog">
+          <div class="modal-dialog" style="width: 900px">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -395,7 +395,7 @@ else
                 <!-- INPUTS SA MODAL HERE!! -->
                 <label style="float: right; color: red;">(* = Required)</label>
                 <label class="hide">Event ID</label>
-                <input id="ID" type="text" class="form-control hide" placeholder="" name="ID">
+                <!-- <input id="ID" type="text" class="form-control hide" placeholder="" name="ID"> -->
           <!-- Checks URL for Event ID -->
                <?php
                   if(isset($_GET['e_id']))
