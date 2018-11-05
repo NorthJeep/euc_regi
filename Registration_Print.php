@@ -168,7 +168,7 @@ echo '<h6 id="QR" class="hide">'.$RID.$LName.$ID.'</h6>';
         </br>
         <h5>
           <strong>This serves as your gate pass to the event. You may or may not print this but bring this with you at all times.</strong></br>
-          You can pay through bank through this bank number <strong>XXXXXXXXXXXXXX</strong> and send your deposit slip to this email: <strong>sample.sample@sample.com</strong>
+          You can pay through bank through the Philippine National Bank No. <strong>1102-7000-2003</strong> while Advice to Debit Account (ADA) can be made with Land Bank Savings Account No. <strong>1691-1650-58</strong> and send your deposit slip to this email: <strong>euc.inc@gmail.com</strong>
         </h5>
         </br>
       </div>

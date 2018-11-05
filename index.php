@@ -12,8 +12,16 @@ include_once('head.php');
       <p class="login-box-msg">Sign in to start your session</p>
 
       <form action="Admin_SignInSession.php" method="post">
+        <?php
+        if(isset($_GET['p']))
+        {  if($_GET['p'] == 1)
+          {
+            echo '<label style="color:red;">Incorrect Username or Password</label>';
+          }
+        }
+        ?>
         <div class="form-group has-feedback">
-          <input type="text" class="form-control" placeholder="Username" name="username" required>
+          <input  type="text" class="form-control" placeholder="Username" name="username" required>
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">

@@ -58,7 +58,7 @@ date_default_timezone_set('Asia/Manila');
 
 						echo '
 						<tr>
-						  <td class="hide">'.$ID.'</td>
+						  <td>'.$ID.'</td>
 						  <td>'.$Title.'</td>
 						  <td>'.$Location.'</td>
 						  <td>'.$Date.'</td>
@@ -115,7 +115,7 @@ date_default_timezone_set('Asia/Manila');
 
 						echo '
 						<tr>
-						  <td class="hide">'.$ID.'</td>
+						  <td>'.$ID.'</td>
 						  <td>'.$Title.'</td>
 						  <td>'.$Location.'</td>
 						  <td>'.$Date.'</td>
@@ -174,7 +174,7 @@ date_default_timezone_set('Asia/Manila');
 
 						echo '
 						<tr>
-						  <td class="hide">'.$ID.'</td>
+						  <td>'.$ID.'</td>
 						  <td>'.$Title.'</td>
 						  <td>'.$Location.'</td>
 						  <td>'.$Date.'</td>
@@ -233,7 +233,7 @@ date_default_timezone_set('Asia/Manila');
 
 						echo '
 						<tr>
-						  <td class="hide">'.$ID.'</td>
+						  <td>'.$ID.'</td>
 						  <td>'.$Title.'</td>
 						  <td>'.$Location.'</td>
 						  <td>'.$Date.'</td>

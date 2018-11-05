@@ -1,7 +1,7 @@
 <footer class="main-footer">
     <div class="container">
       <div class="pull-right hidden-xs">
-       <!--  <b>Version</b> 2.4.0 -->
+        EUC Events Registration System <b>Version 1.5.2 </b>
       </div>
      <!--  <strong>Copyright &copy; 2018 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
       reserved. -->

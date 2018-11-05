@@ -68,60 +68,74 @@ date_default_timezone_set('Asia/Manila');
               <!-- Menu toggle button -->
              
 
-            <!-- Notifications Menu -->
-            <li class="dropdown notifications-menu">
+            <!-- NOTIFICATION -->
+            <li id="notif-drop-btn" class="dropdown notifications-menu">
               <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <a  href="#" class="dropdown-toggle notif-drop-con" data-toggle="dropdown">
                 <i class="fa fa-bell-o"></i>
-                <span class="label label-warning">2</span>
+                <span class="label label-warning count"></span>
               </a>
-              <ul class="dropdown-menu">
-                <li class="header">Notifications</li>
-                <li>
-                  <!-- Inner Menu: contains the notifications -->
-                  <ul class="menu">
-                    <li><!-- start notification -->
-                      <a href="#">
-                        <i class="fa fa-users text-aqua"></i> 5 new participants joined today!
-                      </a>
-                    </li>
-                    <!-- end notification -->
-                  </ul>
-                </li>
-                <li class="footer"><a href="#">View all</a></li>
+              <ul class="dropdown-menu notif-drop">
+                
               </ul>
             </li>
+            <!--END NOTIFICATION -->
             <!-- Tasks Menu -->
             <li class="dropdown tasks-menu">
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-flag-o"></i>
-                <span class="label label-danger">1</span>
+                <!-- <span class="label label-danger">1</span> -->
               </a>
               <ul class="dropdown-menu">
                 <li class="header">Event Days</li>
-                <li>
-                  <!-- Inner menu: contains the tasks -->
-                  <ul class="menu">
-                    <li><!-- Task item -->
-                      <a href="#">
-                        <!-- Task title and progress text -->
-                        <h3>
-                          Barangay IT Seminar 
-                          <small class="pull-right">7 Days Left</small>
-                        </h3>
-                        <!-- The progress bar -->
-                        <div class="progress xs">
-                          <!-- Change the css width attribute to simulate progress -->
-                          <div class="progress-bar progress-bar-aqua" style="width: 50%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                            <span class="sr-only">50% Complete</span>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <!-- end task item -->
-                  </ul>
-                </li>
+                <?php
+                  include('config.php');
+
+                  $EventDaysSQL = 'SELECT Event_Title,
+                                          Event_Date,
+                                          Event_Phases,
+                                          DATEDIFF(Event_Date, CURRENT_DATE) AS Remain_Day,
+                                          DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY) AS End_Date
+                                    FROM tbl_t_event
+                                    WHERE DATE_ADD(Event_Date, INTERVAL (Event_Phases-1) DAY) > CURRENT_DATE';
+                  $EventDaysQuery = mysqli_query($euceventMysqli,$EventDaysSQL) or die (mysqli_error($euceventMysqli));
+                  if(mysqli_num_rows($EventDaysQuery) > 0)
+                  {
+                    while($row1 = mysqli_fetch_assoc($EventDaysQuery))
+                    {
+                      $EDTitle = $row1['Event_Title'];
+                      $EDDate = $row1['Event_Date'];
+                      $EDPhases = $row1['Event_Phases'];
+                      $EDRemain = $row1['Remain_Day'];
+                      $EDEnd = $row1['End_Date'];
+
+                      echo '
+                        <li>
+                          <ul class="menu">
+                            <li>
+                              <a href="#">
+                                <div>
+                                  <h5 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    '.$EDTitle.'
+                                    <small class="pull-right">'.$EDRemain.' Days Left</small>
+                                  </h5>
+                                </div>
+                                <div class="progress xs">
+                                  <div class="progress-bar progress-bar-aqua" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="sr-only">'.$EDDate.'</span>
+                                  </div>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                      ';
+
+                    }
+                  }
+
+                ?>
                 <li class="footer">
                   <a href="#">View all tasks</a>
                 </li>
@@ -167,7 +181,7 @@ date_default_timezone_set('Asia/Manila');
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div> -->
                   <div class="pull-right">
-                    <a href="index.php" class="btn btn-default btn-flat">Sign out</a>
+                    <a href="Admin_SignOutSession.php" class="btn btn-default btn-flat">Sign out</a>
                   </div>
                 </li>
               </ul>
@@ -468,4 +482,56 @@ include('footer.php');
       });
     });
 });
+</script>
+<script>
+    $(document).ready(function(){
+      
+        var NotifActive = 0;
+        function load_unseen_notification(view = '')
+        {
+            $.ajax({
+                url:"NotifLoad.php",
+                method:"POST",
+                data:{view:view},
+                dataType:"json",
+                success:function(data)
+                {
+                    $('.notif-drop').empty();
+                    $('.notif-drop').html(data.Notification);
+
+                    if(data.NotificationCount > 0)
+                    {
+                        $('.count').html(data.NotificationCount);
+                    }
+                }
+            });
+        }
+        load_unseen_notification();
+        $(document).on('click','.notif-drop-con', function(){
+          NotifActive = 1;
+          $('.count').html('');
+          // load_unseen_notification('read');
+        });
+        // $(document).on('click','body', function(){
+        //   if(NotifActive == 1)
+        //   {
+        //     load_unseen_notification('read');
+        //     NotifActive = 0;
+        //   }
+        // });
+        $('#notif-drop-btn').on('hidden.bs.dropdown',function(){
+          if(NotifActive == 1)
+          {
+            load_unseen_notification('read');
+            NotifActive = 0;
+          }
+        });
+        setInterval(function(){
+
+            load_unseen_notification();  
+          
+        }, 5000);
+        
+    });
+
 </script>

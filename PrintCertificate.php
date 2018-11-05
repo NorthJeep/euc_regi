@@ -14,6 +14,7 @@
 								IFNULL(T.Company," ") AS Company,
 								IFNULL(E.Event_Date," ") AS EventDate,
 								IFNULL(E.Event_Phases," ") AS Phases,
+                                DATE_ADD(E.Event_Date, INTERVAL (E.Event_Phases - 1) DAY) AS EndDate,
 								IFNULL(R.Date_Registered," ") AS Date_Registered,
 								IFNULL(aes_decrypt(T.Contact,"eucevent")," ") AS Contact,
                                 IFNULL(aes_decrypt(T.Email,"eucevent")," ") AS Email
@@ -31,8 +32,9 @@
                                     	ON P2.Registration_No = R2.Registration_No
                                     GROUP BY P2.Registration_No) AS P
                                 ON P.Registration_No = R.Registration_No
- 							 WHERE R.Registration_No = '.$Rno.'
-                             	AND P.Pay_Amount >= E.Event_Price';
+ 							 WHERE (R.Registration_No = '.$Rno.'
+                             	AND P.Pay_Amount >= E.Event_Price)
+                                AND DATE_ADD(E.Event_Date, INTERVAL (E.Event_Phases - 1) DAY) <= CURRENT_DATE';
 		$CheckRNo = mysqli_query($euceventMysqli,$CheckRNoSQL) or die(mysqli_error($euceventMysqli));
 		if(mysqli_num_rows($CheckRNo) > 0)
 		{

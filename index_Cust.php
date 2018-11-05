@@ -6,6 +6,9 @@ date_default_timezone_set('Asia/Manila');
 session_start();
 if(isset($_SESSION['LoggedIn']))
 {
+  // echo '<script type="text/javascript">
+  //         alert("'.$_SESSION['LoggedIn'].'")
+  //       </script>';
   $header = 'Location: index_Admin.php?id='.$_SESSION['LoggedIn'].'';
   header($header);
 }
@@ -14,8 +17,17 @@ else
   session_destroy();
 }
 ?>
-
-<body class="hold-transition skin-blue layout-top-nav" onload="$('#modal-default_Register').modal('show')">
+<?php
+  if(isset($_GET['e_id']))
+  {
+      echo '<body class="hold-transition skin-blue layout-top-nav" onload="ModalLoad()">';
+  }
+  else
+  {
+    echo '<body class="hold-transition skin-blue layout-top-nav">';
+  }
+?>
+<!-- <body class="hold-transition skin-blue layout-top-nav" onload=""> -->
 <div class="wrapper">
 
    <header class="main-header">
@@ -119,7 +131,7 @@ else
                   <th class="hide">Organizer</th>
                   <th width="5%">State</th>
                   <th class="hide">Description</th>
-                  <th width="10%">CPD Points</th>
+                  <th width="10%" class="hide">CPD Points</th>
                   <th width="10%">Price</th>
                   <th width="20%">Actions</th>
                 </tr>
@@ -186,7 +198,7 @@ else
                               <td class="hide">'.$Organizer.'</td>
                               <td>'.$Status.'</td>
                               <td class="hide">'.$Desc.'</td>
-                              <td>'.$CPD.'</td>
+                              <td class="hide">'.$CPD.'</td>
                               <td>₱'.$Price.'</td>';
                             if($RegisterFlag == 1)
                             {
@@ -324,11 +336,11 @@ else
                 <input id="VTitle" type="text" class="form-control" placeholder="" name="Title" readonly="">
                 </br>
                 <div>
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <label>Event Organizer</label>
                     <input id="VOrganizer" type="text" class="form-control" placeholder="" name="Organizer" readonly="">
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 hide">
                     <label>CPD Points</label>
                     <input id="VCPDPoint" type="text" class="form-control" placeholder="" name="CPD" readonly="">
                   </div>
@@ -381,7 +393,7 @@ else
 
   <!-- MODAL VIEW ENDS HERE!!! -->
 
-<!-- MODAL EDIT START HERE!!! -->
+<!-- MODAL REGISTER START HERE!!! -->
         <div class="modal fade" id="modal-default_Register">
           <form id="Regster" action="Register.php" method="POST">
           <div class="modal-dialog" style="width: 900px">
@@ -393,7 +405,7 @@ else
               </div>
               <div class="modal-body" style="min-height: 400px">
                 <!-- INPUTS SA MODAL HERE!! -->
-                <label style="float: right; color: red;">(* = Required)</label>
+                <h4 style="float: right; color: red;"><b>(* = Required)</b></h4>
                 <label class="hide">Event ID</label>
                 <!-- <input id="ID" type="text" class="form-control hide" placeholder="" name="ID"> -->
           <!-- Checks URL for Event ID -->
@@ -409,48 +421,54 @@ else
                 ?>
 
 
-                <div div class="col-xs-12">
-                  <div class="col-xs-6">
-                    <label>First Name*</label>
-                    <input id="FName" type="text" class="form-control" placeholder="" name="FName" required="">
+                <div div class="col-xs-12 form-group">
+                  <div class="col-md-12">
+                    <div class="col-xs-6">
+                      <label><b style="color: red;">*</b>First Name</label>
+                      <input id="FName" type="text" class="form-control" placeholder="" name="FName" required="" maxlength="100">
+                    </div>
+                    <div class="col-xs-6">
+                      <label>Middle Name (Optional)</label>
+                      <input id="MName" type="text" class="form-control" placeholder="" name="MName" maxlength="100">
+                    </div>
                   </div>
-                  <div class="col-xs-6">
-                    <label>Middle Name</label>
-                    <input id="MName" type="text" class="form-control" placeholder="" name="MName">
-                  </div>
-                  <div class="col-xs-6">
-                    <label>Last Name*</label>
-                    <input id="LName" type="text" class="form-control" placeholder="" name="LName" required="">
-                  </div>
-                  <div class="col-xs-6">
-                    <label>Extension Name</label>
-                    <input id="XName" type="text" class="form-control" placeholder="" name="XName">
+                  <div class="col-md-12">
+                    <div class="col-xs-6">
+                      <label><b style="color: red;">*</b>Last Name</label>
+                      <input id="LName" type="text" class="form-control" placeholder="" name="LName" required="" maxlength="100">
+                    </div>
+                    <div class="col-xs-6">
+                      <label>Extension Name (Optional)</label>
+                      <input id="XName" type="text" class="form-control" placeholder="" name="XName" maxlength="10">
+                    </div>
                   </div>
                 </div>
-                <div div class="col-xs-12" style="margin-top: 20px;">
-                  <div class="col-xs-6">
-                    <label>Contact Number*</label>
-                    <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
-                  </div>
+                <div div class="col-md-12">
+                  <div div class="col-xs-12">
+                    <div class="col-xs-6">
+                      <label><b style="color: red;">*</b>Contact Number</label>
+                      <input id="Contact" type="text" maxlength="11" class="form-control" placeholder="" name="Contact" required="">
+                    </div>
 
-                  <div class="col-xs-6">
-                    <label>Company/Agency*</label>
-                    <input id="Company" type="text" class="form-control" placeholder="" name="Company" required="">
-                    <div class="company_list"></div>
+                    <div class="col-xs-6">
+                      <label><b style="color: red;">*</b>Company/Agency</label>
+                      <input id="Company" type="text" class="form-control" placeholder="" name="Company" required="">
+                      <div class="company_list"></div>
+                    </div>
                   </div>
                 </br></br></br></br>
+                <div div class="col-xs-12">
                   <div class="col-xs-12">
-                      <label>E-mail Address*</label>
+                      <label><b style="color: red;">*</b>E-mail Address</label>
                       <input id="Email" type="text" class="form-control" placeholder="" name="Email" required="">
                   </div>
                 </div>
-                  <div class="col-xs-12" style="margin:20px" align="center">
-                    <div class="col-xs-2">
-                    </div>
-                    <div class="checkbox icheck col-xs-8" align="center">
-                      <input id="TermsAndConditions" type="checkbox" class="icheckbox_square-blue" required="">
+                </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="checkbox col-xs-12" align="center">
                       <label>
-                         By clicking the checkbox, you agree to our <a href="TermsAndConditions.php">Terms of Use, Privacy Policy and Disclaimer.</a>
+                      <input id="TermsAndConditions" type="checkbox" required="">
+                       By clicking the checkbox, you agree to our <a href="TermsAndConditions.php"><b>Terms of Use, Privacy Policy and Disclaimer.</b></a>
                       </label>
                     </div>
                   </div>
@@ -468,7 +486,7 @@ else
           </form>
         </div>
 
-  <!-- MODAL EDIT ENDS HERE!!! -->
+  <!-- MODAL REGISTER ENDS HERE!!! -->
 
        <!--  -->
       <!-- /.content -->
@@ -518,6 +536,10 @@ else
 </body>
 </html>
 <script type="text/javascript">
+  function ModalLoad()
+  {
+    $('#modal-default_Register').modal('show');
+  }
         $(document).ready(function()
         {
             $(".RegisterEvent").click(function()
@@ -572,7 +594,7 @@ else
                         }
                         else
                         {
-                          alert("Registration Number does not exist or does not fully paid on their balance.");
+                          alert("The event is not yet finished or does not fully paid on their balance.");
                         }
                     },
                     error:function()
@@ -611,6 +633,22 @@ else
                             var Company = $('#Company').val();
                             var Email = $('#Email').val();
 
+                            if(MName.toUpperCase() === "none".toUpperCase() ||
+                              MName.toUpperCase() === "n/a".toUpperCase() ||
+                              MName.toUpperCase() === "not applicable".toUpperCase() ||
+                              MName.toUpperCase() === "not available".toUpperCase())
+                            {
+                              MName = "";
+                            }
+
+
+                            if(XName.toUpperCase() === "none".toUpperCase() ||
+                              XName.toUpperCase() === "n/a".toUpperCase() ||
+                              XName.toUpperCase() === "not applicable".toUpperCase() ||
+                              XName.toUpperCase() === "not available".toUpperCase())
+                            {
+                              XName = "";
+                            }
                             // if(document.getElementById('PaymentPartial').checked)
                             // {
                             //   var Payment = "Partial";

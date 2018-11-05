@@ -26,7 +26,7 @@
 		}
 		else
 		{
-			$header = 'Location: index.php';
+			$header = 'Location: index.php?p=1';
 			header($header);
 			echo 'Wrong Username and Password';
 		} 
